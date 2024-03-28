@@ -1,0 +1,9 @@
+@import '@styles/global.scss';
+@import '@styles/variables.scss';
+
+.authorization {
+    width: 100%;
+    height: 100vh;
+    background-color: $colorPrimary2;
+    background: linear-gradient(135deg, rgba(53,79,82,1) 0%, rgba(82,121,111,1) 100%);
+}
