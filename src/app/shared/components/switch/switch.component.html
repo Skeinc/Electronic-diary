@@ -1,0 +1,5 @@
+<div class="component">
+    <div class="switch-area flex-row" [ngClass]="elementDisable ? 'disable' : (elementValue ? 'active' : '')" (click)="elementDisable ? '' : toggleSwitchValue()">
+        <div class="switch-area__value" [style.transform]="elementValue ? 'translateX(2.6rem)' : 'translateX(0rem)'"></div>
+    </div>
+</div>

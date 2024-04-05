@@ -1,0 +1,43 @@
+@import '@styles/global.scss';
+@import '@styles/variables.scss';
+
+.component {
+    width: 100%;
+    position: relative;
+}
+
+.switch-area {
+    width: 5rem;
+    height: 2rem;
+    border: 1px solid $inputBorder;
+    border-radius: 16px;
+    background-color: $colorGrey6;
+    justify-content: start;
+    align-items: center;
+    padding: 0px 6px;
+    cursor: pointer;
+    transition: $transitionMedium;
+
+    &:hover {
+        background-color: $colorGrey5;
+    }
+
+    .switch-area__value {
+        width: 1.5rem;
+        height: 1.5rem;
+        background-color: $colorWhite;
+        border-radius: 50%;
+        border: 1px solid $inputBorder;
+        transform: translateX(0rem);
+        transition: $transitionMedium;
+    }
+
+    &.active {
+        background-color: $colorBlue;
+    }
+
+    &.disable {
+        background-color: $colorGrey4;
+        cursor: default;
+    }
+}

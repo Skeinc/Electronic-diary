@@ -1,0 +1,21 @@
+<div class="component">
+    <textarea class="textarea"
+    [cols]="elementCols"
+    [rows]="elementRows"
+    [id]="elementID"
+    [name]="elementName ?? ''"
+    [placeholder]="elementPlaceholder ?? ''"
+    [value]="elementValue"
+    [required]="elementRequired ?? false"
+    [readOnly]="elementReadonly"
+    [disabled]="elementDisable ?? false"
+    [style.height]="config?.height ?? ''"
+    [style.backgroundColor]="config?.backgroundColor ?? ''"
+    [style.borderColor]="config?.borderColor ?? ''"
+    [style.color]="config?.color ?? ''"
+    [style.resize]="resizable ? 'both' : 'none'"
+    [(ngModel)]="elementValue"
+    (ngModelChange)="elementValueChange.emit($event)"></textarea>
+
+    <label *ngIf="elementLabel" [for]="elementID" class="textarea-label">{{ elementLabel }}</label>
+</div>

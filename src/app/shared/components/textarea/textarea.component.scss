@@ -6,21 +6,20 @@
     position: relative;
 }
 
-.passwordfield-input {
+.textarea {
     width: 100%;
-    height: 45px;
+    height: auto;
     appearance: none;
     outline: none;
     border: 1px solid $inputBorder;
     background-color: $inputBackground;
     border-radius: 10px;
-    padding: 10px 16px;
+    padding: 10px;
     font-weight: 500;
     font-size: 14px;
     line-height: 18px;
     color: $colorDark2;
-    transition: $transitionMedium;
-    cursor: text;
+    transition: $transitionShort;
 
     &:hover {
         border-radius: 14px;
@@ -34,13 +33,17 @@
         }
     }
 
+    &:invalid {
+        border: 1px solid $colorRed;
+    }
+
     &:focus,
     &:active,
     &:not(:placeholder-shown) {
         border-radius: 16px;
         box-shadow: 0px 0px 6px 0px rgba(100, 100, 100, 0.1);
 
-        ~ .passwordfield-label {
+        ~ .textarea-label {
             top: 0%;
             transform: translateY(0%);
             font-weight: 500;
@@ -52,14 +55,12 @@
     &::placeholder {
         color: $colorGrey3;
     }
-
 }
 
-.passwordfield-label {
+.textarea-label {
     position: absolute;
-    top: 50%;
+    top: 16px;
     left: 0px;
-    transform: translateY(-50%);
     pointer-events: none;
     margin: 0px 16px;
     font-weight: 500;
@@ -67,21 +68,4 @@
     line-height: 18px;
     color: $colorGrey3;
     transition: $transitionMedium;
-}
-
-.passwordfield-icon {
-    position: absolute;
-    top: 50%;
-    right: 0px;
-    transform: translateY(-50%);
-    margin: 0px 16px;
-    font-weight: 500;
-    font-size: 18px;
-    color: $colorGrey3;
-    cursor: pointer;
-    transition: $transitionMedium;
-
-    &:hover {
-        color: $colorGrey1;
-    }
 }

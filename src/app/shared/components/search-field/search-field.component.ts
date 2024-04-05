@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
-import { PasswordFieldInterface } from "../../interfaces/components/password-field.interface";
+import { SearchFieldInterface } from "../../interfaces/components/search-field.interface";
 
 @Component({
-    selector: 'app-password-field',
-    templateUrl: './password-field.component.html',
-    styleUrl: './password-field.component.scss',
+    selector: 'app-search-field',
+    templateUrl: './search-field.component.html',
+    styleUrl: './search-field.component.scss',
 })
-export class PasswordFieldComponent {
+export class SearchFieldComponent {
     @Output() elementValueChange = new EventEmitter<string>();
     
     // ID элемента
@@ -37,15 +37,15 @@ export class PasswordFieldComponent {
     @Input() elementValid?: boolean;
 
     // Конфигурация компонента
-    @Input() config?: PasswordFieldInterface;
+    @Input() config?: SearchFieldInterface;
 
-    // Переменная, контролирующая видимость пароля
-    isVisiblePassword: boolean = false;
+    // Метод обработки ввода
+    onSearchField(event: any): void {
+        this.elementValue = event.target.value;
+    }
 
-    // Метод для смены видимости пароля
-    togglePasswordVisible(): void {
-        if(!this.elementDisable) {
-            this.isVisiblePassword = !this.isVisiblePassword;
-        }
+    // Метод для очистки поля ввода
+    clearSearchField(): void {
+        this.elementValue = '';
     }
 }

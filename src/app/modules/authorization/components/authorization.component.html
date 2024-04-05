@@ -1,1 +1,75 @@
-<section class="authorization flex-center-center"></section>
+<section class="authorization flex-center-center">
+    <div class="container">
+        <div class="login flex-column">
+            <header class="tabmenu flex-row">
+                <div *ngFor="let item of tabmenuConfig" class="tabmenu-item flex-row" [ngClass]="selectedTabmenuElement?.value === item.value ? 'active' : ''" (click)="tabmenuHandler(item)">
+                    <span class="material-icons-outlined">{{ item.icon }}</span>
+                    
+                    <p>{{ item.label }}</p>
+                </div>
+            </header>
+
+            <div *ngIf="selectedTabmenuElement?.value === tabmenuConfig[0].value" class="login-student flex-column">
+                <header class="login-header flex-row">
+                    <h1  class="login-header__title">Вход</h1>
+                </header>
+
+                <div class="login-fields flex-column">
+                    <div class="login-fields__item">
+                        <app-phone-field [elementID]="'login'" [elementName]="'login'" [elementPlaceholder]="'Телефон'" [(elementValue)]="studentLogin"></app-phone-field>
+                    </div>
+
+                    <div class="login-fields__item">
+                        <app-password-field [elementID]="'password'" [elementName]="'password'" [elementPlaceholder]="'Пароль'" [(elementValue)]="studentPassword"></app-password-field>
+                    </div>
+                </div>
+
+                <div class="login-forgot flex-row">
+                    <p>Забыли пароль?</p>
+                    <span>Восстановить</span>
+                </div>
+
+                <div class="login-error flex-row">
+                    <span>{{ studentError }}</span>
+                </div>
+
+                <div class="login-controller">
+                    <app-button [elementID]="'login-button'" [elementName]="'login-button'" [elementLabel]="'Войти'" (click)="studentLoginHandler()"></app-button>
+                </div>
+
+                <div class="login-signup flex-row">
+                    <span>Регистрация</span>
+                </div>
+            </div>
+
+            <div *ngIf="selectedTabmenuElement?.value === tabmenuConfig[1].value" class="login-personal flex-column">
+                <header class="login-header flex-row">
+                    <h1  class="login-header__title">Вход</h1>
+                </header>
+
+                <div class="login-fields flex-column">
+                    <div class="login-fields__item">
+                        <app-text-field [elementID]="'login'" [elementName]="'login'" [elementPlaceholder]="'Логин'" [(elementValue)]="personalLogin"></app-text-field>
+                    </div>
+
+                    <div class="login-fields__item">
+                        <app-password-field [elementID]="'password'" [elementName]="'password'" [elementPlaceholder]="'Пароль'" [(elementValue)]="personalPassword"></app-password-field>
+                    </div>
+                </div>
+
+                <div class="login-forgot flex-row">
+                    <p>Забыли пароль?</p>
+                    <span>Восстановить</span>
+                </div>
+
+                <div class="login-error flex-row">
+                    <span>{{ personalError }}</span>
+                </div>
+
+                <div class="login-controller">
+                    <app-button [elementID]="'login-button'" [elementName]="'login-button'" [elementLabel]="'Войти'" (click)="personalLoginHandler()"></app-button>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

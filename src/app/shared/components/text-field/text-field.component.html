@@ -1,12 +1,19 @@
 <div class="component">
     <input class="textfield-input" type="text" autocomplete="off"
-        [id]="config.id"
-        [name]="config.name"
-        [placeholder]="config.placeholder ?? ''"
-        [value]="config.value ?? ''"
-        [required]="config.required"
-        [readOnly]="config.readonly"
-        [disabled]="config.disabled">
+        [id]="elementID"
+        [name]="elementName ?? ''"
+        [placeholder]="elementPlaceholder ?? ''"
+        [value]="elementValue"
+        [required]="elementRequired ?? false"
+        [readOnly]="elementReadonly"
+        [disabled]="elementDisable ?? false"
+        [style.height]="config?.height ?? ''"
+        [style.backgroundColor]="config?.backgroundColor ?? ''"
+        [style.borderColor]="config?.borderColor ?? ''"
+        [style.color]="config?.color ?? ''"
+        [(ngModel)]="elementValue"
+        (ngModelChange)="elementValueChange.emit($event)"
+        >
 
-    <label *ngIf="config.label" [for]="config.id" class="textfield-label">{{ config.label }}</label>
+    <label *ngIf="elementLabel" [for]="elementID" class="textfield-label">{{ elementLabel }}</label>
 </div>

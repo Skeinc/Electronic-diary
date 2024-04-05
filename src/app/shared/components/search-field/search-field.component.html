@@ -1,6 +1,5 @@
 <div class="component">
-    <input class="passwordfield-input" autocomplete="off"
-        [type]="isVisiblePassword ? 'text' : 'password'"
+    <input class="searchfield-input" type="text" autocomplete="off"
         [id]="elementID"
         [name]="elementName ?? ''"
         [placeholder]="elementPlaceholder ?? ''"
@@ -8,6 +7,7 @@
         [required]="elementRequired ?? false"
         [readOnly]="elementReadonly"
         [disabled]="elementDisable ?? false"
+        (input)="onSearchField($event)"
         [style.height]="config?.height ?? ''"
         [style.backgroundColor]="config?.backgroundColor ?? ''"
         [style.borderColor]="config?.borderColor ?? ''"
@@ -15,7 +15,7 @@
         [(ngModel)]="elementValue"
         (ngModelChange)="elementValueChange.emit($event)">
 
-    <label *ngIf="elementLabel" [for]="elementID" class="passwordfield-label">{{ elementLabel }}</label>
+    <label *ngIf="elementLabel" [for]="elementID" class="searchfield-label">{{ elementLabel }}</label>
 
-    <span class="material-icons passwordfield-icon" (click)='togglePasswordVisible()'>{{ isVisiblePassword ? 'visibility_off' : 'visibility' }}</span>
+    <span *ngIf="elementValue && elementValue.length >= 1" class="material-icons searchfield-icon" (click)="clearSearchField()">{{ 'close' }}</span>
 </div>

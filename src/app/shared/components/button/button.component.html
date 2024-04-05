@@ -1,0 +1,10 @@
+<div class="component">
+    <button class="button" type="button" [id]="elementID" [name]="elementName" [disabled]="elementDisable"
+    [style.height]="config?.height ?? ''"
+    [style.backgroundColor]="config?.backgroundColor ?? ''"
+    [style.border]="config?.border ?? ''">
+        <span
+        [style.color]="config?.color ?? ''"
+        [style.fontSize]="config?.fontSize ?? ''">{{ elementLabel }}</span>
+    </button>
+</div>

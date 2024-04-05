@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
-import { PasswordFieldInterface } from "../../interfaces/components/password-field.interface";
+import { TextareaInterface } from "../../interfaces/components/textarea.interface";
 
 @Component({
-    selector: 'app-password-field',
-    templateUrl: './password-field.component.html',
-    styleUrl: './password-field.component.scss',
+    selector: 'app-textarea',
+    templateUrl: './textarea.component.html',
+    styleUrl: './textarea.component.scss',
 })
-export class PasswordFieldComponent {
+export class TextareaComponent {
     @Output() elementValueChange = new EventEmitter<string>();
     
     // ID элемента
@@ -36,16 +36,15 @@ export class PasswordFieldComponent {
     // Valid параметр элемента
     @Input() elementValid?: boolean;
 
+    // Количество символов в строке элемента
+    @Input() elementRows?: number;
+
+    // Количество символов в столбце элемента
+    @Input() elementCols?: number;
+
+    // Изменение размера textarea
+    @Input() resizable?: boolean;
+
     // Конфигурация компонента
-    @Input() config?: PasswordFieldInterface;
-
-    // Переменная, контролирующая видимость пароля
-    isVisiblePassword: boolean = false;
-
-    // Метод для смены видимости пароля
-    togglePasswordVisible(): void {
-        if(!this.elementDisable) {
-            this.isVisiblePassword = !this.isVisiblePassword;
-        }
-    }
+    @Input() config?: TextareaInterface;
 }

@@ -1,0 +1,41 @@
+@import '@styles/global.scss';
+@import '@styles/variables.scss';
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.component {
+    width: 100%;
+    position: relative;
+    gap: 16px;
+}
+
+.codefield-input {
+    width: 60px;
+    height: 60px;
+    appearance: none;
+    outline: none;
+    border: 1px solid $inputBorder;
+    border-radius: 10px;
+    background-color: $inputBackground;
+    text-align: center;
+    padding: 16px;
+    font-weight: 500;
+    font-size: 20px;
+    line-height: auto;
+    color: $colorDark2;
+    transition: $transitionMedium;
+
+    &:hover {
+        border-radius: 12px;
+    }
+
+    &:active,
+    &:focus {
+        border-radius: 14px;
+        border: 1px solid $colorBlue;
+    }
+}

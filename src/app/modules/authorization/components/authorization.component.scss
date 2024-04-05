@@ -7,3 +7,171 @@
     background-color: $colorPrimary2;
     background: linear-gradient(135deg, rgba(53,79,82,1) 0%, rgba(82,121,111,1) 100%);
 }
+
+.container {
+    width: 380px;
+    height: 520px;
+    border-radius: 16px;
+    background-color: $colorWhite;
+    padding: 16px;
+}
+
+.login {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+.login-student,
+.login-personal {
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+}
+
+.tabmenu {
+    width: 100%;
+    height: auto;
+    justify-content: space-between;
+    transition: $transitionMedium;
+
+    .tabmenu-item {
+        width: 50%;
+        height: 40px;
+        justify-content: center;
+        align-items: center;
+        border-bottom: 2px solid $colorGrey5;
+        gap: 10px;
+        cursor: pointer;
+        transition: $transitionMedium;
+
+        span {
+            font-weight: 500;
+            font-size: 24px;
+            line-height: auto;
+            color: $colorDark3;
+            transition: $transitionMedium;
+        }
+
+        p {
+            font-weight: 600;
+            font-size: 16px;
+            line-height: auto;
+            color: $colorDark3;
+            transition: $transitionMedium;
+        }
+        
+        &:hover {
+            border-bottom: 2px solid $colorGrey3;
+        }
+
+        &.active {
+            border-bottom: 2px solid $colorPrimary3;
+
+            span {
+                color: $colorPrimary3;
+            }
+
+            p {
+                color: $colorPrimary3;
+            }
+        }
+    }
+}
+
+.login-header {
+    width: 100%;
+    height: auto;
+    justify-content: center;
+    align-items: center;
+
+    .login-header__title {
+        font-weight: 600;
+        font-size: 24px;
+        line-height: auto;
+        color: $colorDark2;
+    }
+}
+
+.login-fields {
+    width: 100%;
+    height: auto;
+    gap: 20px;
+    margin-top: 40px;
+
+    .login-fields__item {
+        width: 100%;
+        padding: 0px 20px;
+    }
+}
+
+.login-forgot {
+    width: 100%;
+    height: auto;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 30px;
+    cursor: pointer;
+    transition: $transitionMedium;
+
+    p {
+        font-weight: 500;
+        font-size: 12px;
+        line-height: auto;
+        color: $colorGrey3;
+    }
+
+    span {
+        font-weight: 500;
+        font-size: 12px;
+        line-height: auto;
+        color: $colorDark2;
+        text-decoration: underline;
+    }
+
+    &:hover {
+        gap: 16px;
+    }
+}
+
+.login-error {
+    width: 100%;
+    height: auto;
+    justify-content: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    span {
+        font-weight: 500;
+        font-size: 12px;
+        line-height: auto;
+        color: $colorRed;
+    }
+}
+
+.login-controller {
+    width: 100%;
+    padding: 0px 20px;
+}
+
+.login-signup {
+    width: 100%;
+    height: auto;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 30px;
+    cursor: pointer;
+    transition: $transitionMedium;
+
+    span {
+        font-weight: 500;
+        font-size: 12px;
+        line-height: auto;
+        color: $colorGrey3;
+        text-decoration: underline;
+    }
+
+    &:hover {
+        gap: 16px;
+    }
+}

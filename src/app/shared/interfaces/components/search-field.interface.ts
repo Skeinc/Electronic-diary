@@ -1,4 +1,4 @@
-export interface TextFieldInterface {
+export interface SearchFieldInterface {
     height?: string;
     backgroundColor?: string;
     borderColor?: string;

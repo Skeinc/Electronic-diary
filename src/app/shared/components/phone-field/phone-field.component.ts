@@ -1,12 +1,13 @@
 import { Component, EventEmitter, Input, Output } from "@angular/core";
-import { PasswordFieldInterface } from "../../interfaces/components/password-field.interface";
+import { PHONE_NUMBER_PATTERNS } from "../../constants/phone-number-patterns.constant";
+import { PhoneFieldInterface } from "../../interfaces/components/phone-field.interface";
 
 @Component({
-    selector: 'app-password-field',
-    templateUrl: './password-field.component.html',
-    styleUrl: './password-field.component.scss',
+    selector: 'app-phone-field',
+    templateUrl: './phone-field.component.html',
+    styleUrl: './phone-field.component.scss',
 })
-export class PasswordFieldComponent {
+export class PhoneFieldComponent {
     @Output() elementValueChange = new EventEmitter<string>();
     
     // ID элемента
@@ -37,15 +38,14 @@ export class PasswordFieldComponent {
     @Input() elementValid?: boolean;
 
     // Конфигурация компонента
-    @Input() config?: PasswordFieldInterface;
+    @Input() config?: PhoneFieldInterface;
 
-    // Переменная, контролирующая видимость пароля
-    isVisiblePassword: boolean = false;
+    // Паттерны телефоных номеров различных стран
+    phoneNumberPatterns: string[] = PHONE_NUMBER_PATTERNS;
 
-    // Метод для смены видимости пароля
-    togglePasswordVisible(): void {
-        if(!this.elementDisable) {
-            this.isVisiblePassword = !this.isVisiblePassword;
-        }
+    // Метод для обработки ввода
+    onInput(event: any) {
+        const inputValue = (event.target as HTMLInputElement).value;
+        this.elementValueChange.emit(inputValue);
     }
 }

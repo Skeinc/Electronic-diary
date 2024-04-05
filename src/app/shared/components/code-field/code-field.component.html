@@ -1,0 +1,9 @@
+<div class="component flex-row">
+    <input #codefieldFirst class="codefield-input" type="number" id="codefieldFirst" name="codefieldFirst" autocomplete="off" [(ngModel)]="codeFirstValue" (input)="onInput($event, codefieldFirst)" (keypress)="checkMaxLenght($event)">
+
+    <input #codefieldSecond class="codefield-input" type="number" id="codefieldSecond" name="codefieldSecond" autocomplete="off" [(ngModel)]="codeSecondValue" (input)="onInput($event, codefieldSecond)" (keypress)="checkMaxLenght($event)">
+
+    <input #codefieldThird class="codefield-input" type="number" id="codefieldThird" name="codefieldThird" autocomplete="off" [(ngModel)]="codeThirdValue" (input)="onInput($event, codefieldThird)" (keypress)="checkMaxLenght($event)">
+
+    <input #codefieldFourth class="codefield-input" type="number" id="codefieldFourth" name="codefieldFourth" autocomplete="off" [(ngModel)]="codeFourthValue"  (input)="onInput($event, codefieldFourth)"(keypress)="checkMaxLenght($event)">
+</div>
