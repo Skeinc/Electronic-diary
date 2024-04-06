@@ -61,8 +61,6 @@ export class AuthorizationComponent implements OnInit{
     personalLoginHandler(): void {
         if(this.personalLogin.length > 0 && this.personalPassword.length > 0) {
             this.personalError = '';
-
-            console.log('Success');
         }
         else {
             this.personalError = 'Заполните данные';
@@ -73,8 +71,6 @@ export class AuthorizationComponent implements OnInit{
     studentLoginHandler(): void {
         if(this.studentLogin.length > 0 && this.studentPassword.length > 0) {
             this.studentError = '';
-
-            console.log('Success');
         }
         else {
             this.studentError = 'Заполните данные';
