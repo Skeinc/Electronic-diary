@@ -1,6 +1,7 @@
 import { Routes } from "@angular/router";
 import { ApplicationComponent } from "../../modules/application/components/application.component";
 import { AuthorizationComponent } from "../../modules/authorization/components/authorization.component";
+import { PersonalComponent } from "../../modules/personal/components/personal.component";
 
 export const ROUTES: Routes = [
     {
@@ -10,6 +11,10 @@ export const ROUTES: Routes = [
     {
         path: 'login',
         component: AuthorizationComponent,
+    },
+    {
+        path: 'personal',
+        component: PersonalComponent,
     },
     {
         path: '**',

@@ -8,6 +8,7 @@ import { AppComponent } from "./app.component";
 import { ApplicationModule } from "./modules/application/application.module";
 import { AppRoutingModule } from "./app-routing.module";
 import { AuthorizationModule } from "./modules/authorization/authorization.module";
+import { PersonalModule } from "./modules/personal/personal.module";
 
 @NgModule({
     declarations: [
@@ -22,6 +23,7 @@ import { AuthorizationModule } from "./modules/authorization/authorization.modul
         // Modules
         AppRoutingModule,
         ApplicationModule,
+        PersonalModule,
         AuthorizationModule,
     ],
     providers: [

@@ -1,0 +1,38 @@
+<nav class="navigation flex-column">
+    <div class="navigation-group flex-column">
+        <header class="navigation-header flex-row">
+            <p class="navigation-header__title">Эл. дневник</p>
+
+            <button type="button" class="navigation-header__button flex-center-center">
+                <span class="material-icons">menu</span>
+            </button>
+        </header>
+
+        <div class="navigation-items flex-column">
+            <button class="navigation-item flex-row">
+                <span class="material-icons navigation-item__icon">person</span>
+
+                <p class="navigation-item__value">Личный кабинет</p>
+            </button>
+        </div>
+    </div>
+
+    <div class="navigation-footer flex-row">
+        <div class="navigation-account flex-row">
+            <div class="navigation-account__image">
+                <img *ngIf="false" src="" alt="Profile photo">
+            </div>
+
+            <div class="navigation-account__personal flex-column">
+                <p class="navigation-account__personal__name" title="Ануфриев Дмитрий Олегович">Ануфриев Дмитрий Олегович</p>
+                <p class="navigation-account__personal__role">Администратор</p>
+            </div>
+        </div>
+
+        <div class="navigation-exit">
+            <button type="button" class="navigation-exit__button flex-center-center">
+                <span class="material-icons">logout</span>
+            </button>
+        </div>
+    </div>
+</nav>
