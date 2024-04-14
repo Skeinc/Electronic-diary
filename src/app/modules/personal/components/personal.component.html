@@ -1,1 +1,7 @@
-<app-navigation></app-navigation>
+<section class="wrapper">
+    <app-navigation (navigationVisibility)="onNavigationOpenedChange($event)"></app-navigation>
+
+    <div class="container" [style.marginLeft]="isNavigationOpened ? '320px' : '80px'">
+        <h1>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt repudiandae vitae ut, ratione facilis ad numquam unde accusantium, magnam nihil corporis dolorem, iste nulla dolore necessitatibus enim molestias maiores eos.</h1>
+    </div>
+</section>

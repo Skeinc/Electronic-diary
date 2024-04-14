@@ -50,8 +50,8 @@
                 <p class="header-account__personal__name" title="Ануфриев Дмитрий Олегович">Ануфриев Дмитрий Олегович</p>
             </div>
             
-            <button type="button" class="header-account__button flex-center-center">
-                <span class="material-icons">expand_more</span>
+            <button type="button" class="header-account__button flex-center-center" (click)="toggleProfileListVisibility()">
+                <span class="material-icons header-account__button__icon" [style.transform]="isProfileListOpened ? 'rotate(180deg)' : 'rotate(0deg)'">expand_more</span>
             </button>
         </div>
     </header>
