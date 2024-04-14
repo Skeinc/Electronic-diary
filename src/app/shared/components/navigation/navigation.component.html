@@ -1,38 +1,58 @@
-<nav class="navigation flex-column">
-    <div class="navigation-group flex-column">
-        <header class="navigation-header flex-row">
-            <p class="navigation-header__title">Эл. дневник</p>
-
-            <button type="button" class="navigation-header__button flex-center-center">
-                <span class="material-icons">menu</span>
-            </button>
-        </header>
-
-        <div class="navigation-items flex-column">
-            <button class="navigation-item flex-row">
-                <span class="material-icons navigation-item__icon">person</span>
-
-                <p class="navigation-item__value">Личный кабинет</p>
-            </button>
+<section class="wrapper flex-row">
+    <nav class="navigation flex-column" [style.width]="isNavigationOpened ? '320px' : '80px'">
+        <div class="navigation-group flex-column">
+            <header class="navigation-header flex-row">
+                <p class="navigation-header__title" [style.width]="isNavigationOpened ? '100%' : '0px'">Эл. дневник</p>
+            </header>
+    
+            <div class="navigation-items flex-column">
+                <button class="navigation-item flex-row">
+                    <span class="material-icons navigation-item__icon flex-center-center">person</span>
+    
+                    <p class="navigation-item__value" *ngIf="isNavigationOpened">Личный кабинет</p>
+                </button>
+            </div>
         </div>
-    </div>
-
-    <div class="navigation-footer flex-row">
-        <div class="navigation-account flex-row">
-            <div class="navigation-account__image">
+    
+        <div class="navigation-footer flex-row">
+            <div class="navigation-account flex-row" *ngIf="isNavigationOpened">
+                <div class="navigation-account__image">
+                    <img *ngIf="false" src="" alt="Profile photo">
+                </div>
+    
+                <div class="navigation-account__personal flex-column">
+                    <p class="navigation-account__personal__name" title="Ануфриев Дмитрий Олегович">Ануфриев Дмитрий Олегович</p>
+                    <p class="navigation-account__personal__role">Администратор</p>
+                </div>
+            </div>
+    
+            <div class="navigation-exit">
+                <button type="button" class="navigation-exit__button flex-center-center">
+                    <span class="material-icons">logout</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+    
+    <header class="header flex-row" [style.width]="isNavigationOpened ? 'calc(100% - 320px)' : '100%'" [style.marginLeft]="isNavigationOpened ? '320px' : '0px'">
+        <button type="button" class="header-button flex-center-center" (click)="toggleMenuVisibility()">
+            <span class="material-icons">menu</span>
+        </button>
+    
+        <p class="header-title">Электронный дневник</p>
+    
+        <div class="header-account flex-row">
+            <div class="header-account__image">
                 <img *ngIf="false" src="" alt="Profile photo">
             </div>
-
-            <div class="navigation-account__personal flex-column">
-                <p class="navigation-account__personal__name" title="Ануфриев Дмитрий Олегович">Ануфриев Дмитрий Олегович</p>
-                <p class="navigation-account__personal__role">Администратор</p>
+    
+            <div class="header-account__personal flex-column">
+                <p class="header-account__personal__name" title="Ануфриев Дмитрий Олегович">Ануфриев Дмитрий Олегович</p>
             </div>
-        </div>
-
-        <div class="navigation-exit">
-            <button type="button" class="navigation-exit__button flex-center-center">
-                <span class="material-icons">logout</span>
+            
+            <button type="button" class="header-account__button flex-center-center">
+                <span class="material-icons">expand_more</span>
             </button>
         </div>
-    </div>
-</nav>
+    </header>
+</section>
