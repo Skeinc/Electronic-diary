@@ -54,5 +54,11 @@
                 <span class="material-icons header-account__button__icon" [style.transform]="isProfileListOpened ? 'rotate(180deg)' : 'rotate(0deg)'">expand_more</span>
             </button>
         </div>
+
+        <div class="header-dropdown flex-column" [style.display]="isProfileListOpened ? 'flex' : 'none'">
+            <button type="button" class="header-dropdown__item flex-row flex-center-center">
+                <span class="material-icons">logout</span><p class="header-dropdown__item__text">Выход</p>
+            </button>
+        </div>
     </header>
 </section>

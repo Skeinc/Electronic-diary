@@ -2,6 +2,69 @@
     <app-navigation (navigationVisibility)="onNavigationOpenedChange($event)"></app-navigation>
 
     <div class="container" [style.marginLeft]="isNavigationOpened ? '320px' : '80px'">
-        <h1>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nesciunt repudiandae vitae ut, ratione facilis ad numquam unde accusantium, magnam nihil corporis dolorem, iste nulla dolore necessitatibus enim molestias maiores eos.</h1>
+        <div class="personal flex-column">
+            <header class="header flex-row">
+                <div class="header-title flex-row">
+                    <p class="header-title__value">Личный кабинет</p>
+                </div>
+
+                <div class="header-controllers flex-row">
+
+                </div>
+            </header>
+
+            <div class="information flex-row">
+                <figure class="information-image flex-column">
+                    <label class="information-image__label flex-column">
+                        <div class="information-image__label__background" alt="Product Image"></div>
+                        <img class="information-image__label__photo" *ngIf="false" src="" alt="Product Image">
+                        <input class="information-image__label__input" type="file" accept="image/*">
+                        <span class="information-image__label__value">Сменить фото</span>
+                    </label>        
+                </figure>
+
+                <address class="information-data flex-column">
+                    <div class="information-data__title">
+                        <p>Персональные данные:</p>
+                    </div>
+
+                    <div class="information-data__wrapper flex-row">
+                        <div class="information-data__group flex-column">
+                            <app-text-field [elementID]="'personal-surname'" [elementName]="'personal-surname'" [elementLabel]="'Фамилия'" [elementValue]="userData.surname" [elementReadonly]="true"></app-text-field>
+    
+                            <app-text-field [elementID]="'personal-name'" [elementName]="'personal-name'" [elementLabel]="'Имя'" [elementValue]="userData.name" [elementReadonly]="true"></app-text-field>
+    
+                            <app-text-field [elementID]="'personal-patronymic'" [elementName]="'personal-patronymic'" [elementLabel]="'Отчество'" [elementValue]="userData.patronymic" [elementReadonly]="true"></app-text-field>
+                        </div>
+    
+                        <div class="information-data__border">
+    
+                        </div>
+    
+                        <div class="information-data__group flex-column">
+                            <app-text-field [elementID]="'personal-email'" [elementName]="'personal-email'" [elementLabel]="'Email'" [elementValue]="userData.email" [elementReadonly]="true"></app-text-field>
+    
+                            <app-text-field [elementID]="'personal-phone'" [elementName]="'personal-phone'" [elementLabel]="'Телефон'" [elementValue]="userData.phone" [elementReadonly]="true"></app-text-field>
+    
+                            <app-password-field [elementID]="'personal-password'" [elementName]="'personal-password'" [elementLabel]="'Старый пароль'" [elementValue]="userData.password" [elementReadonly]="true"></app-password-field>
+    
+                            <!-- <app-password-field [elementID]="'personal-new-password'" [elementName]="'personal-new-password'" [elementLabel]="'Новый пароль'" [elementValue]="newPasswordValue" [elementReadonly]="true"></app-password-field>
+    
+                            <app-password-field [elementID]="'personal-confirm-password'" [elementName]="'personal-confirm-password'" [elementLabel]="'Подтвердите пароль'" [elementValue]="confirmNewPasswordValue" [elementReadonly]="true"></app-password-field> -->
+                        </div>
+                    </div>
+
+                    <div class="information-data__controllers flex-row">
+                        <div class="information-data__controllers__wrapper">
+                            <app-button [elementID]="'button-edit'" [elementName]="'button-edit'" [elementLabel]="'Редактировать'" [elementDisable]="false"></app-button>
+                        </div>
+
+                        <div class="information-data__controllers__wrapper">
+                            <app-button [elementID]="'button-save'" [elementName]="'button-save'" [elementLabel]="'Сохранить'" [elementDisable]="true"></app-button>
+                        </div>
+                    </div>
+                </address>
+            </div>
+        </div>
     </div>
 </section>
