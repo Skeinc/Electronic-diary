@@ -25,6 +25,10 @@
         border-radius: 14px;
     }
 
+    &:read-only {
+        color: $colorGrey3;
+    }
+
     &:disabled {
         background-color: $inputBackgroundDisabled;
         

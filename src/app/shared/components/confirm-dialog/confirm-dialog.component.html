@@ -1,0 +1,27 @@
+<section *ngIf="visibleController" class="dialog-wrapper">
+    <div class="component-container">
+        <div class="confirm-dialog flex-center-center flex-column">
+            <div class="dialog-logo flex-row">
+                <div class="dialog-logo__image flex-center-center" alt="Confirm dialog">
+                    <span class="dialog-logo__image__value">?</span>
+                </div>
+            </div>
+
+            <div class="dialog-information flex-column">
+                <p class="dialog-information__title">Вы уверены?</p>
+
+                <p class="dialog-information__caption">Пожалуйста, подтвердите, чтобы продолжить.</p>
+            </div>
+
+            <div class="dialog-controllers flex-row">
+                <button class="dialog-controllers__next" type="button" (click)="onNext()">
+                    <span>Далее</span>
+                </button>
+
+                <button class="dialog-controllers__cancel" type="button" (click)="onCancel()">
+                    <span>Отмена</span>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>

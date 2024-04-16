@@ -9,6 +9,9 @@ import { ApplicationModule } from "./modules/application/application.module";
 import { AppRoutingModule } from "./app-routing.module";
 import { AuthorizationModule } from "./modules/authorization/authorization.module";
 import { PersonalModule } from "./modules/personal/personal.module";
+import { LecturersModule } from "./modules/lecturers/lecturers.module";
+import { StudentsModule } from "./modules/students/students.module";
+import { GroupsModule } from "./modules/groups/groups.module";
 
 @NgModule({
     declarations: [
@@ -25,6 +28,9 @@ import { PersonalModule } from "./modules/personal/personal.module";
         ApplicationModule,
         PersonalModule,
         AuthorizationModule,
+        LecturersModule,
+        StudentsModule,
+        GroupsModule,
     ],
     providers: [
 

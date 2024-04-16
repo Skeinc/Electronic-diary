@@ -9,11 +9,14 @@ export class PersonalComponent {
     // Определяет открыта ли меню
     isNavigationOpened: boolean = false;
 
-    // Значение нового пароля
-    newPasswordValue: string = '';
+    // Переменная, контролирует редактируемость данных
+    isPersonalDataEditable: boolean = false;
 
-    // Значение нового пароля (подтверждение)
-    confirmNewPasswordValue: string = '';
+    // Медиафайл превью, который мы выбрали для загрузки
+    selectedImageURL: string | null = null;
+
+    // Медиафайл, который мы выбрали для загрузки
+    selectedImage: File | null = null;
 
     // Mocks
     userData = {
@@ -29,5 +32,19 @@ export class PersonalComponent {
     // Метод скрывает/открывает меню
     onNavigationOpenedChange(isOpened: boolean) {
         this.isNavigationOpened = isOpened;
+    }
+
+    // Метод для смены редактируемости данных
+    togglePersonalDataEditable(): void {
+        this.isPersonalDataEditable = !this.isPersonalDataEditable;
+    }
+
+    // Метод для загрузки выбранного изображения
+    onImageChange(event: any) {
+        const file = event.target.files[0];
+        if (file) {
+            this.selectedImage = file;
+            this.selectedImageURL = URL.createObjectURL(file);
+        }
     }
 }

@@ -1,0 +1,79 @@
+<section class="wrapper">
+    <app-navigation (navigationVisibility)="onNavigationOpenedChange($event)"></app-navigation>
+
+    <div class="container" [style.marginLeft]="isNavigationOpened ? '320px' : '80px'">
+        <div class="lecturers flex-column">
+            <header class="header flex-row">
+                <div class="header-title flex-row">
+                    <p class="header-title__value">Преподаватели</p>
+                </div>
+
+                <div class="header-controllers flex-row">
+                    <app-button [elementID]="'button-create'" [elementName]="'button-create'" [elementLabel]="'Добавить преподавателя'" [elementDisable]="false" (click)="toggleAddingLecturerDialogVisible()"></app-button>
+                </div>
+            </header>
+
+            <div class="table-wrapper flex-column">
+                <p-table [columns]="tableColumns" [value]="lecturersMocks" styleClass="p-datatable-gridlines" [scrollable]="true" [resizableColumns]="true" [scrollHeight]="tableScrollHeight.toString() + 'px'">
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th *ngFor="let col of columns" pResizableColumn [style.width]="'13%'">
+                                <div class="table-label">
+                                    <p class="table-label__value">{{ col.label }}</p>
+                                </div>
+                            </th>
+
+                            <th pResizableColumn [style.width]="'9%'">
+                                <div class="table-label">
+                                    <p class="table-label__value">Действие</p>
+                                </div>
+                            </th>
+                        </tr>
+                    </ng-template>
+
+                    <ng-template pTemplate="body" let-lecturers>
+                        <tr>
+                            <td *ngFor="let column of tableColumns">
+                                <div class="table-body">
+                                    <p class="table-body__value">{{ lecturers[column.field] ?? '—' }}</p>
+                                </div>
+                            </td>
+
+                            <td>
+                                <div class="table-body flex-row">
+                                    <button type="button" class="table-body__button flex-center-center" (click)="toggleConfirmDialogVisible()">
+                                        <span class="material-icons button-delete">delete</span>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
+        </div>
+    </div>
+</section>
+
+<p-dialog [header]="'Добавление преподавателя'" [(visible)]="isAddingLecturerDialogVisible" [modal]="true" [style]="{ width: '400px' }" [draggable]="false" [resizable]="false">
+    <div class="dialog-wrapper flex-column">
+        <app-text-field [elementID]="'dialog-surname'" [elementName]="'dialog-surname'" [elementLabel]="'Фамилия'" [elementValue]="dialogLecturerSurname" [elementDisable]="false"></app-text-field>
+
+        <app-text-field [elementID]="'dialog-name'" [elementName]="'dialog-name'" [elementLabel]="'Имя'" [elementValue]="dialogLecturerName" [elementDisable]="false"></app-text-field>
+
+        <app-text-field [elementID]="'dialog-patronymic'" [elementName]="'dialog-patronymic'" [elementLabel]="'Отчество'" [elementValue]="dialogLecturerPatronymic" [elementDisable]="false"></app-text-field>
+
+        <app-text-field [elementID]="'dialog-email'" [elementName]="'dialog-email'" [elementLabel]="'E-mail'" [elementValue]="dialogLecturerEmail" [elementDisable]="false"></app-text-field>
+
+        <app-phone-field [elementID]="'dialog-phone'" [elementName]="'dialog-phone'" [elementLabel]="'Телефон'" [elementValue]="dialogLecturerPhone" [elementDisable]="false"></app-phone-field>
+
+        <app-password-field [elementID]="'dialog-password'" [elementName]="'dialog-password'" [elementLabel]="'Пароль'" [elementValue]="dialogLecturerPassword" [elementDisable]="false"></app-password-field>
+
+        <div class="dialog-message flex-row">
+            <span class="dialog-message__value">{{ dialogErrorMessage }}</span>
+        </div>
+
+        <app-button [elementID]="'button-add'" [elementName]="'button-add'" [elementLabel]="'Добавить'" [elementDisable]="false"></app-button>
+    </div>
+</p-dialog>
+
+<app-confirm-dialog [visibleController]="isConfirmDialogVisible" (next)="handleConfirmDialogNext()" (cancel)="handleConfirmDialogCancel()" ></app-confirm-dialog>

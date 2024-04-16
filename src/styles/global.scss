@@ -1,4 +1,6 @@
 // Imports
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
 @import 'material-icons/iconfont/material-icons.css';
 @import './variables.scss';
 
@@ -90,4 +92,95 @@ li {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+// Table
+.table-wrapper {
+    width: 100%;
+    height: 100%;
+    margin-top: 40px;
+}
+
+.table-label {
+    width: 100%;
+    justify-content: center;
+    background-color: $colorGrey7;
+    padding: 10px;
+
+    .table-label__value {
+        font-weight: 600;
+        font-size: 16px;
+        line-height: auto;
+        color: $colorDark2;
+    }
+}
+
+.table-body {
+    width: 100%;
+    justify-content: center;
+    background-color: $colorWhite;
+    padding: 10px;
+    gap: 10px;
+
+    .table-body__value {
+        font-weight: 500;
+        font-size: 14px;
+        line-height: auto;
+        color: $colorDark2;
+    }
+
+    .table-body__button {
+        width: 32px;
+        height: 32px;
+        appearance: none;
+        outline: none;
+        border: none;
+        background-color: transparent;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: $transitionMedium;
+
+        &:hover {
+            opacity: 0.8;
+            background-color: $colorGrey7;
+        }
+
+        span {
+            font-size: 20px;
+        }
+
+        .button-delete {
+            color: $colorRed;
+        }
+
+        .button-edit {
+            color: $colorGrey3;
+        }
+    }
+}
+
+// Dialog
+::ng-deep {
+    .p-dialog .p-dialog-header {
+        padding: 20px;
+    }
+}
+
+.dialog-wrapper {
+    width: 100%;
+    padding: 0px 20px 20px 20px;
+    gap: 12px;
+    height: auto;
+
+    .dialog-message {
+        width: 100%;
+        justify-content: center;
+
+        .dialog-message__value {
+            font-weight: 500;
+            font-size: 12px;
+            line-height: auto;
+            color: $colorRed;
+        }
+    }
 }

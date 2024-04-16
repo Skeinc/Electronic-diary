@@ -1,0 +1,131 @@
+@import '@styles/global.scss';
+@import '@styles/variables.scss';
+
+.dialog-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    background-color: rgba(32, 32, 32, 0.4);
+    transition: $transitionMedium;
+}
+
+.component-container {
+    display: flex;
+    flex-direction: column;
+    pointer-events: auto;
+    max-height: 90%;
+    transform: scale(1);
+}
+
+.confirm-dialog {
+    width: 380px;
+    height: 220px;
+    background-color: $colorWhite;
+    border-radius: 10px;
+    padding: 20px;
+    position: relative;
+
+    .dialog-logo {
+        justify-content: center;
+
+        .dialog-logo__image {
+            width: 100px;
+            height: 100px;
+            background-color: $colorPrimary2;
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            margin-top: -50px;
+
+            .dialog-logo__image__value {
+                font-weight: 600;
+                font-size: 64px;
+                line-height: auto;
+                color: $colorWhite;
+            }
+        }
+    }
+
+    .dialog-information {
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+
+        .dialog-information__title {
+            font-weight: 600;
+            font-size: 20px;
+            line-height: auto;
+            color: $colorDark2;
+        }
+
+        .dialog-information__caption {
+            font-weight: 400;
+            font-size: 14px;
+            line-height: auto;
+            color: $colorGrey3;
+        }
+    }
+
+    .dialog-controllers {
+        margin-top: 20px;
+        width: 100%;
+        justify-content: center;
+        gap: 16px;
+
+        .dialog-controllers__next {
+            width: 120px;
+            height: 40px;
+            appearance: none;
+            outline: none;
+            border: none;
+            border-radius: 10px;
+            background-color: $colorPrimary3;
+            cursor: pointer;
+            transition: $transitionMedium;
+
+            &:hover {
+                border-radius: 14px;
+                opacity: 0.9;
+            }
+
+            span {
+                font-weight: 600;
+                font-size: 14px;
+                line-height: auto;
+                color: $colorWhite;
+            }
+        }
+
+        .dialog-controllers__cancel {
+            width: 120px;
+            height: 40px;
+            appearance: none;
+            outline: none;
+            border: 1px solid $inputBorder;
+            border-radius: 10px;
+            background-color: $colorGrey6;
+            cursor: pointer;
+            transition: $transitionMedium;
+
+            &:hover {
+                border-radius: 14px;
+                opacity: 0.9;
+            }
+
+            span {
+                font-weight: 600;
+                font-size: 14px;
+                line-height: auto;
+                color: $colorDark2;
+            }
+        }
+    }
+}

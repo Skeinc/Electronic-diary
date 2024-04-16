@@ -13,6 +13,7 @@
     position: fixed;
     overflow: hidden;
     padding: 0px 20px;
+    z-index: 999;
     background-color: $colorPrimary2;
     justify-content: space-between;
     transition: $transitionMedium;
@@ -170,6 +171,7 @@
     position: fixed;
     justify-content: space-between;
     align-items: center;
+    z-index: 999;
     gap: 20px;
     padding: 0px 20px;
     background-color: $colorPrimary2;
