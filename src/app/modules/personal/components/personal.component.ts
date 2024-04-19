@@ -26,7 +26,7 @@ export class PersonalComponent {
         patronymic: 'Олегович',
         email: 'iamskezy@gmail.com',
         phone: '+79108765249',
-        password: 'qwerty123'
+        password: 'qwerty123',
     };
 
     // Метод скрывает/открывает меню

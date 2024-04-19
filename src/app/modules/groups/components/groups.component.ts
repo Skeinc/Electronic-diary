@@ -132,7 +132,12 @@ export class GroupsComponent implements OnInit{
     }
 
     // Метод для смены видимости окна изменения группы
-    toggleEditingGroupDialogVisible(): void {
+    toggleEditingGroupDialogVisible(data: any): void {
+        this.dialogEditGroupName = data.name;
+        this.dialogEditGroupShortName = data.shortName;
+        this.dialogEditGroupNumber = data.number;
+        this.dialogEditGroupCourse = data.course;
+
         this.isEditingGroupDialogVisible = !this.isEditingGroupDialogVisible;
     }
 
