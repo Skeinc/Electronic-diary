@@ -12,6 +12,7 @@ import { PersonalModule } from "./modules/personal/personal.module";
 import { LecturersModule } from "./modules/lecturers/lecturers.module";
 import { StudentsModule } from "./modules/students/students.module";
 import { GroupsModule } from "./modules/groups/groups.module";
+import { RequestsModule } from "./modules/requests/requests.module";
 
 @NgModule({
     declarations: [
@@ -31,6 +32,7 @@ import { GroupsModule } from "./modules/groups/groups.module";
         LecturersModule,
         StudentsModule,
         GroupsModule,
+        RequestsModule,
     ],
     providers: [
 

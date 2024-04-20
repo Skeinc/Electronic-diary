@@ -5,6 +5,7 @@ import { PersonalComponent } from "../../modules/personal/components/personal.co
 import { LecturersComponent } from "../../modules/lecturers/components/lecturers.component";
 import { StudentsComponent } from "../../modules/students/components/students.component";
 import { GroupsComponent } from "../../modules/groups/components/groups.component";
+import { RequestsComponent } from "../../modules/requests/components/requests.component";
 
 export const ROUTES: Routes = [
     {
@@ -30,6 +31,10 @@ export const ROUTES: Routes = [
     {
         path: 'groups',
         component: GroupsComponent,
+    },
+    {
+        path: 'requests',
+        component: RequestsComponent,
     },
     {
         path: '**',
