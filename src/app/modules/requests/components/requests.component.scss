@@ -1,2 +1,27 @@
 @import '@styles/global.scss';
 @import '@styles/variables.scss';
+
+.wrapper {
+    width: 100%;
+    min-height: 100vh;
+}
+
+.container {
+    width: auto;
+    min-height: calc(100vh - 80px);
+    height: 100%;
+    margin-top: 80px;
+    padding: 20px;
+    background-color: $colorGrey7;
+    transition: $transitionMedium;
+}
+
+.requests {
+    width: 100%;
+    min-height: calc(100vh - 80px - 40px);
+    height: auto;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: $colorWhite;
+    overflow: hidden;
+}
