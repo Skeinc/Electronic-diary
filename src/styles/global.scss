@@ -156,6 +156,18 @@ li {
         .button-edit {
             color: $colorGrey3;
         }
+
+        .button-remove {
+            background-color: $colorRed;
+            border-radius: 50%;
+            color: $colorWhite;
+        }
+
+        .button-accept {
+            background-color: $colorGreen;
+            border-radius: 50%;
+            color: $colorWhite;
+        }
     }
 }
 

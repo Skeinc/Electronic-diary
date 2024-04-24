@@ -3,6 +3,8 @@ import { RequestsComponent } from "./components/requests.component";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { NavigationModule } from "@shared/components/navigation/navigation.module";
+import { TableModule } from "primeng/table";
+import { ConfirmDialogModule } from "@shared/components/confirm-dialog/confirm-dialog.module";
 
 @NgModule({
     declarations: [
@@ -13,6 +15,9 @@ import { NavigationModule } from "@shared/components/navigation/navigation.modul
         FormsModule,
         // Components
         NavigationModule,
+        ConfirmDialogModule,
+        // PrimeNG
+        TableModule,
     ],
     exports: [
         RequestsComponent,

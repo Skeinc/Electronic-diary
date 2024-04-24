@@ -10,10 +10,52 @@
 
                 <div class="header-controllers flex-row"></div>
             </header>
-        </div>
 
-        <div class="table-wrapper flex-column">
-
+            <div class="table-wrapper flex-column">
+                <p-table [columns]="tableColumns" [value]="requestsMocks" styleClass="p-datatable-gridlines" [scrollable]="true" [resizableColumns]="true" [scrollHeight]="tableScrollHeight.toString() + 'px'">
+                    <ng-template pTemplate="header" let-columns>
+                        <tr>
+                            <th *ngFor="let col of columns" pResizableColumn [style.width]="'11.25%'">
+                                <div class="table-label">
+                                    <p class="table-label__value">{{ col.label }}</p>
+                                </div>
+                            </th>
+    
+                            <th pResizableColumn [style.width]="'10%'">
+                                <div class="table-label">
+                                    <p class="table-label__value">Действие</p>
+                                </div>
+                            </th>
+                        </tr>
+                    </ng-template>
+    
+                    <ng-template pTemplate="body" let-request>
+                        <tr>
+                            <td *ngFor="let column of tableColumns">
+                                <div class="table-body">
+                                    <p class="table-body__value">{{ request[column.field] ?? '—' }}</p>
+                                </div>
+                            </td>
+    
+                            <td>
+                                <div class="table-body flex-row">
+                                    <button type="button" class="table-body__button flex-center-center" (click)="toggleConfirmDialogCancelVisible()">
+                                        <span class="material-icons button-remove">remove</span>
+                                    </button>
+    
+                                    <button type="button" class="table-body__button flex-center-center" (click)="toggleConfirmDialogAcceptVisible()">
+                                        <span class="material-icons button-accept">add</span>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </ng-template>
+                </p-table>
+            </div>
         </div>
     </div>
 </section>
+
+<app-confirm-dialog [visibleController]="isConfirmDialogAcceptVisible" (next)="handleConfirmDialogAcceptNext()" (cancel)="handleConfirmDialogAcceptCancel()" ></app-confirm-dialog>
+
+<app-confirm-dialog [visibleController]="isConfirmDialogCancelVisible" (next)="handleConfirmDialogCancelNext()" (cancel)="handleConfirmDialogCancelCancel()" ></app-confirm-dialog>

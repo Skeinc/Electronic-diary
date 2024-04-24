@@ -1,4 +1,5 @@
 import { Component, HostListener, OnInit } from "@angular/core";
+import { GroupScheduleInterface } from "@shared/interfaces/groups/schedule.interface";
 import { generateRandomCode } from "@shared/utilities/generateRandomCode.util";
 
 @Component({
@@ -18,6 +19,9 @@ export class GroupsComponent implements OnInit{
 
     // Переменная, контролирующая видимость окна изменения группы
     isEditingGroupDialogVisible: boolean = false;
+
+    // Переменная, контролирующая видимость окна редактирования расписания группы
+    isEditingScheduleDialogVisible: boolean = false;
 
     // Высота скрола таблицы
     tableScrollHeight: number = 0;
@@ -43,6 +47,38 @@ export class GroupsComponent implements OnInit{
 
     // Сообщение ошибки для окна изменения группы
     dialogEditErrorMessage: string | null = null;
+
+    // Данные для расписания группы
+    groupSchedule: GroupScheduleInterface[] = [
+        {
+            name: 'Понедельник',
+            data: [],
+        },
+        {
+            name: 'Вторник',
+            data: [],
+        },
+        {
+            name: 'Среда',
+            data: [],
+        },
+        {
+            name: 'Четверг',
+            data: [],
+        },
+        {
+            name: 'Пятница',
+            data: [],
+        },
+        {
+            name: 'Суббота',
+            data: [],
+        },
+        {
+            name: 'Воскресенье',
+            data: [],
+        },
+    ];
 
     // Mocks для таблицы преподаватели
     groupsMocks = [
@@ -139,6 +175,11 @@ export class GroupsComponent implements OnInit{
         this.dialogEditGroupCourse = data.course;
 
         this.isEditingGroupDialogVisible = !this.isEditingGroupDialogVisible;
+    }
+
+    // Метод для смены видимости окна редактирования расписания группы
+    toggleEditingScheduleDialogVisible(): void {
+        this.isEditingScheduleDialogVisible = !this.isEditingScheduleDialogVisible;
     }
 
     // Метод для смены видимости окна подверждения

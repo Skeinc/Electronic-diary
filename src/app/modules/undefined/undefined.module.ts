@@ -1,12 +1,12 @@
 import { NgModule } from "@angular/core";
-import { NavigationComponent } from "./navigation.component";
+import { UndefinedComponent } from "./components/undefined.component";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { RouterLink } from "@angular/router";
 
 @NgModule({
     declarations: [
-        NavigationComponent,
+        UndefinedComponent,
     ],
     imports: [
         CommonModule,
@@ -14,7 +14,7 @@ import { RouterLink } from "@angular/router";
         RouterLink,
     ],
     exports: [
-        NavigationComponent,
+        UndefinedComponent,
     ]
 })
-export class NavigationModule {}
+export class UndefinedModule {}

@@ -6,6 +6,7 @@ import { LecturersComponent } from "../../modules/lecturers/components/lecturers
 import { StudentsComponent } from "../../modules/students/components/students.component";
 import { GroupsComponent } from "../../modules/groups/components/groups.component";
 import { RequestsComponent } from "../../modules/requests/components/requests.component";
+import { UndefinedComponent } from "../../modules/undefined/components/undefined.component";
 
 export const ROUTES: Routes = [
     {
@@ -37,7 +38,11 @@ export const ROUTES: Routes = [
         component: RequestsComponent,
     },
     {
+        path: 'undefined',
+        component: UndefinedComponent,
+    },
+    {
         path: '**',
-        redirectTo: '/',
+        redirectTo: '/undefined',
     }
 ];

@@ -6,28 +6,10 @@
             </header>
     
             <div class="navigation-items flex-column">
-                <button class="navigation-item flex-row">
-                    <span class="material-icons navigation-item__icon flex-center-center">person</span>
+                <button class="navigation-item flex-row" *ngFor="let item of menuItems" [routerLink]="item.path">
+                    <span class="material-icons navigation-item__icon flex-center-center">{{ item.icon }}</span>
     
-                    <p class="navigation-item__value" *ngIf="isNavigationOpened">Личный кабинет</p>
-                </button>
-
-                <button class="navigation-item flex-row">
-                    <span class="material-icons navigation-item__icon flex-center-center">school</span>
-    
-                    <p class="navigation-item__value" *ngIf="isNavigationOpened">Студенты</p>
-                </button>
-
-                <button class="navigation-item flex-row">
-                    <span class="material-icons navigation-item__icon flex-center-center">manage_accounts</span>
-    
-                    <p class="navigation-item__value" *ngIf="isNavigationOpened">Преподаватели</p>
-                </button>
-
-                <button class="navigation-item flex-row">
-                    <span class="material-icons navigation-item__icon flex-center-center">groups</span>
-    
-                    <p class="navigation-item__value" *ngIf="isNavigationOpened">Группы</p>
+                    <p class="navigation-item__value" *ngIf="isNavigationOpened">{{ item.label }}</p>
                 </button>
             </div>
         </div>

@@ -13,6 +13,7 @@ import { LecturersModule } from "./modules/lecturers/lecturers.module";
 import { StudentsModule } from "./modules/students/students.module";
 import { GroupsModule } from "./modules/groups/groups.module";
 import { RequestsModule } from "./modules/requests/requests.module";
+import { UndefinedModule } from "./modules/undefined/undefined.module";
 
 @NgModule({
     declarations: [
@@ -27,6 +28,7 @@ import { RequestsModule } from "./modules/requests/requests.module";
         // Modules
         AppRoutingModule,
         ApplicationModule,
+        UndefinedModule,
         PersonalModule,
         AuthorizationModule,
         LecturersModule,

@@ -45,6 +45,10 @@
                                         <span class="material-icons button-edit">edit</span>
                                     </button>
 
+                                    <button type="button" class="table-body__button flex-center-center" (click)="toggleEditingScheduleDialogVisible()">
+                                        <span class="material-icons button-edit">schedule</span>
+                                    </button>
+
                                     <button type="button" class="table-body__button flex-center-center" (click)="toggleConfirmDialogVisible()">
                                         <span class="material-icons button-delete">delete</span>
                                     </button>
@@ -58,6 +62,7 @@
     </div>
 </section>
 
+<!-- Добавление группы -->
 <p-dialog [header]="'Добавление группы'" [(visible)]="isAddingGroupDialogVisible" [modal]="true" [style]="{ width: '400px' }" [draggable]="false" [resizable]="false">
     <div class="dialog-wrapper flex-column">
 
@@ -79,6 +84,7 @@
     </div>
 </p-dialog>
 
+<!-- Редактирование группы -->
 <p-dialog [header]="'Редактирование группы'" [(visible)]="isEditingGroupDialogVisible" [modal]="true" [style]="{ width: '400px' }" [draggable]="false" [resizable]="false">
     <div class="dialog-wrapper flex-column">
 
@@ -95,6 +101,103 @@
         </div>
 
         <app-button [elementID]="'button-edit'" [elementName]="'button-edit'" [elementLabel]="'Редактировать'" [elementDisable]="false"></app-button>
+    </div>
+</p-dialog>
+
+<!-- Редактирование расписания -->
+<p-dialog [header]="'Редактирование расписания группы'" [(visible)]="isEditingScheduleDialogVisible" [modal]="true" [style]="{ width: '80vw' }" [draggable]="false" [resizable]="false">
+    <div class="schedule-wrapper flex-center-center">
+        <div class="schedule-item flex-column" *ngFor="let item of groupSchedule">
+            <div class="schedule-item__title flex-center-center">
+                <p>{{ item.name }}</p>
+            </div>
+
+            <div class="schedule-item__data flex-column">
+                <div class="data-item flex-row">
+                    <div class="data-item__number flex-center-center">
+                        <p>1</p>
+                    </div>
+
+                    <div class="data-item__name flex-row">
+                        <p *ngIf="item.data[0]">{{ item.data[0].name }}</p>
+                    </div>
+
+                    <div class="data-item__cabinet flex-center-center">
+                        <p *ngIf="item.data[0]">{{ item.data[0].cabinet }}</p>
+                    </div>
+                </div>
+
+                <div class="data-item flex-row">
+                    <div class="data-item__number flex-center-center">
+                        <p>2</p>
+                    </div>
+
+                    <div class="data-item__name flex-row">
+                        <p *ngIf="item.data[1]">{{ item.data[1].name }}</p>
+                    </div>
+
+                    <div class="data-item__cabinet flex-center-center">
+                        <p *ngIf="item.data[1]">{{ item.data[1].cabinet }}</p>
+                    </div>
+                </div>
+
+                <div class="data-item flex-row">
+                    <div class="data-item__number flex-center-center">
+                        <p>3</p>
+                    </div>
+
+                    <div class="data-item__name flex-row">
+                        <p *ngIf="item.data[2]">{{ item.data[2].name }}</p>
+                    </div>
+
+                    <div class="data-item__cabinet flex-center-center">
+                        <p *ngIf="item.data[2]">{{ item.data[2].cabinet }}</p>
+                    </div>
+                </div>
+
+                <div class="data-item flex-row">
+                    <div class="data-item__number flex-center-center">
+                        <p>4</p>
+                    </div>
+
+                    <div class="data-item__name flex-row">
+                        <p *ngIf="item.data[3]">{{ item.data[3].name }}</p>
+                    </div>
+
+                    <div class="data-item__cabinet flex-center-center">
+                        <p *ngIf="item.data[3]">{{ item.data[3].cabinet }}</p>
+                    </div>
+                </div>
+
+                <div class="data-item flex-row">
+                    <div class="data-item__number flex-center-center">
+                        <p>5</p>
+                    </div>
+
+                    <div class="data-item__name flex-row">
+                        <p *ngIf="item.data[4]">{{ item.data[4].name }}</p>
+                    </div>
+
+                    <div class="data-item__cabinet flex-center-center">
+                        <p *ngIf="item.data[4]">{{ item.data[4].cabinet }}</p>
+                    </div>
+                </div>
+
+                <div class="data-item flex-row">
+                    <div class="data-item__number flex-center-center">
+                        <p>6</p>
+                    </div>
+
+                    <div class="data-item__name flex-row">
+                        <p *ngIf="item.data[5]">{{ item.data[5].name }}</p>
+                    </div>
+
+                    <div class="data-item__cabinet flex-center-center">
+                        <p *ngIf="item.data[5]">{{ item.data[5].cabinet }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </p-dialog>
 
