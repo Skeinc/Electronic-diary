@@ -80,7 +80,7 @@ export class GroupsComponent implements OnInit{
         },
     ];
 
-    // Mocks для таблицы преподаватели
+    // Mocks для таблицы группы
     groupsMocks = [
         {
             id: 1,
