@@ -163,8 +163,16 @@ li {
             color: $colorWhite;
         }
 
+        .button-decline {
+            padding: 6px;
+            background-color: $colorRed;
+            border-radius: 50%;
+            color: $colorWhite;
+        }
+
         .button-accept {
-            background-color: $colorGreen;
+            padding: 6px;
+            background-color: $colorPrimary3;
             border-radius: 50%;
             color: $colorWhite;
         }

@@ -1,6 +1,7 @@
 import { Component, HostListener, OnInit } from "@angular/core";
 import { GroupScheduleInterface } from "@shared/interfaces/groups/schedule.interface";
 import { generateRandomCode } from "@shared/utilities/generateRandomCode.util";
+import { GroupsScheduleMocks } from "../mocks/groups-schedule.mocks";
 
 @Component({
     selector: 'app-groups',
@@ -22,6 +23,9 @@ export class GroupsComponent implements OnInit{
 
     // Переменная, контролирующая видимость окна редактирования расписания группы
     isEditingScheduleDialogVisible: boolean = false;
+
+    // Переменная, контролирующая возможность редактирования расписания
+    isEditingSchedule: boolean = false;
 
     // Высота скрола таблицы
     tableScrollHeight: number = 0;
@@ -49,36 +53,7 @@ export class GroupsComponent implements OnInit{
     dialogEditErrorMessage: string | null = null;
 
     // Данные для расписания группы
-    groupSchedule: GroupScheduleInterface[] = [
-        {
-            name: 'Понедельник',
-            data: [],
-        },
-        {
-            name: 'Вторник',
-            data: [],
-        },
-        {
-            name: 'Среда',
-            data: [],
-        },
-        {
-            name: 'Четверг',
-            data: [],
-        },
-        {
-            name: 'Пятница',
-            data: [],
-        },
-        {
-            name: 'Суббота',
-            data: [],
-        },
-        {
-            name: 'Воскресенье',
-            data: [],
-        },
-    ];
+    groupSchedule: GroupScheduleInterface[] = GroupsScheduleMocks;
 
     // Mocks для таблицы группы
     groupsMocks = [
@@ -180,6 +155,17 @@ export class GroupsComponent implements OnInit{
     // Метод для смены видимости окна редактирования расписания группы
     toggleEditingScheduleDialogVisible(): void {
         this.isEditingScheduleDialogVisible = !this.isEditingScheduleDialogVisible;
+    }
+
+    // Метод для смены значения переменной, контролирующей возможность редактирования расписания группы
+    toggleEditingShedule(): void {
+        this.isEditingSchedule = !this.isEditingSchedule;
+    }
+
+    // Метод для сохранения расписания
+    saveSchedule(): void {
+        // Изменяем возможность редактирования расписания группы
+        this.toggleEditingShedule();
     }
 
     // Метод для смены видимости окна подверждения

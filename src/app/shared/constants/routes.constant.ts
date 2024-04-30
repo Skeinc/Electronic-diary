@@ -7,6 +7,7 @@ import { StudentsComponent } from "../../modules/students/components/students.co
 import { GroupsComponent } from "../../modules/groups/components/groups.component";
 import { RequestsComponent } from "../../modules/requests/components/requests.component";
 import { UndefinedComponent } from "../../modules/undefined/components/undefined.component";
+import { SubjectsComponent } from "../../modules/subjects/components/subjects.component";
 
 export const ROUTES: Routes = [
     {
@@ -36,6 +37,10 @@ export const ROUTES: Routes = [
     {
         path: 'requests',
         component: RequestsComponent,
+    },
+    {
+        path: 'subjects',
+        component: SubjectsComponent,
     },
     {
         path: 'undefined',

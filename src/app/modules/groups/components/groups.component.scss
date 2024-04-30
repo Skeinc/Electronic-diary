@@ -96,6 +96,24 @@
             border-top: 1px solid $inputBorder;
             overflow: hidden;
 
+            &::ng-deep {
+                input {
+                    height: 32px;
+                    padding: 0px 10px;
+                    background-color: $colorGrey7;
+                    border-radius: none;
+                    border: none;
+                    font-size: 12px;
+
+                    &:focus,
+                    &:active,
+                    &:not(:placeholder-shown) {
+                        border-radius: 0;
+                        box-shadow: none;
+                    }
+                }
+            }
+
             .data-item__number {
                 width: 32px;
                 height: 100%;
@@ -116,42 +134,25 @@
             }
 
             .data-item__name {
-                width: calc(100% - 32px - 40px);
+                width: calc(100% - 32px - 60px);
                 height: 100%;
-                padding: 0px 10px;
                 align-items: center;
                 overflow: hidden;
-
-                p {
-                    font-weight: 500;
-                    font-size: 12px;
-                    line-height: auto;
-                    color: $colorDark2;
-                    width: calc(100% - 32px - 40px);
-                    text-wrap: nowrap;
-                    text-overflow: ellipsis;
-                    overflow: hidden;
-                }
             }
 
             .data-item__cabinet {
-                width: 40px;
+                width: 60px;
                 height: 100%;
                 border-left: 1px solid $inputBorder;
                 overflow: hidden;
-
-                p {
-                    font-weight: 500;
-                    font-size: 12px;
-                    line-height: auto;
-                    color: $colorDark2;
-                    width: 40px;
-                    text-wrap: nowrap;
-                    text-overflow: ellipsis;
-                    overflow: hidden;
-                    text-align: center;
-                }
             }
         }
     }
+}
+
+.schedule-controller {
+    width: 100%;
+    padding: 0px 20px 20px 20px;
+    gap: 20px;
+    overflow: hidden;
 }

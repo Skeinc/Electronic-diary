@@ -37,6 +37,8 @@ export class PersonalComponent {
     // Метод для смены редактируемости данных
     togglePersonalDataEditable(): void {
         this.isPersonalDataEditable = !this.isPersonalDataEditable;
+
+        console.log(this.userData);
     }
 
     // Метод для загрузки выбранного изображения

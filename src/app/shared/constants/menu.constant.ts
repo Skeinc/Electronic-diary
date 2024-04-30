@@ -32,4 +32,10 @@ export const menuItemsConstant: MenuItemsInterface[] = [
         icon: 'person_add',
         role: RolesEnum.ADMINISTRATOR,
     },
+    {
+        path: '/subjects',
+        label: 'Предметы',
+        icon: 'book',
+        role: RolesEnum.ADMINISTRATOR,
+    }
 ];

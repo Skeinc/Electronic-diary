@@ -105,99 +105,35 @@
 </p-dialog>
 
 <!-- Редактирование расписания группы -->
-<p-dialog [header]="'Редактирование расписания группы'" [(visible)]="isEditingScheduleDialogVisible" [modal]="true" [style]="{ width: '80vw' }" [draggable]="false" [resizable]="false">
-    <div class="schedule-wrapper flex-center-center">
-        <div class="schedule-item flex-column" *ngFor="let item of groupSchedule">
+<p-dialog [header]="'Редактирование расписания группы'" class="flex-column" [(visible)]="isEditingScheduleDialogVisible" [modal]="true" [style]="{ width: '1300px' }" [draggable]="false" [resizable]="false">
+    <div class="schedule-wrapper flex-row">
+        <div class="schedule-item flex-column" *ngFor="let day of groupSchedule">
             <div class="schedule-item__title flex-center-center">
-                <p>{{ item.name }}</p>
+                <p>{{ day.name }}</p>
             </div>
 
             <div class="schedule-item__data flex-column">
-                <div class="data-item flex-row">
+                <div class="data-item flex-row" *ngFor="let subject of day.data; index as i">
                     <div class="data-item__number flex-center-center">
-                        <p>1</p>
+                        <p>{{ day.data[i].number }}</p>
                     </div>
 
                     <div class="data-item__name flex-row">
-                        <p *ngIf="item.data[0]">{{ item.data[0].name }}</p>
+                        <app-text-field *ngIf="day.data[i]" [elementID]="'schedule-name'" [elementName]="'schedule-name'" [elementPlaceholder]="'—'" [elementValue]="day.data[i].name" [elementDisable]="!isEditingSchedule" (elementValueChange)="day.data[i].name = $event"></app-text-field>
                     </div>
 
                     <div class="data-item__cabinet flex-center-center">
-                        <p *ngIf="item.data[0]">{{ item.data[0].cabinet }}</p>
-                    </div>
-                </div>
-
-                <div class="data-item flex-row">
-                    <div class="data-item__number flex-center-center">
-                        <p>2</p>
-                    </div>
-
-                    <div class="data-item__name flex-row">
-                        <p *ngIf="item.data[1]">{{ item.data[1].name }}</p>
-                    </div>
-
-                    <div class="data-item__cabinet flex-center-center">
-                        <p *ngIf="item.data[1]">{{ item.data[1].cabinet }}</p>
-                    </div>
-                </div>
-
-                <div class="data-item flex-row">
-                    <div class="data-item__number flex-center-center">
-                        <p>3</p>
-                    </div>
-
-                    <div class="data-item__name flex-row">
-                        <p *ngIf="item.data[2]">{{ item.data[2].name }}</p>
-                    </div>
-
-                    <div class="data-item__cabinet flex-center-center">
-                        <p *ngIf="item.data[2]">{{ item.data[2].cabinet }}</p>
-                    </div>
-                </div>
-
-                <div class="data-item flex-row">
-                    <div class="data-item__number flex-center-center">
-                        <p>4</p>
-                    </div>
-
-                    <div class="data-item__name flex-row">
-                        <p *ngIf="item.data[3]">{{ item.data[3].name }}</p>
-                    </div>
-
-                    <div class="data-item__cabinet flex-center-center">
-                        <p *ngIf="item.data[3]">{{ item.data[3].cabinet }}</p>
-                    </div>
-                </div>
-
-                <div class="data-item flex-row">
-                    <div class="data-item__number flex-center-center">
-                        <p>5</p>
-                    </div>
-
-                    <div class="data-item__name flex-row">
-                        <p *ngIf="item.data[4]">{{ item.data[4].name }}</p>
-                    </div>
-
-                    <div class="data-item__cabinet flex-center-center">
-                        <p *ngIf="item.data[4]">{{ item.data[4].cabinet }}</p>
-                    </div>
-                </div>
-
-                <div class="data-item flex-row">
-                    <div class="data-item__number flex-center-center">
-                        <p>6</p>
-                    </div>
-
-                    <div class="data-item__name flex-row">
-                        <p *ngIf="item.data[5]">{{ item.data[5].name }}</p>
-                    </div>
-
-                    <div class="data-item__cabinet flex-center-center">
-                        <p *ngIf="item.data[5]">{{ item.data[5].cabinet }}</p>
+                        <app-text-field *ngIf="day.data[i]" [elementID]="'schedule-cabinet'" [elementName]="'schedule-cabinet'" [elementPlaceholder]="'—'" [elementValue]="day.data[i].cabinet" [elementDisable]="!isEditingSchedule" (elementValueChange)="day.data[i].cabinet = $event"></app-text-field>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="schedule-controller flex-row">
+        <app-button [elementID]="'button-edit'" [elementName]="'button-edit'" [elementLabel]="'Редактировать'" [elementDisable]="isEditingSchedule" (click)="toggleEditingShedule()"></app-button>
+
+        <app-button [elementID]="'button-save'" [elementName]="'button-save'" [elementLabel]="'Сохранить'" [elementDisable]="!isEditingSchedule" (click)="saveSchedule()"></app-button>
     </div>
 </p-dialog>
 

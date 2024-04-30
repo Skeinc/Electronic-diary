@@ -35,6 +35,10 @@
         &:hover {
             border-radius: 10px;
         }
+
+        &::placeholder {
+            color: $colorGrey5;
+        }
     }
 
     &:invalid {

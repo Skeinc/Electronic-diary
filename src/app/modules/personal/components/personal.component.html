@@ -30,11 +30,11 @@
 
                     <div class="information-data__wrapper flex-row">
                         <div class="information-data__group flex-column">
-                            <app-text-field [elementID]="'personal-surname'" [elementName]="'personal-surname'" [elementLabel]="'Фамилия'" [elementValue]="userData.surname" [elementReadonly]="!isPersonalDataEditable"></app-text-field>
+                            <app-text-field [elementID]="'personal-surname'" [elementName]="'personal-surname'" [elementLabel]="'Фамилия'" [elementValue]="userData.surname" [elementReadonly]="!isPersonalDataEditable" (elementValueChange)="userData.surname = $event"></app-text-field>
     
-                            <app-text-field [elementID]="'personal-name'" [elementName]="'personal-name'" [elementLabel]="'Имя'" [elementValue]="userData.name" [elementReadonly]="!isPersonalDataEditable"></app-text-field>
+                            <app-text-field [elementID]="'personal-name'" [elementName]="'personal-name'" [elementLabel]="'Имя'" [elementValue]="userData.name" [elementReadonly]="!isPersonalDataEditable" (elementValueChange)="userData.name = $event"></app-text-field>
     
-                            <app-text-field [elementID]="'personal-patronymic'" [elementName]="'personal-patronymic'" [elementLabel]="'Отчество'" [elementValue]="userData.patronymic" [elementReadonly]="!isPersonalDataEditable"></app-text-field>
+                            <app-text-field [elementID]="'personal-patronymic'" [elementName]="'personal-patronymic'" [elementLabel]="'Отчество'" [elementValue]="userData.patronymic" [elementReadonly]="!isPersonalDataEditable" (elementValueChange)="userData.patronymic = $event"></app-text-field>
                         </div>
     
                         <div class="information-data__border">
@@ -42,11 +42,11 @@
                         </div>
     
                         <div class="information-data__group flex-column">
-                            <app-text-field [elementID]="'personal-email'" [elementName]="'personal-email'" [elementLabel]="'Email'" [elementValue]="userData.email" [elementReadonly]="!isPersonalDataEditable"></app-text-field>
+                            <app-text-field [elementID]="'personal-email'" [elementName]="'personal-email'" [elementLabel]="'Email'" [elementValue]="userData.email" [elementReadonly]="!isPersonalDataEditable" (elementValueChange)="userData.email = $event"></app-text-field>
     
-                            <app-phone-field [elementID]="'personal-phone'" [elementName]="'personal-phone'" [elementLabel]="'Телефон'" [elementValue]="userData.phone" [elementReadonly]="!isPersonalDataEditable"></app-phone-field>
+                            <app-phone-field [elementID]="'personal-phone'" [elementName]="'personal-phone'" [elementLabel]="'Телефон'" [elementValue]="userData.phone" [elementReadonly]="!isPersonalDataEditable" (elementValueChange)="userData.phone = $event"></app-phone-field>
     
-                            <app-password-field [elementID]="'personal-password'" [elementName]="'personal-password'" [elementLabel]="'Старый пароль'" [elementValue]="userData.password" [elementReadonly]="!isPersonalDataEditable"></app-password-field>
+                            <app-password-field [elementID]="'personal-password'" [elementName]="'personal-password'" [elementLabel]="'Старый пароль'" [elementValue]="userData.password" [elementReadonly]="!isPersonalDataEditable" (elementValueChange)="userData.password = $event"></app-password-field>
                         </div>
                     </div>
 

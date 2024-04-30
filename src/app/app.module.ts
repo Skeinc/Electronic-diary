@@ -14,6 +14,7 @@ import { StudentsModule } from "./modules/students/students.module";
 import { GroupsModule } from "./modules/groups/groups.module";
 import { RequestsModule } from "./modules/requests/requests.module";
 import { UndefinedModule } from "./modules/undefined/undefined.module";
+import { SubjectsModule } from "./modules/subjects/subjects.module";
 
 @NgModule({
     declarations: [
@@ -35,6 +36,7 @@ import { UndefinedModule } from "./modules/undefined/undefined.module";
         StudentsModule,
         GroupsModule,
         RequestsModule,
+        SubjectsModule,
     ],
     providers: [
 
