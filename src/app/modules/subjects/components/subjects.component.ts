@@ -25,7 +25,7 @@ export class SubjectsComponent implements OnInit{
     tableColumns: any = null; 
 
     // Mocks для таблицы предметы
-    groupsMocks = [
+    subjectsMocks = [
         {
             id: 1,
             name: 'История',
@@ -37,6 +37,30 @@ export class SubjectsComponent implements OnInit{
             name: 'Русский язык',
             lecturers: 'Иванова Марина Николаевна, Сидорова Виктория Петровна',
             groups: '4-ИСиП, 3-ИП',
+        },
+    ];
+
+    // Mocks для доступных преподавателей
+    lecturersMocks = [
+        {
+            id: 1,
+            name: 'Иванова Мария Николаевна'
+        },
+        {
+            id: 2,
+            name: 'Сидорова Татьяна Петровна'
+        }
+    ];
+
+    // Mocks для доступных групп
+    groupsMocks = [
+        {
+            id: 1,
+            name: '4-ИСиП'
+        },
+        {
+            id: 2,
+            name: '3-ИП'
         },
     ];
 
