@@ -62,6 +62,10 @@ export class SubjectsComponent implements OnInit{
             id: 2,
             name: '3-ИП'
         },
+        {
+            id: 3,
+            name: '2-ИБ'
+        }
     ];
 
     @HostListener('window:resize', ['$event'])
