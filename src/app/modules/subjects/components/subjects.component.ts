@@ -49,6 +49,10 @@ export class SubjectsComponent implements OnInit{
         {
             id: 2,
             name: 'Сидорова Татьяна Петровна'
+        },
+        {
+            id: 3,
+            name: 'Петрова Юлия Ивановна'
         }
     ];
 
