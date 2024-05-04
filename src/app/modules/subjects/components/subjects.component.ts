@@ -29,12 +29,14 @@ export class SubjectsComponent implements OnInit{
         {
             id: 1,
             name: 'История',
+            code: '103-203',
             lecturers: 'Иванова Марина Николаевна, Сидорова Виктория Петровна',
             groups: '4-ИСиП, 3-ИП',
         },
         {
             id: 2,
             name: 'Русский язык',
+            code: '103-204',
             lecturers: 'Иванова Марина Николаевна, Сидорова Виктория Петровна',
             groups: '4-ИСиП, 3-ИП',
         },
@@ -107,6 +109,10 @@ export class SubjectsComponent implements OnInit{
             {
                 label: 'Наименование',
                 field: 'name',
+            },
+            {
+                label: 'Кодировка',
+                field: 'code',
             },
             {
                 label: 'Преподаватели',
