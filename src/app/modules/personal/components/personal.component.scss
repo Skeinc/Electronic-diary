@@ -23,7 +23,6 @@
     padding: 20px;
     border-radius: 10px;
     background-color: $colorWhite;
-    overflow: hidden;
 }
 
 .header {
@@ -130,7 +129,7 @@
                 font-weight: 600;
                 font-size: 14px;
                 line-height: 20px;
-                color: $colorDark2; 
+                color: $colorDark2;
             }
         }
 
@@ -159,6 +158,180 @@
 
             .information-data__controllers__wrapper {
                 width: 200px;
+            }
+        }
+    }
+}
+
+.subjects {
+    width: 100%;
+    height: auto;
+    margin-top: 40px;
+
+    .subjects-header {
+        width: 100%;
+        height: 40px;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid $inputBorder;
+        gap: 16px;
+
+        .subjects-header__title {
+            font-weight: 600;
+            font-size: 18px;
+            line-height: auto;
+            color: $colorDark2;
+        }
+    }
+
+    .subjects-list {
+        width: 100%;
+        height: auto;
+        margin-top: 20px;
+        gap: 16px;
+
+        .subjects-item {
+            width: 100%;
+            height: auto;
+
+            .subject {
+                width: 100%;
+                height: 64px;
+                border-radius: 10px;
+                background-color: transparent;
+                justify-content: space-between;
+                padding: 10px 16px;
+                gap: 20px;
+                cursor: pointer;
+                transition: $transitionMedium;
+
+                &:hover {
+                    background-color: $colorGrey7;
+
+                    .subject-item__button span {
+                        transform: translateY(4px);
+                    }
+                }
+
+                .subject-item__information {
+                    width: auto;
+                    height: 100%;
+                    justify-content: space-between;
+                    gap: 10px;
+
+                    .subject-item__name {
+                        font-weight: 600;
+                        font-size: 16px;
+                        line-height: auto;
+                        color: $colorDark2;
+                    }
+
+                    .subject-item__code {
+                        font-weight: 400;
+                        font-size: 12px;
+                        line-height: auto;
+                        color: $colorGrey3;
+                    }
+                }
+
+                .subject-item__button {
+                    width: 44px;
+                    height: 100%;
+                    appearance: none;
+                    outline: none;
+                    border: none;
+                    background-color: transparent;
+                    cursor: pointer;
+                    transition: $transitionMedium;
+
+                    &:hover {
+                        background-color: $colorGrey7;
+                    }
+
+                    span {
+                        color: $colorDark2;
+                        transition: $transitionMedium;
+                    }
+                }
+            }
+
+            .subject-themes {
+                width: 100%;
+                height: auto;
+                background-color: transparent;
+                padding: 10px 16px;
+                gap: 16px;
+                transition: $transitionMedium;
+
+                .theme-item {
+                    width: 100%;
+                    height: auto;
+
+                    .theme {
+                        width: 100%;
+                        height: auto;
+                        border-radius: 10px;
+                        background-color: transparent;
+                        justify-content: space-between;
+                        padding: 10px 16px;
+                        gap: 10px;
+                        cursor: pointer;
+                        transition: $transitionMedium;
+
+                        &:hover {
+                            background-color: $colorGrey7;
+                        }
+
+                        .theme-item__information {
+                            width: auto;
+                            height: 100%;
+                            justify-content: space-between;
+                            gap: 10px;
+
+                            .theme-item__name {
+                                font-weight: 600;
+                                font-size: 14px;
+                                line-height: auto;
+                                color: $colorDark2;
+                            }
+
+                            .theme-item__number {
+                                font-weight: 400;
+                                font-size: 12px;
+                                line-height: auto;
+                                color: $colorGrey3;
+                            }
+                        }
+
+                        .theme-item__button {
+                            width: 32px;
+                            height: 32px;
+                            appearance: none;
+                            outline: none;
+                            border: none;
+                            background-color: transparent;
+                            cursor: pointer;
+                            transition: $transitionMedium;
+
+                            &:hover {
+                                background-color: $colorGrey7;
+                            }
+
+                            span {
+                                color: $colorDark2;
+                                transition: $transitionMedium;
+                            }
+                        }
+                    }
+                }
+
+                .subject-theme__wrapper {
+                    width: 100%;
+
+                    .subject-theme__add {
+                        width: 300px;
+                    }
+                }
             }
         }
     }

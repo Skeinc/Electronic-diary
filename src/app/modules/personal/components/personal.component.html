@@ -61,6 +61,72 @@
                     </div>
                 </address>
             </div>
+
+            <div *ngIf="userData.role === 'Преподаватель'" class="subjects flex-column">
+                <header class="subjects-header">
+                    <p class="subjects-header__title">Предметы</p>
+                </header>
+
+                <div class="subjects-list flex-column">
+                    <div class="subjects-item flex-column" *ngFor="let item of lecturerSubjects; index as i">
+                        <div class="subject flex-row" (click)="toggleSubjectVisible(i)">
+                            <div class="subject-item__information flex-column">
+                                <div class="subject-item__name">
+                                    <p>{{ item.name }}</p>
+                                </div>
+        
+                                <div class="subject-item__code">
+                                    <p>{{ item.code }}</p>
+                                </div>
+                            </div>
+    
+                            <button type="button" class="subject-item__button flex-center-center">
+                                <span class="material-icons" [style.transform]="subjectsVisibleFlags[i] ? 'rotate(180deg)' : 'rotate(0deg)'">expand_more</span>
+                            </button>
+                        </div>
+
+                        <div *ngIf="subjectsVisibleFlags[i]" class="subject-themes flex-column" [@fadeInOut]>
+                            <div class="theme-item flex-column" *ngFor="let theme of subjectThemes; index as i">
+                                <div class="theme flex-row" (click)="toggleSubjectThemeVisible(i)">
+                                    <div class="theme-item__information flex-column">
+                                        <div class="theme-item__name">
+                                            <p>{{ theme.name }}</p>
+                                        </div>
+                
+                                        <div class="theme-item__number">
+                                            <p>{{ "№" + theme.number }}</p>
+                                        </div>
+                                    </div>
+    
+                                    <button type="button" class="theme-item__button flex-center-center">
+                                        <span class="material-icons" [style.transform]="subjectsThemesVisibleFlags[i] ? 'rotate(180deg)' : 'rotate(0deg)'">expand_more</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div class="subject-theme__wrapper flex-center-center">
+                                <div class="subject-theme__add">
+                                    <app-button [elementID]="'button-theme-add'" [elementName]="'button-theme-add'" [elementLabel]="'Добавить тему'" [elementDisable]="false" (click)="toggleAddingThemeVisible(item.id)"></app-button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </section>
+
+<!-- Добавление темы -->
+<p-dialog [header]="'Добавление темы'" [(visible)]="isAddingThemeDialogVisible" [modal]="true" [style]="{ width: '400px' }" [draggable]="false" [resizable]="false">
+    <div class="dialog-wrapper flex-column">
+
+        <app-text-field [elementID]="'dialog-theme-name'" [elementName]="'dialog-theme-name'" [elementLabel]="'Название темы'" [elementValue]="dialogThemeName" [elementDisable]="false"></app-text-field>
+
+        <div class="dialog-message flex-row">
+            <span class="dialog-message__value">{{ dialogErrorMessage }}</span>
+        </div>
+
+        <app-button [elementID]="'button-theme-add'" [elementName]="'button-theme-add'" [elementLabel]="'Добавить'" [elementDisable]="false"></app-button>
+    </div>
+</p-dialog>

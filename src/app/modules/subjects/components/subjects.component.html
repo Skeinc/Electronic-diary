@@ -35,13 +35,13 @@
                         <tr>
                             <td *ngFor="let column of tableColumns">
                                 <div class="table-body">
-                                    <p class="table-body__value">{{ subject[column.field] ?? '—' }}</p>
+                                    <p class="table-body__value" [title]="formatTableData(subject[column.field], 'name')">{{ formatTableData(subject[column.field], 'name') }}</p>
                                 </div>
                             </td>
     
                             <td>
                                 <div class="table-body flex-row">
-                                    <button type="button" class="table-body__button flex-center-center" (click)="toggleEditingSubjectDialogVisible()">
+                                    <button type="button" class="table-body__button flex-center-center" (click)="toggleEditingSubjectDialogVisible(subject)">
                                         <span class="material-icons button-edit">edit</span>
                                     </button>
     
@@ -60,13 +60,41 @@
 
 <!-- Добавление предмета -->
 <p-dialog [header]="'Добавление предмета'" [(visible)]="isAddingSubjectDialogVisible" [modal]="true" [style]="{ width: '400px' }" [draggable]="false" [resizable]="false">
-    
+    <div class="dialog-wrapper flex-column">
+        <app-text-field [elementID]="'dialog-name'" [elementName]="'dialog-name'" [elementLabel]="'Наименование'" [elementValue]="dialogSubjectName" [elementDisable]="false" (elementValueChange)="dialogSubjectName = $event"></app-text-field>
+
+        <app-text-field [elementID]="'dialog-code'" [elementName]="'dialog-code'" [elementLabel]="'Кодировка'" [elementValue]="dialogSubjectCode" [elementDisable]="false" (elementValueChange)="dialogSubjectCode = $event"></app-text-field>
+
+        <app-multiselect [elementID]="'selected-lecturers'" [elementName]="'selected-lecturers'" [elementLabel]="'Выберите преподавателей'" [(elementValue)]="addSubjectSelectedLecturers" [options]="lecturersMocks" [optionsValue]="'name'" [optionsLabel]="'name'" [clearOption]="true" [filter]="true"></app-multiselect>
+
+        <app-multiselect [elementID]="'selected-groups'" [elementName]="'selected-groups'" [elementLabel]="'Выберите группы'" [(elementValue)]="addSubjectSelectedGroups" [options]="groupsMocks" [optionsValue]="'name'" [optionsLabel]="'name'" [clearOption]="true" [filter]="true"></app-multiselect>
+
+        <div class="dialog-message flex-row">
+            <span class="dialog-message__value">{{ dialogErrorMessage }}</span>
+        </div>
+
+        <app-button [elementID]="'button-add'" [elementName]="'button-add'" [elementLabel]="'Добавить'" [elementDisable]="false"></app-button>
+    </div>
 </p-dialog>
 
 <!-- Редактирование предмета -->
 
 <p-dialog [header]="'Редактирование предмета'" [(visible)]="isEditingSubjectDialogVisible" [modal]="true" [style]="{ width: '400px' }" [draggable]="false" [resizable]="false">
-    
+    <div class="dialog-wrapper flex-column">
+        <app-text-field [elementID]="'dialog-name'" [elementName]="'dialog-name'" [elementLabel]="'Наименование'" [elementValue]="dialogEditSubjectName" [elementDisable]="false" (elementValueChange)="dialogEditSubjectName = $event"></app-text-field>
+
+        <app-text-field [elementID]="'dialog-code'" [elementName]="'dialog-code'" [elementLabel]="'Кодировка'" [elementValue]="dialogEditSubjectCode" [elementDisable]="false" (elementValueChange)="dialogEditSubjectCode = $event"></app-text-field>
+
+        <app-multiselect [elementID]="'selected-lecturers'" [elementName]="'selected-lecturers'" [elementLabel]="'Выберите преподавателей'" [(elementValue)]="editSubjectSelectedLecturers" [options]="lecturersMocks" [optionsValue]="'name'" [optionsLabel]="'name'" [clearOption]="true" [filter]="true"></app-multiselect>
+
+        <app-multiselect [elementID]="'selected-groups'" [elementName]="'selected-groups'" [elementLabel]="'Выберите группы'" [(elementValue)]="editSubjectSelectedGroups" [options]="groupsMocks" [optionsValue]="'name'" [optionsLabel]="'name'" [clearOption]="true" [filter]="true"></app-multiselect>
+
+        <div class="dialog-message flex-row">
+            <span class="dialog-message__value">{{ dialogEditErrorMessage }}</span>
+        </div>
+
+        <app-button [elementID]="'button-add'" [elementName]="'button-add'" [elementLabel]="'Добавить'" [elementDisable]="false"></app-button>
+    </div>
 </p-dialog>
 
 <app-confirm-dialog [visibleController]="isConfirmDialogVisible" (next)="handleConfirmDialogNext()" (cancel)="handleConfirmDialogCancel()" ></app-confirm-dialog>

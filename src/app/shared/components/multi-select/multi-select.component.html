@@ -1,0 +1,43 @@
+<div class="component">
+    <div class="multiselect flex-column">
+        <div class="input-area">
+            <input class="multiselect-input" type="text" autocomplete="off" readonly="true" [title]="selectedOptionsText()"
+            [id]="elementID"
+            [name]="elementName ?? ''"
+            [placeholder]="elementPlaceholder ?? ''"
+            [value]="selectedOptionsText()"
+            [required]="elementRequired ?? false"
+            [disabled]="elementDisable ?? false"
+            (click)="toggleMultiselectVisible()">
+            
+            <span *ngIf="clearOption" class="material-icons multiselect-icon icon-remove" (click)="clearValue()">close</span>
+
+            <span class="material-icons multiselect-icon" (click)="toggleMultiselectVisible()">{{ isMultiselectVisible ? 'expand_less' : 'expand_more' }}</span>
+    
+            <label *ngIf="elementLabel" [for]="elementID" class="multiselect-label">{{ elementLabel }}</label>
+        </div>
+
+        <div class="multiselect-area" [style.maxHeight]="filter ? (isMultiselectVisible ? '260px' : '0px') : (isMultiselectVisible ? '200px' : '0px')">
+            <div *ngIf="filter" class="multiselect-filter">
+                <input class="multiselect-filter__input" type="text" autocomplete="off" id="multiselect-filter" name="multiselect-filter" (input)="filterOptions($event)">
+
+                <span class="material-icons multiselect-icon icon-search">search</span>
+            </div>
+
+            <ul class="multiselect-list flex-column">
+                <ng-container *ngIf="filteredOptions.length > 0">
+                    <li class="multiselect-list__item flex-row" *ngFor="let item of filteredOptions" (click)="selectOption(item)">
+                        <span>{{ optionsLabel ? item[optionsLabel] : item }}</span>
+                    </li>
+                </ng-container>
+
+                <ng-container *ngIf="filteredOptions.length === 0">
+                    <li class="multiselect-list__item flex-row" *ngFor="let item of options" (click)="selectOption(item)">
+                        <span>{{ optionsLabel ? item[optionsLabel] : item }}</span>
+                    </li>
+                </ng-container>
+
+                <span *ngIf="options?.length === 0" class="empty-data">Нет данных</span>
+            </ul>
+        </div>
+</div>

@@ -7,6 +7,8 @@ import { TextFieldModule } from "@shared/components/text-field/text-field.module
 import { PasswordFieldModule } from "@shared/components/password-field/password-field.module";
 import { ButtonModule } from "@shared/components/button/button.module";
 import { PhoneFieldModule } from "@shared/components/phone-field/phone-field.module";
+import { DropdownModule } from "@shared/components/dropdown/dropdown.module";
+import { DialogModule } from "primeng/dialog";
 
 @NgModule({
     declarations: [
@@ -21,6 +23,9 @@ import { PhoneFieldModule } from "@shared/components/phone-field/phone-field.mod
         PhoneFieldModule,
         PasswordFieldModule,
         ButtonModule,
+        DropdownModule,
+        // PrimeNg
+        DialogModule,
     ],
     exports: [
         PersonalComponent,
