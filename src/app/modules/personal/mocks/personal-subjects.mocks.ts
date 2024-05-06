@@ -9,4 +9,9 @@ export const PersonalSubjectsMocks = [
         name: 'Русский язык',
         code: '103-205',
     },
+    {
+        id: 3,
+        name: 'Английский язык',
+        code: '103-206',
+    },
 ];
