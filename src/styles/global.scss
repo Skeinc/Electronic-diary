@@ -208,3 +208,13 @@ body {
         }
     }
 }
+
+// Loader
+.loader {
+    position: absolute;
+    top: 50vh;
+    left: 50vw;
+    transform: translate(-50vw, -50vh);
+    margin-left: -20px;
+    z-index: 999;
+}

@@ -1,4 +1,6 @@
 <section class="wrapper">
+    <app-loader *ngIf="isDataLoading" class="loader"></app-loader>
+    
     <app-navigation (navigationVisibility)="onNavigationOpenedChange($event)"></app-navigation>
 
     <div class="container" [style.marginLeft]="isNavigationOpened ? '320px' : '80px'">
@@ -39,7 +41,7 @@
 
                             <td>
                                 <div class="table-body flex-row">
-                                    <button type="button" class="table-body__button flex-center-center" (click)="toggleConfirmDialogVisible()">
+                                    <button type="button" class="table-body__button flex-center-center" (click)="toggleConfirmDialogVisible(students.id)">
                                         <span class="material-icons button-delete">delete</span>
                                     </button>
                                 </div>

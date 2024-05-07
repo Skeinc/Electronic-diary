@@ -17,13 +17,13 @@
                 <p-table [columns]="tableColumns" [value]="lecturersMocks" styleClass="p-datatable-gridlines" [scrollable]="true" [resizableColumns]="true" [scrollHeight]="tableScrollHeight.toString() + 'px'">
                     <ng-template pTemplate="header" let-columns>
                         <tr>
-                            <th *ngFor="let col of columns" pResizableColumn [style.width]="'13%'">
+                            <th *ngFor="let col of columns" pResizableColumn [style.width]="'11.5%'">
                                 <div class="table-label">
                                     <p class="table-label__value">{{ col.label }}</p>
                                 </div>
                             </th>
 
-                            <th pResizableColumn [style.width]="'9%'">
+                            <th pResizableColumn [style.width]="'8%'">
                                 <div class="table-label">
                                     <p class="table-label__value">Действие</p>
                                 </div>
@@ -56,17 +56,19 @@
 
 <p-dialog [header]="'Добавление преподавателя'" [(visible)]="isAddingLecturerDialogVisible" [modal]="true" [style]="{ width: '400px' }" [draggable]="false" [resizable]="false">
     <div class="dialog-wrapper flex-column">
-        <app-text-field [elementID]="'dialog-surname'" [elementName]="'dialog-surname'" [elementLabel]="'Фамилия'" [elementValue]="dialogLecturerSurname" [elementDisable]="false"></app-text-field>
+        <app-text-field [elementID]="'dialog-surname'" [elementName]="'dialog-surname'" [elementLabel]="'Фамилия'" [elementValue]="dialogLecturerSurname" [elementDisable]="false" (elementValueChange)="dialogLecturerSurname = $event"></app-text-field>
 
-        <app-text-field [elementID]="'dialog-name'" [elementName]="'dialog-name'" [elementLabel]="'Имя'" [elementValue]="dialogLecturerName" [elementDisable]="false"></app-text-field>
+        <app-text-field [elementID]="'dialog-name'" [elementName]="'dialog-name'" [elementLabel]="'Имя'" [elementValue]="dialogLecturerName" [elementDisable]="false" (elementValueChange)="dialogLecturerName = $event"></app-text-field>
 
-        <app-text-field [elementID]="'dialog-patronymic'" [elementName]="'dialog-patronymic'" [elementLabel]="'Отчество'" [elementValue]="dialogLecturerPatronymic" [elementDisable]="false"></app-text-field>
+        <app-text-field [elementID]="'dialog-patronymic'" [elementName]="'dialog-patronymic'" [elementLabel]="'Отчество'" [elementValue]="dialogLecturerPatronymic" [elementDisable]="false" (elementValueChange)="dialogLecturerPatronymic = $event"></app-text-field>
 
-        <app-text-field [elementID]="'dialog-email'" [elementName]="'dialog-email'" [elementLabel]="'E-mail'" [elementValue]="dialogLecturerEmail" [elementDisable]="false"></app-text-field>
+        <app-text-field [elementID]="'dialog-email'" [elementName]="'dialog-email'" [elementLabel]="'E-mail'" [elementValue]="dialogLecturerEmail" [elementDisable]="false" (elementValueChange)="dialogLecturerEmail = $event"></app-text-field>
 
-        <app-phone-field [elementID]="'dialog-phone'" [elementName]="'dialog-phone'" [elementLabel]="'Телефон'" [elementValue]="dialogLecturerPhone" [elementDisable]="false"></app-phone-field>
+        <app-phone-field [elementID]="'dialog-phone'" [elementName]="'dialog-phone'" [elementLabel]="'Телефон'" [elementValue]="dialogLecturerPhone" [elementDisable]="false" (elementValueChange)="dialogLecturerPhone = $event"></app-phone-field>
 
-        <app-password-field [elementID]="'dialog-password'" [elementName]="'dialog-password'" [elementLabel]="'Пароль'" [elementValue]="dialogLecturerPassword" [elementDisable]="false"></app-password-field>
+        <app-text-field [elementID]="'dialog-login'" [elementName]="'dialog-login'" [elementLabel]="'Логин'" [elementValue]="dialogLecturerLogin" [elementDisable]="false" (elementValueChange)="dialogLecturerLogin = $event"></app-text-field>
+
+        <app-password-field [elementID]="'dialog-password'" [elementName]="'dialog-password'" [elementLabel]="'Пароль'" [elementValue]="dialogLecturerPassword" [elementDisable]="false" (elementValueChange)="dialogLecturerPassword = $event"></app-password-field>
 
         <div class="dialog-message flex-row">
             <span class="dialog-message__value">{{ dialogErrorMessage }}</span>

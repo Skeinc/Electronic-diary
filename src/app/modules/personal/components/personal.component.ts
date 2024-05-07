@@ -119,7 +119,7 @@ export class PersonalComponent implements OnInit {
 
         this.personalService.updateUserInformation(user).subscribe({
             next: (response) => {
-                this.loggerService.message('message', 'User information was updated');
+                this.loggerService.message('backend', 'User information was updated');
             },
             error: (err) => {
                 this.loggerService.message('error', 'Error with update user information', err);
@@ -147,7 +147,7 @@ export class PersonalComponent implements OnInit {
 
                     user.id_media = this.uploadedImageID;
 
-                    this.loggerService.message('message', 'Mediafile was uploaded');
+                    this.loggerService.message('backend', 'Mediafile was uploaded');
                 },
                 error: (err) => {
                     this.loggerService.message('error', 'Error with upload mediafile', err);

@@ -27,6 +27,7 @@ export class LecturersComponent implements OnInit{
     dialogLecturerPatronymic: string = '';
     dialogLecturerEmail: string = '';
     dialogLecturerPhone: string = '';
+    dialogLecturerLogin: string = '';
     dialogLecturerPassword: string = '';
 
     // Сообщение ошибки для окна добавления преподавателя
@@ -41,6 +42,7 @@ export class LecturersComponent implements OnInit{
             patronymic: 'Ивановна',
             email: 'ivanova@gmail.com',
             phone: '+79901002030',
+            login: 'test',
             password: 'mivanova',
         },
         {
@@ -50,6 +52,7 @@ export class LecturersComponent implements OnInit{
             patronymic: 'Владимировна',
             email: 'sidorova@gmail.com',
             phone: '+79903009040',
+            login: 'test',
             password: 'jsidorova',
         },
     ];
@@ -106,6 +109,10 @@ export class LecturersComponent implements OnInit{
             {
                 label: 'Телефон',
                 field: 'phone'
+            },
+            {
+                label: 'Логин',
+                field: 'login',
             },
             {
                 label: 'Пароль',

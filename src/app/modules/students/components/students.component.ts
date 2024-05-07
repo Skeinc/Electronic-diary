@@ -1,4 +1,7 @@
-import { Component, HostListener, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, HostListener, OnInit } from "@angular/core";
+import { StudentsService } from "../services/students.service";
+import { LoggerService } from "@shared/services/logger/logger.service";
+import { StudentModel } from "@shared/models/student.model";
 
 @Component({
     selector: 'app-students',
@@ -6,6 +9,12 @@ import { Component, HostListener, OnInit } from "@angular/core";
     styleUrl: './students.component.scss',
 })
 export class StudentsComponent implements OnInit{
+    constructor(
+        private studentsService: StudentsService,
+        private loggerService: LoggerService,
+        private cdr: ChangeDetectorRef,
+    ) { }
+
     // Определяет открыта ли меню
     isNavigationOpened: boolean = false;
 
@@ -17,6 +26,15 @@ export class StudentsComponent implements OnInit{
 
     // Доступные колонки таблицы
     tableColumns: any = null; 
+
+    // Переменная, обозначающая статус загрузки данных
+    isDataLoading: boolean = false;
+
+    // Данные о студентах
+    studentsData: StudentModel[] | null = null;
+
+    // Переменная, хранящая ID студента, которого пытаются удалить
+    deleteUserID: number | null = null;
 
     // Mocks для таблицы студентов
     studentsMocks = [
@@ -48,14 +66,64 @@ export class StudentsComponent implements OnInit{
         this.updateScrollHeight();
     }
 
-
     ngOnInit(): void {
         // Установка высоты скрола таблицы
         this.updateScrollHeight();
 
         // Установка конфигурации таблицы
-        this.setConfigurationTable()
+        this.setConfigurationTable();
+
+        // Получаем информацию о всех студентах
+        this.getAllStudents();
     }
+
+    // Метод для получения всех студентов
+    getAllStudents(): void {
+        this.isDataLoading = true;
+
+        this.studentsService.getAllStudents().subscribe({
+            next: (response: StudentModel[]) => {
+                this.studentsData = response;
+
+                this.loggerService.message('backend', 'All students information was received', response);
+            },
+            error: (err) => {
+                this.loggerService.message('error', 'Error with get all students information', err);
+
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+            complete: () => {
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+        });
+    }
+
+    // Метод для удаления студента по ID
+    deleteStudentByID(id: number): void {
+        this.isDataLoading = true;
+
+        this.studentsService.deleteStudentByID(id).subscribe({
+            next: (response: any) => {
+                this.loggerService.message('backend', `Student with ID = ${id} was deleted`, response);
+            },
+            error: (err) => {
+                this.loggerService.message('error', 'Error with delete student by ID', err);
+
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+            complete: () => {
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+        });
+    };
 
     // Метод скрывает/открывает меню
     onNavigationOpenedChange(isOpened: boolean) {
@@ -107,13 +175,21 @@ export class StudentsComponent implements OnInit{
     }
 
     // Метод для смены видимости окна подверждения
-    toggleConfirmDialogVisible(): void {
+    toggleConfirmDialogVisible(id?: number): void {
         this.isConfirmDialogVisible = !this.isConfirmDialogVisible;
+
+        if(id) {
+            this.deleteUserID = id;
+        }
     }
 
     // Логика для события "Далее"
     handleConfirmDialogNext(): void {
         this.toggleConfirmDialogVisible();
+
+        if(this.deleteUserID) {
+            this.deleteStudentByID(this.deleteUserID);
+        }
     }
 
     // Логика для события "Отмена"
