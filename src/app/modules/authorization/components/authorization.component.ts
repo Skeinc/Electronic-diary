@@ -1,12 +1,25 @@
-import { Component, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
 import { TabmenuInterface } from "../shared/interfaces/tabmenu.interface";
+import { AuthorizationService } from "../services/authorization.service";
+import { LoggerService } from "@shared/services/logger/logger.service";
+import { Router } from "@angular/router";
+import { PersonalService } from "@modules/personal/services/personal.service";
+import { UserModel } from "@shared/models/user.model";
 
 @Component({
     selector: 'app-authorization',
     templateUrl: './authorization.component.html',
     styleUrl: './authorization.component.scss'
 })
-export class AuthorizationComponent implements OnInit{
+export class AuthorizationComponent implements OnInit {
+    constructor(
+        private authorizationService: AuthorizationService,
+        private personalService: PersonalService,
+        private loggerService: LoggerService,
+        private cdr: ChangeDetectorRef,
+        private router: Router,
+    ) { }
+
     // Конфигурация Tabmenu
     tabmenuConfig: TabmenuInterface[] = [
         {
@@ -40,27 +53,86 @@ export class AuthorizationComponent implements OnInit{
     // Ошибка входа для студентов
     studentError: string = '';
 
+    // Переменная, обозначающая статус загрузки данных
+    isDataLoading: boolean = false;
+
     ngOnInit(): void {
         // Устанавливаем по умолчанию выбранный Tabmenu
-        this.selectedTabmenuElement = this.tabmenuConfig[0]; 
+        this.selectedTabmenuElement = this.tabmenuConfig[0];
     }
+
+    // Метод для авторизации пользователя
+    authorizationHandler(requestType: 'student' | 'personal'): void {
+        this.personalError = '';
+        this.isDataLoading = true;
+
+        if (requestType === 'personal') {
+            this.authorizationService.authorizationPersonal(this.personalLogin, this.personalPassword).subscribe({
+                next: (response: number) => {
+                    // Получаем данные об авторизированном пользователе
+                    this.getUserInformation(response);
+                },
+                error: (err) => {
+                    this.loggerService.message('error', 'Error with personal authorization', err);
+
+                    this.personalError = 'Неверные данные';
+
+                    this.isDataLoading = false;
+
+                    this.cdr.detectChanges();
+                },
+                complete: () => {
+                    this.isDataLoading = false;
+
+                    this.cdr.detectChanges();
+                }
+            });
+        };
+    };
+
+    // Метод для получения информации об авторизированном пользователе
+    getUserInformation(id: number): void {
+        this.isDataLoading = true;
+
+        this.personalService.getUserInformation(id).subscribe({
+            next: (response: UserModel) => {
+                this.personalService.setUser(response);
+
+                this.router.navigateByUrl('/personal');
+            },
+            error: (err) => {
+                this.loggerService.message('error', 'Error with get user information', err);
+
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+            complete: () => {
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+        });
+    };
 
     // Метод для смены Tabmenu
     tabmenuHandler(item: TabmenuInterface): void {
         this.selectedTabmenuElement = item;
-        
-        if(item.value === this.tabmenuConfig[0].value) {
+
+        if (item.value === this.tabmenuConfig[0].value) {
             this.clearPersonalForm();
         }
-        else if(item.value === this.tabmenuConfig[1].value) {
+        else if (item.value === this.tabmenuConfig[1].value) {
             this.clearStudentForm();
         }
     }
 
     // Метод для входа персонала в аккаунт
     personalLoginHandler(): void {
-        if(this.personalLogin.length > 0 && this.personalPassword.length > 0) {
+        if (this.personalLogin.length > 0 && this.personalPassword.length > 0) {
             this.personalError = '';
+
+            this.authorizationHandler('personal');
         }
         else {
             this.personalError = 'Заполните данные';
@@ -69,7 +141,7 @@ export class AuthorizationComponent implements OnInit{
 
     // Метод для входа студента в аккаунт
     studentLoginHandler(): void {
-        if(this.studentLogin.length > 0 && this.studentPassword.length > 0) {
+        if (this.studentLogin.length > 0 && this.studentPassword.length > 0) {
             this.studentError = '';
         }
         else {

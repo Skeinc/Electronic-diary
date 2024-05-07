@@ -1,7 +1,14 @@
-import { Component, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
 import { PersonalSubjectsMocks } from "../mocks/personal-subjects.mocks";
 import { PersonalThemesMocks } from "../mocks/personal-themes.mocks";
 import { animate, style, transition, trigger } from "@angular/animations";
+import { LoggerService } from "@shared/services/logger/logger.service";
+import { PersonalService } from "../services/personal.service";
+import { UserModel } from "@shared/models/user.model";
+import { convertPhoneNumber } from "@shared/utilities/converPhoneNumber.util";
+import { MediaService } from "@shared/services/media/media.service";
+import { UploadMediaInterface } from "@shared/interfaces/backend/media/media.interface";
+import { environment } from "@environments/environment";
 
 @Component({
     selector: 'app-personal',
@@ -20,6 +27,13 @@ import { animate, style, transition, trigger } from "@angular/animations";
     ],
 })
 export class PersonalComponent implements OnInit {
+    constructor(
+        private personalService: PersonalService,
+        private loggerService: LoggerService,
+        private mediaService: MediaService,
+        private cdr: ChangeDetectorRef,
+    ) { }
+
     // Определяет открыта ли меню
     isNavigationOpened: boolean = false;
 
@@ -31,6 +45,9 @@ export class PersonalComponent implements OnInit {
 
     // Медиафайл, который мы выбрали для загрузки
     selectedImage: File | null = null;
+
+    // ID загруженного медиафайла
+    uploadedImageID: string | null = null;
 
     // Предметы, закрепленные за преподавателем
     lecturerSubjects: any[] = [];
@@ -53,23 +70,107 @@ export class PersonalComponent implements OnInit {
     // Сообщение ошибки для окна добавления темы
     dialogErrorMessage: string | null = null;
 
+    // Переменная, обозначающая статус загрузки данных
+    isDataLoading: boolean = false;
+
     // Mocks
-    userData = {
-        id: 1,
-        surname: 'Ануфриев',
-        name: 'Дмитрий',
-        patronymic: 'Олегович',
-        email: 'iamskezy@gmail.com',
-        phone: '+79108765249',
-        password: 'qwerty123',
-        role: 'Преподаватель',
-    };
+    userData: UserModel | null = null;
 
     ngOnInit(): void {
-        // Устанавливаем предметы, закрепленные за преподавателем
-        if (this.userData.role === 'Преподаватель') {
-            this.setLecturerConfiguration();
+        // Получаем данные о пользователе
+        this.getUserInformation();
+    }
+
+    // Метод для получения данных о пользователе
+    getUserInformation(): void {
+        this.userData = this.personalService.getUser();
+    };
+
+    // Метод для обновления данных о пользователе
+    async saveUserInformationHandler(): Promise<void> {
+        this.togglePersonalDataEditable();
+
+        // Формируем тело запроса
+        const user: UserModel = {
+            id: this.userData!.id,
+            name: this.userData?.name,
+            surname: this.userData?.surname,
+            patronymic: this.userData?.patronymic,
+            email: this.userData?.email,
+            phone: convertPhoneNumber(this.userData?.phone ?? ''),
+            password: this.userData?.password,
+            id_media: null,
         };
+
+        // Проверяем есть ли загруженный файл
+        if(this.selectedImage) {
+            // Вызываем метод для загрузки медиафайла
+            await this.uploadMediaFile(user);
+        }
+        else {
+            // Отправляем запрос на изменение данных пользователя
+            await this.updateUserInformation(user);
+        }
+    }
+
+    // Метод для обновления данных о пользователе
+    async updateUserInformation(user: UserModel): Promise<void> {
+        this.isDataLoading = true;
+
+        this.personalService.updateUserInformation(user).subscribe({
+            next: (response) => {
+                this.loggerService.message('message', 'User information was updated');
+            },
+            error: (err) => {
+                this.loggerService.message('error', 'Error with update user information', err);
+
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+            complete: () => {
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+        });
+    }
+
+    // Метод для загрузки медиафайла на сервер
+    async uploadMediaFile(user: UserModel): Promise<void> {
+        this.isDataLoading = true;
+
+        if(this.selectedImage) {
+            this.mediaService.uploadFile(this.selectedImage).subscribe({
+                next: (response: UploadMediaInterface) => {
+                    this.uploadedImageID = response.id;
+
+                    user.id_media = this.uploadedImageID;
+
+                    this.loggerService.message('message', 'Mediafile was uploaded');
+                },
+                error: (err) => {
+                    this.loggerService.message('error', 'Error with upload mediafile', err);
+
+                    this.isDataLoading = false;
+
+                    this.cdr.detectChanges();
+                },
+                complete: () => {
+                    this.isDataLoading = false;
+
+                    this.cdr.detectChanges();
+
+                    // Обновление данных о пользователе
+                    this.updateUserInformation(user);
+                },
+            });
+        };
+    };
+
+    // Метод для получения URL к медиафайлу
+    getURLForMediafile(): string {
+        return `${environment.protocol}://${environment.domain}/media/file?id=`;
     }
 
     // Метод скрывает/открывает меню

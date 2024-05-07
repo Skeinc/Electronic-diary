@@ -1,4 +1,6 @@
 <section class="wrapper">
+    <app-loader *ngIf="isDataLoading" class="loader"></app-loader>
+
     <app-navigation (navigationVisibility)="onNavigationOpenedChange($event)"></app-navigation>
 
     <div class="container" [style.marginLeft]="isNavigationOpened ? '320px' : '80px'">
@@ -16,8 +18,9 @@
             <div class="information flex-row">
                 <figure class="information-image flex-column">
                     <label class="information-image__label flex-column">
-                        <div class="information-image__label__background" *ngIf="!selectedImageURL" alt="Product Image"></div>
-                        <img class="information-image__label__photo" *ngIf="selectedImageURL" [src]="selectedImageURL ? selectedImageURL : '../../../../assets/images/photos/default_avatar.png'" alt="Product Image">
+                        <div class="information-image__label__background" *ngIf="!selectedImageURL && !userData?.id_media" alt="Product Image"></div>
+                        <img class="information-image__label__photo" *ngIf="userData?.id_media && !selectedImageURL" [src]="getURLForMediafile() + userData?.id_media" src="" alt="User Image">
+                        <img class="information-image__label__photo" *ngIf="selectedImageURL" [src]="selectedImageURL ? selectedImageURL : '../../../../assets/images/photos/default_avatar.png'" alt="User Image">
                         <input class="information-image__label__input" type="file" accept="image/*" [disabled]="!isPersonalDataEditable" (change)="onImageChange($event)">
                         <span class="information-image__label__value">Сменить фото</span>
                     </label>        
@@ -30,11 +33,11 @@
 
                     <div class="information-data__wrapper flex-row">
                         <div class="information-data__group flex-column">
-                            <app-text-field [elementID]="'personal-surname'" [elementName]="'personal-surname'" [elementLabel]="'Фамилия'" [elementValue]="userData.surname" [elementReadonly]="!isPersonalDataEditable" (elementValueChange)="userData.surname = $event"></app-text-field>
+                            <app-text-field [elementID]="'personal-surname'" [elementName]="'personal-surname'" [elementLabel]="'Фамилия'" [elementValue]="userData?.surname" [elementReadonly]="!isPersonalDataEditable" (elementValueChange)="userData!.surname = $event"></app-text-field>
     
-                            <app-text-field [elementID]="'personal-name'" [elementName]="'personal-name'" [elementLabel]="'Имя'" [elementValue]="userData.name" [elementReadonly]="!isPersonalDataEditable" (elementValueChange)="userData.name = $event"></app-text-field>
+                            <app-text-field [elementID]="'personal-name'" [elementName]="'personal-name'" [elementLabel]="'Имя'" [elementValue]="userData?.name" [elementReadonly]="!isPersonalDataEditable" (elementValueChange)="userData!.name = $event"></app-text-field>
     
-                            <app-text-field [elementID]="'personal-patronymic'" [elementName]="'personal-patronymic'" [elementLabel]="'Отчество'" [elementValue]="userData.patronymic" [elementReadonly]="!isPersonalDataEditable" (elementValueChange)="userData.patronymic = $event"></app-text-field>
+                            <app-text-field [elementID]="'personal-patronymic'" [elementName]="'personal-patronymic'" [elementLabel]="'Отчество'" [elementValue]="userData?.patronymic" [elementReadonly]="!isPersonalDataEditable" (elementValueChange)="userData!.patronymic = $event"></app-text-field>
                         </div>
     
                         <div class="information-data__border">
@@ -42,11 +45,11 @@
                         </div>
     
                         <div class="information-data__group flex-column">
-                            <app-text-field [elementID]="'personal-email'" [elementName]="'personal-email'" [elementLabel]="'Email'" [elementValue]="userData.email" [elementReadonly]="!isPersonalDataEditable" (elementValueChange)="userData.email = $event"></app-text-field>
+                            <app-text-field [elementID]="'personal-email'" [elementName]="'personal-email'" [elementLabel]="'Email'" [elementValue]="userData?.email" [elementReadonly]="!isPersonalDataEditable" (elementValueChange)="userData!.email = $event"></app-text-field>
     
-                            <app-phone-field [elementID]="'personal-phone'" [elementName]="'personal-phone'" [elementLabel]="'Телефон'" [elementValue]="userData.phone" [elementReadonly]="!isPersonalDataEditable" (elementValueChange)="userData.phone = $event"></app-phone-field>
+                            <app-phone-field [elementID]="'personal-phone'" [elementName]="'personal-phone'" [elementLabel]="'Телефон'" [elementValue]="userData?.phone" [elementReadonly]="!isPersonalDataEditable" (elementValueChange)="userData!.phone = $event"></app-phone-field>
     
-                            <app-password-field [elementID]="'personal-password'" [elementName]="'personal-password'" [elementLabel]="'Старый пароль'" [elementValue]="userData.password" [elementReadonly]="!isPersonalDataEditable" (elementValueChange)="userData.password = $event"></app-password-field>
+                            <app-password-field [elementID]="'personal-password'" [elementName]="'personal-password'" [elementLabel]="'Пароль'" [elementValue]="userData?.password" [elementReadonly]="!isPersonalDataEditable" (elementValueChange)="userData!.password = $event"></app-password-field>
                         </div>
                     </div>
 
@@ -56,13 +59,13 @@
                         </div>
 
                         <div class="information-data__controllers__wrapper">
-                            <app-button [elementID]="'button-save'" [elementName]="'button-save'" [elementLabel]="'Сохранить'" [elementDisable]="!isPersonalDataEditable" (click)="togglePersonalDataEditable()"></app-button>
+                            <app-button [elementID]="'button-save'" [elementName]="'button-save'" [elementLabel]="'Сохранить'" [elementDisable]="!isPersonalDataEditable" (click)="saveUserInformationHandler()"></app-button>
                         </div>
                     </div>
                 </address>
             </div>
 
-            <div *ngIf="userData.role === 'Преподаватель'" class="subjects flex-column">
+            <div *ngIf="userData?.role === 'Преподаватель'" class="subjects flex-column">
                 <header class="subjects-header">
                     <p class="subjects-header__title">Предметы</p>
                 </header>

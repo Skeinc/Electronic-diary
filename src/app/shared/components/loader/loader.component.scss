@@ -1,0 +1,23 @@
+@import '@styles/global.scss';
+@import '@styles/variables.scss';
+
+.loader {
+    width: 80px;
+    height: 80px;
+    border: 8px dotted rgba(82, 121, 111, 1);
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    box-sizing: border-box;
+    animation: rotation 3s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

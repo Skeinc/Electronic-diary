@@ -1,10 +1,12 @@
 import { ResponseInterface } from "@shared/interfaces/api/response.interface";
 
 export function requestHandler<T>(response: ResponseInterface<T>): T {
-    if(response.success) {
-        return response.data!;
+    const { success, data, message} = response;
+
+    if(success) {
+        return data!;
     }
     else {
-        throw new Error(`Server error: ${response.message}`);
+        throw new Error(`Server error: ${message}`);
     }
 }

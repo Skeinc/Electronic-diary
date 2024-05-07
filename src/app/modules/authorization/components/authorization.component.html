@@ -1,4 +1,7 @@
 <section class="authorization flex-center-center">
+
+    <app-loader *ngIf="isDataLoading" class="loader"></app-loader>
+
     <div class="container">
         <div class="login flex-column">
             <header class="tabmenu flex-row">
@@ -49,11 +52,11 @@
 
                 <div class="login-fields flex-column">
                     <div class="login-fields__item">
-                        <app-text-field [elementID]="'login'" [elementName]="'login'" [elementPlaceholder]="'Логин'" [(elementValue)]="personalLogin"></app-text-field>
+                        <app-text-field [elementID]="'login'" [elementName]="'login'" [elementPlaceholder]="'Логин'" [(elementValue)]="personalLogin" [elementDisable]="isDataLoading"></app-text-field>
                     </div>
 
                     <div class="login-fields__item">
-                        <app-password-field [elementID]="'password'" [elementName]="'password'" [elementPlaceholder]="'Пароль'" [(elementValue)]="personalPassword"></app-password-field>
+                        <app-password-field [elementID]="'password'" [elementName]="'password'" [elementPlaceholder]="'Пароль'" [(elementValue)]="personalPassword" [elementDisable]="isDataLoading"></app-password-field>
                     </div>
                 </div>
 
@@ -67,7 +70,7 @@
                 </div>
 
                 <div class="login-controller">
-                    <app-button [elementID]="'login-button'" [elementName]="'login-button'" [elementLabel]="'Войти'" (click)="personalLoginHandler()"></app-button>
+                    <app-button [elementID]="'login-button'" [elementName]="'login-button'" [elementLabel]="'Войти'" (click)="personalLoginHandler()" [elementDisable]="isDataLoading"></app-button>
                 </div>
             </div>
         </div>

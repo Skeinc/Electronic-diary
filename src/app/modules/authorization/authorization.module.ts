@@ -6,6 +6,7 @@ import { TextFieldModule } from "@shared/components/text-field/text-field.module
 import { PasswordFieldModule } from "@shared/components/password-field/password-field.module";
 import { ButtonModule } from "@shared/components/button/button.module";
 import { PhoneFieldModule } from "@shared/components/phone-field/phone-field.module";
+import { LoaderModule } from "@shared/components/loader/loader.module";
 
 @NgModule({
     declarations: [
@@ -19,6 +20,7 @@ import { PhoneFieldModule } from "@shared/components/phone-field/phone-field.mod
         PhoneFieldModule,
         PasswordFieldModule,
         ButtonModule,
+        LoaderModule,
     ],
     exports: [
         AuthorizationComponent,

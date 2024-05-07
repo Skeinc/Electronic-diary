@@ -1,6 +1,6 @@
 export const environment = {
-    protocol: '',
-    domain: '',
+    protocol: 'https',
+    domain: 'gdddbb4m-3000.euw.devtunnels.ms',
     serverError: 'Server is disabled',
     serverStorage: {
         protocol: '',
