@@ -1,4 +1,7 @@
-import { Component, HostListener, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, HostListener, OnInit } from "@angular/core";
+import { LecturerModel } from "@shared/models/lecturer.model";
+import { LecturersService } from "../services/lecturers.service";
+import { LoggerService } from "@shared/services/logger/logger.service";
 
 @Component({
     selector: 'app-lecturers',
@@ -6,6 +9,12 @@ import { Component, HostListener, OnInit } from "@angular/core";
     styleUrl: './lecturers.component.scss',
 })
 export class LecturersComponent implements OnInit{
+    constructor(
+        private lecturersService: LecturersService,
+        private loggerService: LoggerService,
+        private cdr: ChangeDetectorRef,
+    ) { }
+
     // Определяет открыта ли меню
     isNavigationOpened: boolean = false;
 
@@ -32,6 +41,12 @@ export class LecturersComponent implements OnInit{
 
     // Сообщение ошибки для окна добавления преподавателя
     dialogErrorMessage: string | null = null;
+
+    // Переменная обозначающая статус загрузки данных
+    isDataLoading: boolean = false;
+
+    // Данные о преподавателях
+    lecturersData: LecturerModel[] | null = null;
 
     // Mocks для таблицы преподаватели
     lecturersMocks = [
@@ -69,8 +84,36 @@ export class LecturersComponent implements OnInit{
         this.updateScrollHeight();
 
         // Установка конфигурации таблицы
-        this.setConfigurationTable()
+        this.setConfigurationTable();
+
+        // Получаем информацию о преподавателях
+        this.getAllLecturersData();
     }
+
+    // Метод для получения всех преподавателей
+    getAllLecturersData(): void {
+        this.isDataLoading = true;
+
+        this.lecturersService.getAllLecturers().subscribe({
+            next: (response: LecturerModel[]) => {
+                this.lecturersData = response;
+
+                this.loggerService.message('backend', 'All lecturers information was received', response);
+            },
+            error: (err) => {
+                this.loggerService.message('error', 'Error with get all lecturers information', err);
+
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+            complete: () => {
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+        });
+    };
 
     // Метод скрывает/открывает меню
     onNavigationOpenedChange(isOpened: boolean) {

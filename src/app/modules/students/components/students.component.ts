@@ -100,7 +100,7 @@ export class StudentsComponent implements OnInit{
                 this.cdr.detectChanges();
             },
         });
-    }
+    };
 
     // Метод для удаления студента по ID
     deleteStudentByID(id: number): void {
