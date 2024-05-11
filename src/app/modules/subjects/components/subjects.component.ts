@@ -86,6 +86,9 @@ export class SubjectsComponent implements OnInit {
     // Данные по доступным группам
     avaliableGroups: AvaliableGroupsInterface[] | null = null;
 
+    // ID предмета, которого хотят удалить
+    deleteSubjectID: number | null = null;
+
     @HostListener('window:resize', ['$event'])
     onResize(event: any): void {
         // Вызываем метод для обновления высоты скрола таблицы
@@ -285,6 +288,8 @@ export class SubjectsComponent implements OnInit {
                 error: (err) => {
                     this.loggerService.message('error', 'Error with edit subject', err);
 
+                    this.dialogEditErrorMessage = 'Не удалось изменить предмет';
+
                     this.isDataLoading = false;
 
                     this.cdr.detectChanges();
@@ -301,7 +306,34 @@ export class SubjectsComponent implements OnInit {
 
             this.loggerService.message('error', 'Error with validate data');
         }
-    }
+    };
+
+    // Метод для удаления предмета по ID
+    deleteSubjectByID(id: number): void {
+        this.isDataLoading = true;
+
+        this.subjectsService.deleteSubject(id).subscribe({
+            next: (response) => {
+                this.getAllSubjects();
+
+                this.loggerService.message('backend', `Subject with id = ${id} was deleted`);
+
+                this.cdr.detectChanges();
+            },
+            error: (err) => {
+                this.loggerService.message('error', 'Error with delete subject', err);
+
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+            complete: () => {
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+        });
+    };
 
     // Метод для валидации данных добавления предмета
     validateAddingSubjectData(): boolean {
@@ -442,13 +474,21 @@ export class SubjectsComponent implements OnInit {
     };
 
     // Метод для смены видимости окна подверждения
-    toggleConfirmDialogVisible(): void {
+    toggleConfirmDialogVisible(id?: number): void {
         this.isConfirmDialogVisible = !this.isConfirmDialogVisible;
+
+        if(id) {
+            this.deleteSubjectID = id;
+        }
     };
 
     // Логика для события "Далее"
     handleConfirmDialogNext(): void {
         this.toggleConfirmDialogVisible();
+
+        if(this.deleteSubjectID) {
+            this.deleteSubjectByID(this.deleteSubjectID);
+        }
     };
 
     // Логика для события "Отмена"

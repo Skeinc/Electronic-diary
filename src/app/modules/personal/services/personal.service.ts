@@ -42,4 +42,9 @@ export class PersonalService {
 
         return this.httpService.put('user/UpdateUser', body);
     };
+
+    // Метод для выхода пользователя
+    public logout(): Observable<any> {
+        return this.httpService.post('user/logout');
+    };
 }

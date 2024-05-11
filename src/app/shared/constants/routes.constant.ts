@@ -8,6 +8,7 @@ import { GroupsComponent } from "../../modules/groups/components/groups.componen
 import { RequestsComponent } from "../../modules/requests/components/requests.component";
 import { UndefinedComponent } from "../../modules/undefined/components/undefined.component";
 import { SubjectsComponent } from "../../modules/subjects/components/subjects.component";
+import { AuthGuard } from "@core/guards/authorization.guard";
 
 export const ROUTES: Routes = [
     {
@@ -21,26 +22,32 @@ export const ROUTES: Routes = [
     {
         path: 'personal',
         component: PersonalComponent,
+        canActivate: [AuthGuard],
     },
     {
         path: 'lecturers',
         component: LecturersComponent,
+        canActivate: [AuthGuard],
     },
     {
         path: 'students',
         component: StudentsComponent,
+        canActivate: [AuthGuard],
     },
     {
         path: 'groups',
         component: GroupsComponent,
+        canActivate: [AuthGuard],
     },
     {
         path: 'requests',
         component: RequestsComponent,
+        canActivate: [AuthGuard],
     },
     {
         path: 'subjects',
         component: SubjectsComponent,
+        canActivate: [AuthGuard],
     },
     {
         path: 'undefined',

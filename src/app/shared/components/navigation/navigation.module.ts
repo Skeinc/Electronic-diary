@@ -3,6 +3,7 @@ import { NavigationComponent } from "./navigation.component";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { RouterLink } from "@angular/router";
+import { LoaderModule } from "../loader/loader.module";
 
 @NgModule({
     declarations: [
@@ -12,6 +13,8 @@ import { RouterLink } from "@angular/router";
         CommonModule,
         FormsModule,
         RouterLink,
+        // Components
+        LoaderModule,
     ],
     exports: [
         NavigationComponent,

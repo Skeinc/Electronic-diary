@@ -1,4 +1,6 @@
 <section class="wrapper flex-row">
+    <app-loader *ngIf="isDataLoading" class="loader"></app-loader>
+
     <nav class="navigation flex-column" [style.width]="isNavigationOpened ? '320px' : '80px'">
         <div class="navigation-group flex-column">
             <header class="navigation-header flex-row">
@@ -21,13 +23,13 @@
                 </div>
     
                 <div class="navigation-account__personal flex-column">
-                    <p class="navigation-account__personal__name" title="Ануфриев Дмитрий Олегович">Ануфриев Дмитрий Олегович</p>
+                    <p class="navigation-account__personal__name" [title]="(userData?.surname ?? '') + ' ' + (userData?.name ?? '') + ' ' + (userData?.patronymic ?? '')">{{ (userData?.surname ?? '') + ' ' + (userData?.name ?? '') + ' ' + (userData?.patronymic ?? '') }}</p>
                     <p class="navigation-account__personal__role">Администратор</p>
                 </div>
             </div>
     
             <div class="navigation-exit">
-                <button type="button" class="navigation-exit__button flex-center-center">
+                <button type="button" class="navigation-exit__button flex-center-center" (click)="logout()">
                     <span class="material-icons">logout</span>
                 </button>
             </div>
@@ -47,7 +49,7 @@
             </div>
     
             <div class="header-account__personal flex-column">
-                <p class="header-account__personal__name" title="Ануфриев Дмитрий Олегович">Ануфриев Дмитрий Олегович</p>
+                <p class="header-account__personal__name" [title]="(userData?.surname ?? '') + ' ' + (userData?.name ?? '') + ' ' + (userData?.patronymic ?? '')">{{ (userData?.surname ?? '') + ' ' + (userData?.name ?? '') + ' ' + (userData?.patronymic ?? '') }}</p>
             </div>
             
             <button type="button" class="header-account__button flex-center-center" (click)="toggleProfileListVisibility()">
@@ -56,7 +58,7 @@
         </div>
 
         <div class="header-dropdown flex-column" [style.display]="isProfileListOpened ? 'flex' : 'none'">
-            <button type="button" class="header-dropdown__item flex-row flex-center-center">
+            <button type="button" class="header-dropdown__item flex-row flex-center-center" (click)="logout()">
                 <span class="material-icons">logout</span><p class="header-dropdown__item__text">Выход</p>
             </button>
         </div>

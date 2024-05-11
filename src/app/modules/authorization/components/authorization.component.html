@@ -19,11 +19,11 @@
 
                 <div class="login-fields flex-column">
                     <div class="login-fields__item">
-                        <app-phone-field [elementID]="'login'" [elementName]="'login'" [elementPlaceholder]="'Телефон'" [(elementValue)]="studentLogin"></app-phone-field>
+                        <app-phone-field [elementID]="'login'" [elementName]="'login'" [elementPlaceholder]="'Телефон'" [(elementValue)]="studentLogin" [elementDisable]="isDataLoading"></app-phone-field>
                     </div>
 
                     <div class="login-fields__item">
-                        <app-password-field [elementID]="'password'" [elementName]="'password'" [elementPlaceholder]="'Пароль'" [(elementValue)]="studentPassword"></app-password-field>
+                        <app-password-field [elementID]="'password'" [elementName]="'password'" [elementPlaceholder]="'Пароль'" [(elementValue)]="studentPassword" [elementDisable]="isDataLoading"></app-password-field>
                     </div>
                 </div>
 
@@ -37,7 +37,7 @@
                 </div>
 
                 <div class="login-controller">
-                    <app-button [elementID]="'login-button'" [elementName]="'login-button'" [elementLabel]="'Войти'" (click)="studentLoginHandler()"></app-button>
+                    <app-button [elementID]="'login-button'" [elementName]="'login-button'" [elementLabel]="'Войти'" (click)="studentLoginHandler()" [elementDisable]="isDataLoading"></app-button>
                 </div>
 
                 <div class="login-signup flex-row">

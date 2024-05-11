@@ -64,6 +64,7 @@ export class AuthorizationComponent implements OnInit {
     // Метод для авторизации пользователя
     authorizationHandler(requestType: 'student' | 'personal'): void {
         this.personalError = '';
+        this.studentError = '';
         this.isDataLoading = true;
 
         if (requestType === 'personal') {
@@ -76,6 +77,28 @@ export class AuthorizationComponent implements OnInit {
                     this.loggerService.message('error', 'Error with personal authorization', err);
 
                     this.personalError = 'Неверные данные';
+
+                    this.isDataLoading = false;
+
+                    this.cdr.detectChanges();
+                },
+                complete: () => {
+                    this.isDataLoading = false;
+
+                    this.cdr.detectChanges();
+                }
+            });
+        };
+        if(requestType === 'student') {
+            this.authorizationService.authorizationStudent(this.studentLogin, this.studentPassword).subscribe({
+                next: (response: number) => {
+                    // Получаем данные об авторизированном пользователе
+                    this.getUserInformation(response);
+                },
+                error: (err) => {
+                    this.loggerService.message('error', 'Error with student authorization', err);
+
+                    this.studentError = 'Неверные данные';
 
                     this.isDataLoading = false;
 
@@ -143,6 +166,8 @@ export class AuthorizationComponent implements OnInit {
     studentLoginHandler(): void {
         if (this.studentLogin.length > 0 && this.studentPassword.length > 0) {
             this.studentError = '';
+
+            this.authorizationHandler('student');
         }
         else {
             this.studentError = 'Заполните данные';
