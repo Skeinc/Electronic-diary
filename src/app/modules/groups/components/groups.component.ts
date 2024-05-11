@@ -11,12 +11,12 @@ import { GroupModel } from "@shared/models/group.model";
     templateUrl: './groups.component.html',
     styleUrl: './groups.component.scss',
 })
-export class GroupsComponent implements OnInit{
-    constructor (
+export class GroupsComponent implements OnInit {
+    constructor(
         private groupsService: GroupsService,
         private loggerService: LoggerService,
         private cdr: ChangeDetectorRef,
-    ) {}
+    ) { }
 
     // Определяет открыта ли меню
     isNavigationOpened: boolean = false;
@@ -40,7 +40,7 @@ export class GroupsComponent implements OnInit{
     tableScrollHeight: number = 0;
 
     // Доступные колонки таблицы
-    tableColumns: any = null; 
+    tableColumns: any = null;
 
     // Данные для окна добавления группы
     dialogGroupName: string = '';
@@ -151,7 +151,7 @@ export class GroupsComponent implements OnInit{
 
     // Метод для добавления группы
     async addGroup(): Promise<void> {
-        if(this.validateAddingGroupData()) {
+        if (this.validateAddingGroupData()) {
             this.isDataLoading = true;
 
             // Формируем тело запроса
@@ -194,7 +194,9 @@ export class GroupsComponent implements OnInit{
 
     // Метод для изменения группы
     editGroup(): void {
-        if(this.validateEditingGroupData()) {
+        this.dialogEditErrorMessage = '';
+
+        if (this.validateEditingGroupData()) {
             this.isDataLoading = true;
 
             // Формируем тело запроса
@@ -215,6 +217,8 @@ export class GroupsComponent implements OnInit{
                 },
                 error: (err) => {
                     this.loggerService.message('error', 'Error with edit group', err);
+
+                    this.dialogEditErrorMessage = 'Не удалось изменить данные';
 
                     this.isDataLoading = false;
 
@@ -263,7 +267,7 @@ export class GroupsComponent implements OnInit{
 
     // Метод для валидации данных группы
     validateAddingGroupData(): boolean {
-        if(this.dialogGroupName.length === 0 || this.dialogGroupNumber.length === 0 || this.dialogGroupShortName.length === 0 || this.dialogGroupCourse.length === 0) {
+        if (this.dialogGroupName.length === 0 || this.dialogGroupNumber.length === 0 || this.dialogGroupShortName.length === 0 || this.dialogGroupCourse.length === 0) {
             return false;
         };
 
@@ -272,7 +276,7 @@ export class GroupsComponent implements OnInit{
 
     // Метод для валидации данных группы
     validateEditingGroupData(): boolean {
-        if(this.dialogEditGroupName.length === 0 || this.dialogEditGroupNumber.length === 0 || this.dialogEditGroupShortName.length === 0 || this.dialogEditGroupCourse.length === 0) {
+        if (this.dialogEditGroupName.length === 0 || this.dialogEditGroupNumber.length === 0 || this.dialogEditGroupShortName.length === 0 || this.dialogEditGroupCourse.length === 0) {
             return false;
         };
 
@@ -281,24 +285,11 @@ export class GroupsComponent implements OnInit{
 
     // Метод генерации рандомного кода
     generateGroupCode(): void {
-        if(this.groupsCodeData) {
-            // Обозначаем булевую переменную, которая означает валидность кода группы
-            let isCodeValid: boolean = false;
-            
-            while(isCodeValid) {
-                this.dialogGroupCode = generateRandomCode(10);
+        this.dialogGroupCode = generateRandomCode(10);
 
-                if(this.groupsCodeData.includes(this.dialogGroupCode)) {
-                    this.dialogGroupCode = generateRandomCode(10);
-                }
-                else {
-                    isCodeValid = true;
-                };
-            }
-        }
-        else {
+        while (this.groupsCodeData?.includes(this.dialogGroupCode)) {
             this.dialogGroupCode = generateRandomCode(10);
-        };
+        }
     };
 
     // Метод скрывает/открывает меню
@@ -350,6 +341,11 @@ export class GroupsComponent implements OnInit{
     toggleAddingGroupDialogVisible(): void {
         this.getAllGroupCodesData();
 
+        this.dialogGroupName = '';
+        this.dialogGroupShortName = '';
+        this.dialogGroupNumber = '';
+        this.dialogGroupCourse = '';
+
         this.isAddingGroupDialogVisible = !this.isAddingGroupDialogVisible;
     };
 
@@ -384,7 +380,7 @@ export class GroupsComponent implements OnInit{
     toggleConfirmDialogVisible(id?: number): void {
         this.isConfirmDialogVisible = !this.isConfirmDialogVisible;
 
-        if(id) {
+        if (id) {
             this.deleteGroupID = id;
         };
     };
@@ -393,7 +389,7 @@ export class GroupsComponent implements OnInit{
     handleConfirmDialogNext(): void {
         this.toggleConfirmDialogVisible();
 
-        if(this.deleteGroupID) {
+        if (this.deleteGroupID) {
             this.deleteGroupByID(this.deleteGroupID);
         };
     };

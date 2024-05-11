@@ -227,6 +227,14 @@ export class LecturersComponent implements OnInit{
     // Метод для смены видимости окна добавления преподавателя
     toggleAddingLecturerDialogVisible(): void {
         this.isAddingLecturerDialogVisible = !this.isAddingLecturerDialogVisible;
+
+        this.dialogLecturerSurname = '';
+        this.dialogLecturerName = '';
+        this.dialogLecturerPatronymic = '';
+        this.dialogLecturerEmail = '';
+        this.dialogLecturerPhone = '';
+        this.dialogLecturerLogin = '';
+        this.dialogLecturerPassword = '';
     };
 
     // Метод для смены видимости окна подверждения

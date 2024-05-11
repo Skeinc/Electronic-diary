@@ -9,6 +9,7 @@ import { ConfirmDialogModule } from "@shared/components/confirm-dialog/confirm-d
 import { TableModule } from "primeng/table";
 import { DialogModule } from "primeng/dialog";
 import { MultiSelectModule } from "@shared/components/multi-select/multi-select.module";
+import { LoaderModule } from "@shared/components/loader/loader.module";
 
 @NgModule({
     declarations: [
@@ -23,6 +24,7 @@ import { MultiSelectModule } from "@shared/components/multi-select/multi-select.
         ButtonModule,
         ConfirmDialogModule,
         MultiSelectModule,
+        LoaderModule,
         // PrimeNg
         TableModule,
         DialogModule,

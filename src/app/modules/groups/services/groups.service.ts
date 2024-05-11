@@ -47,6 +47,6 @@ export class GroupsService {
     public deleteGroupByID(id: number): Observable<any> {
         const body = { id };
 
-        return this.httpService.delete('groups/deleteGroupByID');
+        return this.httpService.delete('groups/deleteGroupByID', body);
     };
 };

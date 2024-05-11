@@ -1,4 +1,6 @@
 <section class="wrapper">
+    <app-loader *ngIf="isDataLoading" class="loader"></app-loader>
+
     <app-navigation (navigationVisibility)="onNavigationOpenedChange($event)"></app-navigation>
 
     <div class="container" [style.marginLeft]="isNavigationOpened ? '320px' : '80px'">
@@ -14,7 +16,7 @@
             </header>
 
             <div class="table-wrapper flex-column">
-                <p-table [columns]="tableColumns" [value]="subjectsMocks" styleClass="p-datatable-gridlines" [scrollable]="true" [resizableColumns]="true" [scrollHeight]="tableScrollHeight.toString() + 'px'">
+                <p-table [columns]="tableColumns" [value]="subjectsData ?? []" styleClass="p-datatable-gridlines" [scrollable]="true" [resizableColumns]="true" [scrollHeight]="tableScrollHeight.toString() + 'px'">
                     <ng-template pTemplate="header" let-columns>
                         <tr>
                             <th *ngFor="let col of columns" pResizableColumn [style.width]="'22.5%'">
@@ -65,35 +67,34 @@
 
         <app-text-field [elementID]="'dialog-code'" [elementName]="'dialog-code'" [elementLabel]="'Кодировка'" [elementValue]="dialogSubjectCode" [elementDisable]="false" (elementValueChange)="dialogSubjectCode = $event"></app-text-field>
 
-        <app-multiselect [elementID]="'selected-lecturers'" [elementName]="'selected-lecturers'" [elementLabel]="'Выберите преподавателей'" [(elementValue)]="addSubjectSelectedLecturers" [options]="lecturersMocks" [optionsValue]="'name'" [optionsLabel]="'name'" [clearOption]="true" [filter]="true"></app-multiselect>
+        <app-multiselect [elementID]="'selected-lecturers'" [elementName]="'selected-lecturers'" [elementLabel]="'Выберите преподавателей'" [(elementValue)]="addSubjectSelectedLecturers" [options]="avaliableLecturers ?? []" [optionsValue]="'name'" [optionsLabel]="'name'" [clearOption]="true" [filter]="true"></app-multiselect>
 
-        <app-multiselect [elementID]="'selected-groups'" [elementName]="'selected-groups'" [elementLabel]="'Выберите группы'" [(elementValue)]="addSubjectSelectedGroups" [options]="groupsMocks" [optionsValue]="'name'" [optionsLabel]="'name'" [clearOption]="true" [filter]="true"></app-multiselect>
+        <app-multiselect [elementID]="'selected-groups'" [elementName]="'selected-groups'" [elementLabel]="'Выберите группы'" [(elementValue)]="addSubjectSelectedGroups" [options]="avaliableGroups ?? []" [optionsValue]="'name'" [optionsLabel]="'name'" [clearOption]="true" [filter]="true"></app-multiselect>
 
         <div class="dialog-message flex-row">
             <span class="dialog-message__value">{{ dialogErrorMessage }}</span>
         </div>
 
-        <app-button [elementID]="'button-add'" [elementName]="'button-add'" [elementLabel]="'Добавить'" [elementDisable]="false"></app-button>
+        <app-button [elementID]="'button-add'" [elementName]="'button-add'" [elementLabel]="'Добавить'" [elementDisable]="isDataLoading" (click)="addSubject()"></app-button>
     </div>
 </p-dialog>
 
 <!-- Редактирование предмета -->
-
 <p-dialog [header]="'Редактирование предмета'" [(visible)]="isEditingSubjectDialogVisible" [modal]="true" [style]="{ width: '400px' }" [draggable]="false" [resizable]="false">
     <div class="dialog-wrapper flex-column">
         <app-text-field [elementID]="'dialog-name'" [elementName]="'dialog-name'" [elementLabel]="'Наименование'" [elementValue]="dialogEditSubjectName" [elementDisable]="false" (elementValueChange)="dialogEditSubjectName = $event"></app-text-field>
 
         <app-text-field [elementID]="'dialog-code'" [elementName]="'dialog-code'" [elementLabel]="'Кодировка'" [elementValue]="dialogEditSubjectCode" [elementDisable]="false" (elementValueChange)="dialogEditSubjectCode = $event"></app-text-field>
 
-        <app-multiselect [elementID]="'selected-lecturers'" [elementName]="'selected-lecturers'" [elementLabel]="'Выберите преподавателей'" [(elementValue)]="editSubjectSelectedLecturers" [options]="lecturersMocks" [optionsValue]="'name'" [optionsLabel]="'name'" [clearOption]="true" [filter]="true"></app-multiselect>
+        <app-multiselect [elementID]="'selected-lecturers'" [elementName]="'selected-lecturers'" [elementLabel]="'Выберите преподавателей'" [(elementValue)]="editSubjectSelectedLecturers" [options]="avaliableLecturers ?? []" [optionsValue]="'name'" [optionsLabel]="'name'" [clearOption]="true" [filter]="true"></app-multiselect>
 
-        <app-multiselect [elementID]="'selected-groups'" [elementName]="'selected-groups'" [elementLabel]="'Выберите группы'" [(elementValue)]="editSubjectSelectedGroups" [options]="groupsMocks" [optionsValue]="'name'" [optionsLabel]="'name'" [clearOption]="true" [filter]="true"></app-multiselect>
+        <app-multiselect [elementID]="'selected-groups'" [elementName]="'selected-groups'" [elementLabel]="'Выберите группы'" [(elementValue)]="editSubjectSelectedGroups" [options]="avaliableGroups ?? []" [optionsValue]="'name'" [optionsLabel]="'name'" [clearOption]="true" [filter]="true"></app-multiselect>
 
         <div class="dialog-message flex-row">
             <span class="dialog-message__value">{{ dialogEditErrorMessage }}</span>
         </div>
 
-        <app-button [elementID]="'button-add'" [elementName]="'button-add'" [elementLabel]="'Добавить'" [elementDisable]="false"></app-button>
+        <app-button [elementID]="'button-add'" [elementName]="'button-add'" [elementLabel]="'Добавить'" [elementDisable]="isDataLoading" (click)="editSubject(dialogEditSubjectID!)"></app-button>
     </div>
 </p-dialog>
 

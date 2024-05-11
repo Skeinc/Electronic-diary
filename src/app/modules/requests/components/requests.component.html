@@ -14,7 +14,7 @@
             </header>
 
             <div class="table-wrapper flex-column">
-                <p-table [columns]="tableColumns" [value]="requestsMocks" styleClass="p-datatable-gridlines" [scrollable]="true" [resizableColumns]="true" [scrollHeight]="tableScrollHeight.toString() + 'px'">
+                <p-table [columns]="tableColumns" [value]="requestsData ?? []" styleClass="p-datatable-gridlines" [scrollable]="true" [resizableColumns]="true" [scrollHeight]="tableScrollHeight.toString() + 'px'">
                     <ng-template pTemplate="header" let-columns>
                         <tr>
                             <th *ngFor="let col of columns" pResizableColumn [style.width]="'11.25%'">
@@ -41,11 +41,11 @@
     
                             <td>
                                 <div class="table-body flex-row">
-                                    <button type="button" class="table-body__button flex-center-center" (click)="toggleConfirmDialogCancelVisible()">
+                                    <button type="button" class="table-body__button flex-center-center" (click)="toggleConfirmDialogCancelVisible(request.id)">
                                         <span class="material-icons button-decline">remove</span>
                                     </button>
     
-                                    <button type="button" class="table-body__button flex-center-center" (click)="toggleConfirmDialogAcceptVisible()">
+                                    <button type="button" class="table-body__button flex-center-center" (click)="toggleConfirmDialogAcceptVisible(request.id)">
                                         <span class="material-icons button-accept">done</span>
                                     </button>
                                 </div>

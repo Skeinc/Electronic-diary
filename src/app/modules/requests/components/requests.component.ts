@@ -36,29 +36,8 @@ export class RequestsComponent implements OnInit {
     // Данные по заявкам
     requestsData: StudentModel[] | null = null;
 
-    // Mocks для заявок
-    requestsMocks = [
-        {
-            id: 1,
-            surname: 'Прусаков',
-            name: 'Михаил',
-            patronymic: 'Алексеевич',
-            email: 'prusakov@gmail.com',
-            phone: '+79109991234',
-            group: '1-ИП',
-            course: 1,
-        },
-        {
-            id: 2,
-            surname: 'Прусаков',
-            name: 'Алексей',
-            patronymic: 'Алексеевич',
-            email: 'prusakov_alexey@gmail.com',
-            phone: '+79109995678',
-            group: '2-ИП',
-            course: 2,
-        }
-    ];
+    // ID элементы с которым хотят произвести операцию
+    requestID: number | null = null;
 
     @HostListener('window:resize', ['$event'])
     onResize(event: any): void {
@@ -72,7 +51,10 @@ export class RequestsComponent implements OnInit {
         this.updateScrollHeight();
 
         // Установка конфигурации таблицы
-        this.setConfigurationTable()
+        this.setConfigurationTable();
+
+        // Получаем данные по заявкам
+        this.getAllRequests();
     }
 
     // Метод для получения данных о заявок
@@ -189,7 +171,7 @@ export class RequestsComponent implements OnInit {
             },
             {
                 label: 'Группа',
-                field: 'group',
+                field: 'groupName',
             },
             {
                 label: 'Курс',
@@ -199,13 +181,21 @@ export class RequestsComponent implements OnInit {
     };
 
     // Метод для смены видимости окна подтверждения заявки
-    toggleConfirmDialogAcceptVisible(): void {
+    toggleConfirmDialogAcceptVisible(id?: number): void {
         this.isConfirmDialogAcceptVisible = !this.isConfirmDialogAcceptVisible;
+
+        if(id) {
+            this.requestID = id;
+        }
     }
 
     // Логика для события "Далее" окна подтверждения заявки
     handleConfirmDialogAcceptNext(): void {
         this.toggleConfirmDialogAcceptVisible();
+
+        if(this.requestID) {
+            this.acceptRequest(this.requestID);
+        }
     }
 
     // Логика для события "Отмена" окна подтверждения заявки
@@ -214,13 +204,21 @@ export class RequestsComponent implements OnInit {
     }
 
     // Метод для смены видимости окна отклонения заявки
-    toggleConfirmDialogCancelVisible(): void {
+    toggleConfirmDialogCancelVisible(id?: number): void {
         this.isConfirmDialogCancelVisible = !this.isConfirmDialogCancelVisible;
+
+        if(id) {
+            this.requestID = id;
+        }
     }
 
     // Логика для события "Далее" окна отклонения заявки
     handleConfirmDialogCancelNext(): void {
         this.toggleConfirmDialogCancelVisible();
+
+        if(this.requestID) {
+            this.declineRequest(this.requestID);
+        }
     }
 
     // Логика для события "Отмена" окна отклонения заявки
