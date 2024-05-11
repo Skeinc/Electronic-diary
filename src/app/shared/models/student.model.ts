@@ -1,3 +1,5 @@
+import { GroupModel } from "./group.model";
+
 export interface StudentModel {
     id: number,
     surname: string | null,
@@ -5,6 +7,9 @@ export interface StudentModel {
     patronymic: string | null,
     email: string | null,
     phone: string | null,
-    group: string | null,
-    course: 4,
-}
+    login: string | null,
+    password: string| null,
+    groupdID: number | null,
+    group: GroupModel | null,
+    course: number | null,
+};

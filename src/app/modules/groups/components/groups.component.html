@@ -1,4 +1,6 @@
 <section class="wrapper">
+    <app-loader *ngIf="isDataLoading" class="loader"></app-loader>
+
     <app-navigation (navigationVisibility)="onNavigationOpenedChange($event)"></app-navigation>
 
     <div class="container" [style.marginLeft]="isNavigationOpened ? '320px' : '80px'">
@@ -14,7 +16,7 @@
             </header>
 
             <div class="table-wrapper flex-column">
-                <p-table [columns]="tableColumns" [value]="groupsMocks" styleClass="p-datatable-gridlines" [scrollable]="true" [resizableColumns]="true" [scrollHeight]="tableScrollHeight.toString() + 'px'">
+                <p-table [columns]="tableColumns" [value]="groupsData ?? []" styleClass="p-datatable-gridlines" [scrollable]="true" [resizableColumns]="true" [scrollHeight]="tableScrollHeight.toString() + 'px'">
                     <ng-template pTemplate="header" let-columns>
                         <tr>
                             <th *ngFor="let col of columns" pResizableColumn [style.width]="'13%'">
@@ -49,7 +51,7 @@
                                         <span class="material-icons button-edit">schedule</span>
                                     </button>
 
-                                    <button type="button" class="table-body__button flex-center-center" (click)="toggleConfirmDialogVisible()">
+                                    <button type="button" class="table-body__button flex-center-center" (click)="toggleConfirmDialogVisible(groups.id)">
                                         <span class="material-icons button-delete">delete</span>
                                     </button>
                                 </div>
@@ -66,21 +68,21 @@
 <p-dialog [header]="'Добавление группы'" [(visible)]="isAddingGroupDialogVisible" [modal]="true" [style]="{ width: '400px' }" [draggable]="false" [resizable]="false">
     <div class="dialog-wrapper flex-column">
 
-        <app-text-field [elementID]="'dialog-name'" [elementName]="'dialog-name'" [elementLabel]="'Наименование'" [elementValue]="dialogGroupName" [elementDisable]="false"></app-text-field>
+        <app-text-field [elementID]="'dialog-name'" [elementName]="'dialog-name'" [elementLabel]="'Наименование'" [elementValue]="dialogGroupName" [elementDisable]="isDataLoading" (elementValueChange)="dialogGroupName = $event"></app-text-field>
 
-        <app-text-field [elementID]="'dialog-short-name'" [elementName]="'dialog-short-name'" [elementLabel]="'Сокращение'" [elementValue]="dialogGroupShortName" [elementDisable]="false"></app-text-field>
+        <app-text-field [elementID]="'dialog-short-name'" [elementName]="'dialog-short-name'" [elementLabel]="'Сокращение'" [elementValue]="dialogGroupShortName" [elementDisable]="isDataLoading" (elementValueChange)="dialogGroupShortName = $event"></app-text-field>
         
-        <app-text-field [elementID]="'dialog-number'" [elementName]="'dialog-number'" [elementLabel]="'Номер группы'" [elementValue]="dialogGroupNumber" [elementDisable]="false"></app-text-field>
+        <app-text-field [elementID]="'dialog-number'" [elementName]="'dialog-number'" [elementLabel]="'Номер группы'" [elementValue]="dialogGroupNumber" [elementDisable]="isDataLoading" (elementValueChange)="dialogGroupNumber = $event"></app-text-field>
 
-        <app-text-field [elementID]="'dialog-course'" [elementName]="'dialog-course'" [elementLabel]="'Курс'" [elementValue]="dialogGroupCourse" [elementDisable]="false"></app-text-field>
+        <app-text-field [elementID]="'dialog-course'" [elementName]="'dialog-course'" [elementLabel]="'Курс'" [elementValue]="dialogGroupCourse" [elementDisable]="isDataLoading" (elementValueChange)="dialogGroupCourse = $event"></app-text-field>
 
-        <app-text-field [elementID]="'dialog-code'" [elementName]="'dialog-code'" [elementLabel]="'Кодировка'" [elementValue]="dialogGroupCode" [elementDisable]="true"></app-text-field>
+        <app-text-field [elementID]="'dialog-code'" [elementName]="'dialog-code'" [elementLabel]="'Кодировка'" [elementValue]="dialogGroupCode" [elementDisable]="true" (elementValueChange)="dialogGroupCode = $event"></app-text-field>
 
         <div class="dialog-message flex-row">
             <span class="dialog-message__value">{{ dialogErrorMessage }}</span>
         </div>
 
-        <app-button [elementID]="'button-add'" [elementName]="'button-add'" [elementLabel]="'Добавить'" [elementDisable]="false"></app-button>
+        <app-button [elementID]="'button-add'" [elementName]="'button-add'" [elementLabel]="'Добавить'" [elementDisable]="isDataLoading" (click)="addGroup()"></app-button>
     </div>
 </p-dialog>
 
@@ -88,19 +90,19 @@
 <p-dialog [header]="'Редактирование группы'" [(visible)]="isEditingGroupDialogVisible" [modal]="true" [style]="{ width: '400px' }" [draggable]="false" [resizable]="false">
     <div class="dialog-wrapper flex-column">
 
-        <app-text-field [elementID]="'dialog-name'" [elementName]="'dialog-name'" [elementLabel]="'Наименование'" [elementValue]="dialogEditGroupName" [elementDisable]="false"></app-text-field>
+        <app-text-field [elementID]="'dialog-name'" [elementName]="'dialog-name'" [elementLabel]="'Наименование'" [elementValue]="dialogEditGroupName" [elementDisable]="isDataLoading" (elementValueChange)="dialogEditGroupName = $event"></app-text-field>
 
-        <app-text-field [elementID]="'dialog-short-name'" [elementName]="'dialog-short-name'" [elementLabel]="'Сокращение'" [elementValue]="dialogEditGroupShortName" [elementDisable]="false"></app-text-field>
+        <app-text-field [elementID]="'dialog-short-name'" [elementName]="'dialog-short-name'" [elementLabel]="'Сокращение'" [elementValue]="dialogEditGroupShortName" [elementDisable]="isDataLoading" (elementValueChange)="dialogEditGroupShortName = $event"></app-text-field>
         
-        <app-text-field [elementID]="'dialog-number'" [elementName]="'dialog-number'" [elementLabel]="'Номер группы'" [elementValue]="dialogEditGroupNumber" [elementDisable]="false"></app-text-field>
+        <app-text-field [elementID]="'dialog-number'" [elementName]="'dialog-number'" [elementLabel]="'Номер группы'" [elementValue]="dialogEditGroupNumber" [elementDisable]="isDataLoading" (elementValueChange)="dialogEditGroupNumber = $event"></app-text-field>
 
-        <app-text-field [elementID]="'dialog-course'" [elementName]="'dialog-course'" [elementLabel]="'Курс'" [elementValue]="dialogEditGroupCourse" [elementDisable]="false"></app-text-field>
+        <app-text-field [elementID]="'dialog-course'" [elementName]="'dialog-course'" [elementLabel]="'Курс'" [elementValue]="dialogEditGroupCourse" [elementDisable]="isDataLoading" (elementValueChange)="dialogEditGroupCourse = $event"></app-text-field>
 
         <div class="dialog-message flex-row">
             <span class="dialog-message__value">{{ dialogEditErrorMessage }}</span>
         </div>
 
-        <app-button [elementID]="'button-edit'" [elementName]="'button-edit'" [elementLabel]="'Редактировать'" [elementDisable]="false"></app-button>
+        <app-button [elementID]="'button-edit'" [elementName]="'button-edit'" [elementLabel]="'Редактировать'" [elementDisable]="isDataLoading" (click)="editGroup()"></app-button>
     </div>
 </p-dialog>
 

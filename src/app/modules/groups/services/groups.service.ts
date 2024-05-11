@@ -1,6 +1,7 @@
 import { HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { HttpService } from "@core/services/http.service";
+import { GroupModel } from "@shared/models/group.model";
 import { Observable } from "rxjs";
 
 @Injectable({
@@ -12,7 +13,7 @@ export class GroupsService {
     ) {}
 
     // Метод на получение всех групп
-    public getAllGroups(): Observable<any> {
+    public getAllGroups(): Observable<GroupModel[]> {
         return this.httpService.get('groups/getGroups');
     };
 
@@ -24,12 +25,12 @@ export class GroupsService {
     };
 
     // Метод на получение всех кодировок групп
-    public getAllGroupCodes(): Observable<any> {
+    public getAllGroupCodes(): Observable<string[]> {
         return this.httpService.get('groups/getAllGroupCodes');
     };
 
     // Метод на добавление группы
-    public addGroup(request: any): Observable<any> {
+    public addGroup(request: GroupModel): Observable<any> {
         const body = request;
 
         return this.httpService.post('groups/addGroup', body);

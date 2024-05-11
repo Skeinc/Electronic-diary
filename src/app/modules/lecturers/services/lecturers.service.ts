@@ -1,5 +1,6 @@
 import { Injectable } from "@angular/core";
 import { HttpService } from "@core/services/http.service";
+import { LecturerModel } from "@shared/models/lecturer.model";
 import { Observable } from "rxjs";
 
 @Injectable({
@@ -11,12 +12,12 @@ export class LecturersService {
     ) {}
 
     // Метод для получения всех преподавателей
-    public getAllLecturers(): Observable<any> {
+    public getAllLecturers(): Observable<LecturerModel[]> {
         return this.httpService.get('teachers/getAllTeachers');
     };
 
     // Метод для добавления преподавателя
-    public addLecturer(request: any): Observable<any> {
+    public addLecturer(request: LecturerModel): Observable<any> {
         const body = request;
 
         return this.httpService.post('teachers/addTeacher', body);

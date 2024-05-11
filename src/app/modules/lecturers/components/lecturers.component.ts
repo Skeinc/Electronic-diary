@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, HostListener, OnInit } from "@angular/cor
 import { LecturerModel } from "@shared/models/lecturer.model";
 import { LecturersService } from "../services/lecturers.service";
 import { LoggerService } from "@shared/services/logger/logger.service";
+import { convertPhoneNumber } from "@shared/utilities/converPhoneNumber.util";
 
 @Component({
     selector: 'app-lecturers',
@@ -48,29 +49,8 @@ export class LecturersComponent implements OnInit{
     // Данные о преподавателях
     lecturersData: LecturerModel[] | null = null;
 
-    // Mocks для таблицы преподаватели
-    lecturersMocks = [
-        {
-            id: 1,
-            surname: 'Иванова',
-            name: 'Мария',
-            patronymic: 'Ивановна',
-            email: 'ivanova@gmail.com',
-            phone: '+79901002030',
-            login: 'test',
-            password: 'mivanova',
-        },
-        {
-            id: 2,
-            surname: 'Сидорова',
-            name: 'Жанна',
-            patronymic: 'Владимировна',
-            email: 'sidorova@gmail.com',
-            phone: '+79903009040',
-            login: 'test',
-            password: 'jsidorova',
-        },
-    ];
+    // Переменная, хранящая ID преподавателя, которого пытаются удалить
+    deleteLecturerID: number | null = null;
 
     @HostListener('window:resize', ['$event'])
     onResize(event: any): void {
@@ -99,6 +79,8 @@ export class LecturersComponent implements OnInit{
                 this.lecturersData = response;
 
                 this.loggerService.message('backend', 'All lecturers information was received', response);
+
+                this.cdr.detectChanges();
             },
             error: (err) => {
                 this.loggerService.message('error', 'Error with get all lecturers information', err);
@@ -115,16 +97,94 @@ export class LecturersComponent implements OnInit{
         });
     };
 
+    // Метод для удаления преподавателя по ID
+    deleteLecturerByID(id: number): void {
+        this.isDataLoading = true;
+
+        this.lecturersService.deleteLecturerByID(id).subscribe({
+            next: (response: any) => {
+                this.getAllLecturersData();
+
+                this.loggerService.message('backend', `Lecturer with ID = ${id} was deleted`, response);
+            },
+            error: (err) => {
+                this.loggerService.message('error', 'Error with delete lecturer by ID', err);
+
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+            complete: () => {
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+        });
+    };
+
+    // Метод для валидации добавления преподавателя
+    validateLecturerData(): boolean {
+        if(this.dialogLecturerSurname.length === 0 || this.dialogLecturerName.length === 0 || this.dialogLecturerPatronymic.length === 0 || this.dialogLecturerLogin.length === 0 || this.dialogLecturerPassword.length === 0  || this.dialogLecturerPhone.length === 0 || this.dialogLecturerEmail.length === 0) {
+            return false;
+        }
+
+        return true;
+    };
+
+    // Метод для добавления преподавателя
+    addLecturer(): void {
+        if(this.validateLecturerData()) {
+            this.isDataLoading = true;
+
+            // Формируем тело запроса
+            const request: LecturerModel = {
+                surname: this.dialogLecturerSurname,
+                name: this.dialogLecturerName,
+                patronymic: this.dialogLecturerPatronymic,
+                email: this.dialogLecturerEmail,
+                phone: convertPhoneNumber(this.dialogLecturerPhone),
+                login: this.dialogLecturerLogin,
+                password: this.dialogLecturerPassword,
+            };
+
+            this.lecturersService.addLecturer(request).subscribe({
+                next: (response: any) => {
+                    this.getAllLecturersData();
+
+                    this.loggerService.message('backend', `Lecturer was added`, response);
+                },
+                error: (err) => {
+                    this.loggerService.message('error', 'Error with add lecturer', err);
+
+                    this.isDataLoading = false;
+
+                    this.cdr.detectChanges();
+                },
+                complete: () => {
+                    this.isDataLoading = false;
+
+                    this.toggleAddingLecturerDialogVisible();
+
+                    this.cdr.detectChanges();
+                },
+            });
+        }
+        else {
+            this.dialogErrorMessage = 'Заполните все поля';
+
+            this.loggerService.message('error', 'Error with validation lecturer data');
+        }
+    };
+
     // Метод скрывает/открывает меню
     onNavigationOpenedChange(isOpened: boolean) {
         this.isNavigationOpened = isOpened;
-    }
+    };
 
     // Метод для обновления высоты скрола таблицы
     updateScrollHeight(): void {
         this.tableScrollHeight = window.innerHeight - 80 - 40 - 40 - 60 - 40;
-    }
-
+    };
 
     // Установка конфигурации таблицы
     setConfigurationTable(): void {
@@ -162,25 +222,33 @@ export class LecturersComponent implements OnInit{
                 field: 'password'
             },
         ];
-    }
+    };
 
     // Метод для смены видимости окна добавления преподавателя
     toggleAddingLecturerDialogVisible(): void {
         this.isAddingLecturerDialogVisible = !this.isAddingLecturerDialogVisible;
-    }
+    };
 
     // Метод для смены видимости окна подверждения
-    toggleConfirmDialogVisible(): void {
+    toggleConfirmDialogVisible(id?: number): void {
         this.isConfirmDialogVisible = !this.isConfirmDialogVisible;
-    }
+
+        if(id) {
+            this.deleteLecturerID = id;
+        }
+    };
 
     // Логика для события "Далее"
     handleConfirmDialogNext(): void {
         this.toggleConfirmDialogVisible();
-    }
+
+        if(this.deleteLecturerID) {
+            this.deleteLecturerByID(this.deleteLecturerID);
+        };
+    };
 
     // Логика для события "Отмена"
     handleConfirmDialogCancel(): void {
         this.toggleConfirmDialogVisible();
-    }
+    };
 }

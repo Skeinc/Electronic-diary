@@ -14,7 +14,7 @@
             </header>
 
             <div class="table-wrapper flex-column">
-                <p-table [columns]="tableColumns" [value]="studentsMocks" styleClass="p-datatable-gridlines" [scrollable]="true" [resizableColumns]="true" [scrollHeight]="tableScrollHeight.toString() + 'px'">
+                <p-table [columns]="tableColumns" [value]="studentsData ?? []" styleClass="p-datatable-gridlines" [scrollable]="true" [resizableColumns]="true" [scrollHeight]="tableScrollHeight.toString() + 'px'">
                     <ng-template pTemplate="header" let-columns>
                         <tr>
                             <th *ngFor="let col of columns" pResizableColumn [style.width]="'11.25%'">

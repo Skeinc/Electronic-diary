@@ -5,6 +5,7 @@ import { FormsModule } from "@angular/forms";
 import { NavigationModule } from "@shared/components/navigation/navigation.module";
 import { TableModule } from "primeng/table";
 import { ConfirmDialogModule } from "@shared/components/confirm-dialog/confirm-dialog.module";
+import { LoaderModule } from "@shared/components/loader/loader.module";
 
 @NgModule({
     declarations: [
@@ -16,6 +17,7 @@ import { ConfirmDialogModule } from "@shared/components/confirm-dialog/confirm-d
         // Components
         NavigationModule,
         ConfirmDialogModule,
+        LoaderModule,
         // PrimeNG
         TableModule,
     ],

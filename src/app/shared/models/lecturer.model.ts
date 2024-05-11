@@ -1,5 +1,5 @@
 export interface LecturerModel {
-    id: number,
+    id?: number,
     surname: string | null,
     name: string | null,
     patronymic: string | null,

@@ -1,7 +1,10 @@
-import { Component, HostListener, OnInit } from "@angular/core";
+import { ChangeDetectorRef, Component, HostListener, OnInit } from "@angular/core";
 import { GroupScheduleInterface } from "@shared/interfaces/groups/schedule.interface";
 import { generateRandomCode } from "@shared/utilities/generateRandomCode.util";
 import { GroupsScheduleMocks } from "../mocks/groups-schedule.mocks";
+import { GroupsService } from "../services/groups.service";
+import { LoggerService } from "@shared/services/logger/logger.service";
+import { GroupModel } from "@shared/models/group.model";
 
 @Component({
     selector: 'app-groups',
@@ -9,6 +12,12 @@ import { GroupsScheduleMocks } from "../mocks/groups-schedule.mocks";
     styleUrl: './groups.component.scss',
 })
 export class GroupsComponent implements OnInit{
+    constructor (
+        private groupsService: GroupsService,
+        private loggerService: LoggerService,
+        private cdr: ChangeDetectorRef,
+    ) {}
+
     // Определяет открыта ли меню
     isNavigationOpened: boolean = false;
 
@@ -38,7 +47,7 @@ export class GroupsComponent implements OnInit{
     dialogGroupShortName: string = '';
     dialogGroupNumber: string = '';
     dialogGroupCourse: string = '';
-    dialogGroupCode: string = generateRandomCode(10);
+    dialogGroupCode: string = '';
 
     // Данные для окна изменения группы
     dialogEditGroupName: string = '';
@@ -55,27 +64,20 @@ export class GroupsComponent implements OnInit{
     // Данные для расписания группы
     groupSchedule: GroupScheduleInterface[] = GroupsScheduleMocks;
 
-    // Mocks для таблицы группы
-    groupsMocks = [
-        {
-            id: 1,
-            name: 'Информационные системы и программирование',
-            shortName: '4-ИСИП',
-            number: '431-002',
-            course: 4,
-            studentsAmount: 20,
-            code: generateRandomCode(10),
-        },
-        {
-            id: 2,
-            name: 'Прикладная информатика',
-            shortName: '2-ПИ',
-            number: '431-003',
-            course: 2,
-            studentsAmount: 17,
-            code: generateRandomCode(10),
-        },
-    ];
+    // Данные о группах
+    groupsData: GroupModel[] | null = null;
+
+    // Данные о кодировок групп
+    groupsCodeData: string[] | null = null;
+
+    // Переменная, обозначающая статус загрузки данных
+    isDataLoading: boolean = false;
+
+    // Переменная, хранящая ID группы, которую пытаются удалить
+    deleteGroupID: number | null = null;
+
+    // Переменная, хранящая ID группы, которую пытаются редактировать
+    editGroupID: number | null = null;
 
     @HostListener('window:resize', ['$event'])
     onResize(event: any): void {
@@ -90,17 +92,224 @@ export class GroupsComponent implements OnInit{
 
         // Установка конфигурации таблицы
         this.setConfigurationTable()
+
+        // Получаем данные о группах
+        this.getAllGroupsData();
     }
+
+    // Метод для получения всех групп
+    getAllGroupsData(): void {
+        this.isDataLoading = true;
+
+        this.groupsService.getAllGroups().subscribe({
+            next: (response: GroupModel[]) => {
+                this.groupsData = response;
+
+                this.loggerService.message('backend', 'Groups data was received', response);
+            },
+            error: (err) => {
+                this.loggerService.message('error', 'Error with get groups data', err);
+
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+            complete: () => {
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+        });
+    };
+
+    // Метод для получения всех кодировок
+    getAllGroupCodesData(): void {
+        this.isDataLoading = true;
+
+        this.groupsService.getAllGroupCodes().subscribe({
+            next: (response: string[]) => {
+                this.groupsCodeData = response;
+
+                this.loggerService.message('backend', 'Group codes data was received', response);
+            },
+            error: (err) => {
+                this.loggerService.message('error', 'Error with get group codes data', err);
+
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+            complete: () => {
+                this.isDataLoading = false;
+
+                this.generateGroupCode();
+
+                this.cdr.detectChanges();
+            },
+        });
+    };
+
+    // Метод для добавления группы
+    async addGroup(): Promise<void> {
+        if(this.validateAddingGroupData()) {
+            this.isDataLoading = true;
+
+            // Формируем тело запроса
+            const request: GroupModel = {
+                name: this.dialogGroupName,
+                numberSpec: this.dialogGroupNumber,
+                nameShortly: this.dialogGroupShortName,
+                course: Number(this.dialogGroupCourse),
+                coding: this.dialogGroupCode,
+            };
+
+            this.groupsService.addGroup(request).subscribe({
+                next: (response: any) => {
+                    this.getAllGroupsData();
+
+                    this.loggerService.message('backend', 'Group was added', response);
+                },
+                error: (err) => {
+                    this.loggerService.message('error', 'Error with add group', err);
+
+                    this.isDataLoading = false;
+
+                    this.cdr.detectChanges();
+                },
+                complete: () => {
+                    this.isDataLoading = false;
+
+                    this.toggleAddingGroupDialogVisible();
+
+                    this.cdr.detectChanges();
+                },
+            });
+        }
+        else {
+            this.dialogErrorMessage = 'Заполните все данные';
+
+            this.loggerService.message('error', 'Error with validate group data');
+        };
+    };
+
+    // Метод для изменения группы
+    editGroup(): void {
+        if(this.validateEditingGroupData()) {
+            this.isDataLoading = true;
+
+            // Формируем тело запроса
+            const request: GroupModel = {
+                id: this.editGroupID!,
+                name: this.dialogEditGroupName,
+                numberSpec: this.dialogEditGroupNumber,
+                nameShortly: this.dialogEditGroupShortName,
+                course: Number(this.dialogEditGroupCourse),
+            };
+
+
+            this.groupsService.editGroup(request).subscribe({
+                next: (response: any) => {
+                    this.getAllGroupsData();
+
+                    this.loggerService.message('backend', 'Group was edited', response);
+                },
+                error: (err) => {
+                    this.loggerService.message('error', 'Error with edit group', err);
+
+                    this.isDataLoading = false;
+
+                    this.cdr.detectChanges();
+                },
+                complete: () => {
+                    this.isDataLoading = false;
+
+                    this.isEditingGroupDialogVisible = !this.isEditingGroupDialogVisible;
+
+                    this.cdr.detectChanges();
+                },
+            });
+        }
+        else {
+            this.dialogEditErrorMessage = 'Заполните все данные';
+
+            this.loggerService.message('error', 'Error with validate group data');
+        };
+    };
+
+    // Метод для удаления по ID
+    deleteGroupByID(groupID: number): void {
+        this.isDataLoading = true;
+
+        this.groupsService.deleteGroupByID(groupID).subscribe({
+            next: (response: any) => {
+                this.getAllGroupsData();
+
+                this.loggerService.message('backend', `Group with id = ${groupID} was deleted`, response);
+            },
+            error: (err) => {
+                this.loggerService.message('error', 'Error with delete group', err);
+
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+            complete: () => {
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+        });
+    };
+
+    // Метод для валидации данных группы
+    validateAddingGroupData(): boolean {
+        if(this.dialogGroupName.length === 0 || this.dialogGroupNumber.length === 0 || this.dialogGroupShortName.length === 0 || this.dialogGroupCourse.length === 0) {
+            return false;
+        };
+
+        return true;
+    };
+
+    // Метод для валидации данных группы
+    validateEditingGroupData(): boolean {
+        if(this.dialogEditGroupName.length === 0 || this.dialogEditGroupNumber.length === 0 || this.dialogEditGroupShortName.length === 0 || this.dialogEditGroupCourse.length === 0) {
+            return false;
+        };
+
+        return true;
+    };
+
+    // Метод генерации рандомного кода
+    generateGroupCode(): void {
+        if(this.groupsCodeData) {
+            // Обозначаем булевую переменную, которая означает валидность кода группы
+            let isCodeValid: boolean = false;
+            
+            while(isCodeValid) {
+                this.dialogGroupCode = generateRandomCode(10);
+
+                if(this.groupsCodeData.includes(this.dialogGroupCode)) {
+                    this.dialogGroupCode = generateRandomCode(10);
+                }
+                else {
+                    isCodeValid = true;
+                };
+            }
+        }
+        else {
+            this.dialogGroupCode = generateRandomCode(10);
+        };
+    };
 
     // Метод скрывает/открывает меню
     onNavigationOpenedChange(isOpened: boolean) {
         this.isNavigationOpened = isOpened;
-    }
+    };
 
     // Метод для обновления высоты скрола таблицы
     updateScrollHeight(): void {
         this.tableScrollHeight = window.innerHeight - 80 - 40 - 40 - 60 - 40;
-    }
+    };
 
 
     // Установка конфигурации таблицы
@@ -116,11 +325,11 @@ export class GroupsComponent implements OnInit{
             },
             {
                 label: 'Сокращение',
-                field: 'shortName'
+                field: 'nameShortly'
             },
             {
                 label: 'Номер группы',
-                field: 'number',
+                field: 'numberSpec',
             },
             {
                 label: 'Курс',
@@ -132,54 +341,65 @@ export class GroupsComponent implements OnInit{
             },
             {
                 label: 'Кодировка',
-                field: 'code'
+                field: 'coding'
             },
         ];
-    }
+    };
 
     // Метод для смены видимости окна добавления группы
     toggleAddingGroupDialogVisible(): void {
+        this.getAllGroupCodesData();
+
         this.isAddingGroupDialogVisible = !this.isAddingGroupDialogVisible;
-    }
+    };
 
     // Метод для смены видимости окна изменения группы
     toggleEditingGroupDialogVisible(data: any): void {
+        this.editGroupID = data.id;
         this.dialogEditGroupName = data.name;
-        this.dialogEditGroupShortName = data.shortName;
-        this.dialogEditGroupNumber = data.number;
+        this.dialogEditGroupShortName = data.nameShortly;
+        this.dialogEditGroupNumber = data.numberSpec;
         this.dialogEditGroupCourse = data.course;
 
         this.isEditingGroupDialogVisible = !this.isEditingGroupDialogVisible;
-    }
+    };
 
     // Метод для смены видимости окна редактирования расписания группы
     toggleEditingScheduleDialogVisible(): void {
         this.isEditingScheduleDialogVisible = !this.isEditingScheduleDialogVisible;
-    }
+    };
 
     // Метод для смены значения переменной, контролирующей возможность редактирования расписания группы
     toggleEditingShedule(): void {
         this.isEditingSchedule = !this.isEditingSchedule;
-    }
+    };
 
     // Метод для сохранения расписания
     saveSchedule(): void {
         // Изменяем возможность редактирования расписания группы
         this.toggleEditingShedule();
-    }
+    };
 
     // Метод для смены видимости окна подверждения
-    toggleConfirmDialogVisible(): void {
+    toggleConfirmDialogVisible(id?: number): void {
         this.isConfirmDialogVisible = !this.isConfirmDialogVisible;
-    }
+
+        if(id) {
+            this.deleteGroupID = id;
+        };
+    };
 
     // Логика для события "Далее"
     handleConfirmDialogNext(): void {
         this.toggleConfirmDialogVisible();
-    }
+
+        if(this.deleteGroupID) {
+            this.deleteGroupByID(this.deleteGroupID);
+        };
+    };
 
     // Логика для события "Отмена"
     handleConfirmDialogCancel(): void {
         this.toggleConfirmDialogVisible();
-    }
+    };
 }

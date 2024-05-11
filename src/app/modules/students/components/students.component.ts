@@ -36,30 +36,6 @@ export class StudentsComponent implements OnInit{
     // Переменная, хранящая ID студента, которого пытаются удалить
     deleteUserID: number | null = null;
 
-    // Mocks для таблицы студентов
-    studentsMocks = [
-        {
-            id: 3,
-            surname: 'Цветков',
-            name: 'Илья',
-            patronymic: 'Викторович',
-            email: 'pcheluha@gmail.com',
-            phone: '+79901002030',
-            group: '4-ИСИП-19-1',
-            course: 4,
-        },
-        {
-            id: 4,
-            surname: 'Сироткин',
-            name: 'Данил',
-            patronymic: 'Александрович',
-            email: 'sirotkin@gmail.com',
-            phone: '+79903009040',
-            group: '4-ИСИП-19-1',
-            course: 4,
-        },
-    ];
-
     @HostListener('window:resize', ['$event'])
     onResize(event: any): void {
         // Вызываем метод для обновления высоты скрола таблицы
@@ -86,6 +62,8 @@ export class StudentsComponent implements OnInit{
                 this.studentsData = response;
 
                 this.loggerService.message('backend', 'All students information was received', response);
+
+                this.cdr.detectChanges();
             },
             error: (err) => {
                 this.loggerService.message('error', 'Error with get all students information', err);
@@ -108,6 +86,8 @@ export class StudentsComponent implements OnInit{
 
         this.studentsService.deleteStudentByID(id).subscribe({
             next: (response: any) => {
+                this.getAllStudents();
+
                 this.loggerService.message('backend', `Student with ID = ${id} was deleted`, response);
             },
             error: (err) => {
@@ -164,13 +144,13 @@ export class StudentsComponent implements OnInit{
                 field: 'phone'
             },
             {
-                label: 'Группа',
-                field: 'group',
+                label: 'Логин',
+                field: 'login',
             },
             {
-                label: 'Курс',
-                field: 'course',
-            }
+                label: 'Пароль',
+                field: 'password',
+            },
         ];
     }
 

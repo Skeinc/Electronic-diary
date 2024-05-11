@@ -8,6 +8,7 @@ import { ButtonModule } from "@shared/components/button/button.module";
 import { ConfirmDialogModule } from "@shared/components/confirm-dialog/confirm-dialog.module";
 import { TableModule } from "primeng/table";
 import { DialogModule } from "primeng/dialog";
+import { LoaderModule } from "@shared/components/loader/loader.module";
 
 @NgModule({
     declarations: [
@@ -21,6 +22,7 @@ import { DialogModule } from "primeng/dialog";
         TextFieldModule,
         ButtonModule,
         ConfirmDialogModule,
+        LoaderModule,
         // PrimeNg
         TableModule,
         DialogModule,
