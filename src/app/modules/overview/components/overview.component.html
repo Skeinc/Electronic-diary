@@ -1,0 +1,93 @@
+<section class="wrapper">
+    <header id="overview" class="header flex-row">
+        <div class="header-brand">
+            <p>Электронный дневник</p>
+        </div>
+
+        <nav class="navigation flex-row">
+            <div class="navigation-list flex-row">
+                <button type="button" class="navigation-item flex-center-center">
+                    <span>Главная</span>
+                </button>
+
+                <button type="button" class="navigation-item flex-center-center">
+                    <span>О нас</span>
+                </button>
+
+                <button type="button" class="navigation-item flex-center-center">
+                    <span>Возможности</span>
+                </button>
+
+                <button type="button" class="navigation-item flex-center-center">
+                    <span>Расписание</span>
+                </button>
+
+                <button type="button" class="navigation-item flex-center-center">
+                    <span>Контакты</span>
+                </button>
+            </div>
+        </nav>
+
+        <div class="header-account flex-row">
+            <div class="header-wrapper">
+                <app-button [elementID]="'signin'" [elementName]="'signin'" [elementLabel]="'Войти'" [elementDisable]="false" (click)="navigateToAuthorization()"></app-button>
+            </div>
+        </div>
+
+        <div class="header-toggle">
+            <button type="button" class="header-toggle__button flex-center-center">
+                <span class="material-icons">menu</span>
+            </button>
+        </div>
+    </header>
+
+    <div class="banner flex-row">
+        <div class="banner-information flex-column">
+            <div class="banner-information__title">
+                <p>Электронный дневник</p>
+            </div>
+
+            <div class="banner-information__caption">
+                <p>Это современное веб-приложение, предназначенное для управления учебными данными и процессами в колледже. Наше приложение предоставляет студентам, преподавателям и администраторам эффективный и удобный способ ведения учета успеваемости, расписания занятий, заданий и других важных аспектов учебного процесса.</p>
+            </div>
+
+            <div class="banner-information__button">
+                <app-button [elementID]="'try-it'" [elementName]="'try-it'" [elementLabel]="'Попробовать'" [elementDisable]="false" (click)="navigateToAuthorization()"></app-button>
+            </div>
+        </div>
+
+        <div class="banner-image flex-row">
+            <img src="../../../../assets/images/photos/happy-man.png" alt="Banner image">
+        </div>
+    </div>
+
+    <div id="about" class="section about flex-column">
+        <div class="section-title flex-row">
+            <p>О нас</p>
+        </div>
+
+        <div class="section-container about-container flex-row">
+            <div class="about-image">
+                <img src="../../../../assets/images/photos/lovely-man.png" alt="About image">
+            </div>
+
+            <div class="about-information flex-column">
+                <p>Данный проект разработан специально для ГПОАУ ЯО Заволжский политехнический колледжа — колледжа, который ценит инновации и стремится к постоянному совершенствованию учебного процесса. Своими усилиями мы поддерживаем и расширяем его миссию, создавая современные инструменты для образования будущего.</p>
+
+                <p>Наше приложение представляет собой не просто инструмент для ведения учета успеваемости, расписания занятий и заданий, но и целую платформу, объединяющую студентов, преподавателей и администраторов в единую образовательную среду.</p>
+
+                <p>Наши усилия направлены на то, чтобы сделать учебный процесс более доступным, удобным и эффективным для всех его участников. Мы верим, что образование — это ключ к будущему, и стремимся сделать его получение максимально комфортным и эффективным для каждого студента.</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="features" class="section features flex-column">
+        <div class="section-title flex-row">
+            <p>Возможности</p>
+        </div>
+
+        <div class="section-container features-container flex-row">
+            
+        </div>
+    </div>
+</section>

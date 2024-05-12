@@ -1,0 +1,64 @@
+<section class="registration flex-center-center">
+
+    <app-loader *ngIf="isDataLoading" class="loader"></app-loader>
+
+    <div class="container">
+        <div class="signup flex-column">
+            <header class="signup-header flex-row">
+                <h1 class="signup-header__title">Регистрация</h1>
+            </header>
+
+            <div class="signup-fields flex-row">
+                <div class="signup-fields__wrapper flex-column">
+                    <div class="signup-fields__item">
+                        <app-text-field [elementID]="'surname'" [elementName]="'surname'" [elementPlaceholder]="'Фамилия'" [(elementValue)]="surname" [elementDisable]="isDataLoading"></app-text-field>
+                    </div>
+    
+                    <div class="signup-fields__item">
+                        <app-text-field [elementID]="'name'" [elementName]="'name'" [elementPlaceholder]="'Имя'" [(elementValue)]="name" [elementDisable]="isDataLoading"></app-text-field>
+                    </div>
+    
+                    <div class="signup-fields__item">
+                        <app-text-field [elementID]="'patronymic'" [elementName]="'patronymic'" [elementPlaceholder]="'Отчество'" [(elementValue)]="patronymic" [elementDisable]="isDataLoading"></app-text-field>
+                    </div>
+    
+                    <div class="signup-fields__item">
+                        <app-text-field [elementID]="'email'" [elementName]="'email'" [elementPlaceholder]="'Email'" [(elementValue)]="email" [elementDisable]="isDataLoading"></app-text-field>
+                    </div>
+                </div>
+
+                <div class="signup-fields__wrapper flex-column">
+                    <div class="signup-fields__item">
+                        <app-phone-field [elementID]="'phone'" [elementName]="'phone'" [elementPlaceholder]="'Телефон'" [(elementValue)]="phone" [elementDisable]="isDataLoading"></app-phone-field>
+                    </div>
+                    
+                    <div class="signup-fields__item">
+                        <app-password-field [elementID]="'password'" [elementName]="'password'" [elementPlaceholder]="'Пароль'" [(elementValue)]="password" [elementDisable]="isDataLoading"></app-password-field>
+                    </div>
+
+                    <div class="signup-fields__item">
+                        <app-dropdown [elementID]="'group'" [elementName]="'group'" [elementPlaceholder]="'Группа'" [(elementValue)]="selectedGroup" [options]="avaliableGroups ?? []" [optionsLabel]="'nameShortly'" [optionsValue]="'nameShortly'" [elementDisable]="isDataLoading"></app-dropdown>
+                    </div>
+
+                    <div class="signup-fields__item">
+                        <app-text-field [elementID]="'code'" [elementName]="'code'" [elementPlaceholder]="'Кодировка'" [(elementValue)]="groupCode" [elementDisable]="isDataLoading"></app-text-field>
+                    </div>
+                </div>
+            </div>
+
+            <div class="signup-error flex-row">
+                <span>{{ signupError }}</span>
+            </div>
+
+            <div class="signup-controller flex-row">
+                <div class="signup-controller__wrapper">
+                    <app-button [elementID]="'signup-button'" [elementName]="'signup-button'" [elementLabel]="'Регистрация'" [elementDisable]="isDataLoading" (click)="registrationUser()"></app-button>
+                </div>
+            </div>
+
+            <div class="signup-login flex-row">
+                <span (click)="navigateToAuthorization()">Перейти к авторизации</span>
+            </div>
+        </div>
+    </div>
+</section>

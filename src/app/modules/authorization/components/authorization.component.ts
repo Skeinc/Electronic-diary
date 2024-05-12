@@ -160,7 +160,7 @@ export class AuthorizationComponent implements OnInit {
         else {
             this.personalError = 'Заполните данные';
         }
-    }
+    };
 
     // Метод для входа студента в аккаунт
     studentLoginHandler(): void {
@@ -172,19 +172,24 @@ export class AuthorizationComponent implements OnInit {
         else {
             this.studentError = 'Заполните данные';
         }
-    }
+    };
 
     // Метод для очистки данных формы при переходе на Tabview для персонала
     clearPersonalForm(): void {
         this.personalLogin = '';
         this.personalPassword = '';
         this.personalError = '';
-    }
+    };
 
     // Метод для очистки данных формы при переходе на Tabview для студентов
     clearStudentForm(): void {
         this.studentLogin = '';
         this.studentPassword = '';
         this.studentError = '';
-    }
+    };
+
+    // Метод для перехода на регистрацию
+    navigateToRegistration(): void {
+        this.router.navigateByUrl('/signup');
+    };
 }

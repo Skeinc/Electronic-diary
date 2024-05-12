@@ -9,15 +9,26 @@ import { RequestsComponent } from "../../modules/requests/components/requests.co
 import { UndefinedComponent } from "../../modules/undefined/components/undefined.component";
 import { SubjectsComponent } from "../../modules/subjects/components/subjects.component";
 import { AuthGuard } from "@core/guards/authorization.guard";
+import { RegistrationComponent } from "@modules/registration/components/registration.component";
+import { WaitingComponent } from "@modules/waiting/components/waiting.component";
+import { OverviewComponent } from "@modules/overview/components/overview.component";
 
 export const ROUTES: Routes = [
     {
         path: '',
-        component: ApplicationComponent,
+        component: OverviewComponent,
+    },
+    {
+        path: 'overview',
+        component: OverviewComponent,
     },
     {
         path: 'login',
         component: AuthorizationComponent,
+    },
+    {
+        path: 'signup',
+        component: RegistrationComponent,
     },
     {
         path: 'personal',
@@ -48,6 +59,10 @@ export const ROUTES: Routes = [
         path: 'subjects',
         component: SubjectsComponent,
         canActivate: [AuthGuard],
+    },
+    {
+        path: 'waiting',
+        component: WaitingComponent,
     },
     {
         path: 'undefined',

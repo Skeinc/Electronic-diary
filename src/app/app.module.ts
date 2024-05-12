@@ -15,6 +15,9 @@ import { GroupsModule } from "./modules/groups/groups.module";
 import { RequestsModule } from "./modules/requests/requests.module";
 import { UndefinedModule } from "./modules/undefined/undefined.module";
 import { SubjectsModule } from "./modules/subjects/subjects.module";
+import { RegistrationModule } from "@modules/registration/registration.module";
+import { WaitingModule } from "@modules/waiting/waiting.module";
+import { OverviewModule } from "@modules/overview/overview.module";
 
 @NgModule({
     declarations: [
@@ -29,9 +32,12 @@ import { SubjectsModule } from "./modules/subjects/subjects.module";
         // Modules
         AppRoutingModule,
         ApplicationModule,
+        OverviewModule,
         UndefinedModule,
+        WaitingModule,
         PersonalModule,
         AuthorizationModule,
+        RegistrationModule,
         LecturersModule,
         StudentsModule,
         GroupsModule,
