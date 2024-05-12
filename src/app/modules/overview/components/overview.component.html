@@ -6,25 +6,25 @@
 
         <nav class="navigation flex-row">
             <div class="navigation-list flex-row">
-                <button type="button" class="navigation-item flex-center-center">
+                <a class="navigation-item flex-center-center" href="#overview">
                     <span>Главная</span>
-                </button>
+                </a>
 
-                <button type="button" class="navigation-item flex-center-center">
+                <a class="navigation-item flex-center-center" href="#about">
                     <span>О нас</span>
-                </button>
+                </a>
 
-                <button type="button" class="navigation-item flex-center-center">
+                <a class="navigation-item flex-center-center" href="#features">
                     <span>Возможности</span>
-                </button>
+                </a>
 
-                <button type="button" class="navigation-item flex-center-center">
+                <a class="navigation-item flex-center-center" (click)="navigateToSchedule()">
                     <span>Расписание</span>
-                </button>
+                </a>
 
-                <button type="button" class="navigation-item flex-center-center">
+                <a class="navigation-item flex-center-center" href="#contacts">
                     <span>Контакты</span>
-                </button>
+                </a>
             </div>
         </nav>
 
@@ -87,7 +87,103 @@
         </div>
 
         <div class="section-container features-container flex-row">
-            
+            <div class="features-wrapper flex-row">
+                <div class="features-item flex-column" (click)="navigateToAuthorization()">
+                    <div class="features-item__title flex-row">
+                        <p>Учет успеваемости</p>
+                    </div>
+
+                    <div class="features-item__image flex-row">
+                        <img src="../../../../assets/images/photos/features-1.png" alt="Features image">
+                    </div>
+
+                    <div class="features-item__caption flex-row">
+                        <p>Студенты могут легко отслеживать свои академические достижения, просматривать оценки по предметам, а также получать обратную связь от преподавателей.</p>
+                    </div>
+                </div>
+
+                <div class="features-item flex-column" (click)="navigateToAuthorization()">
+                    <div class="features-item__title flex-row">
+                        <p>Расписание занятий</p>
+                    </div>
+
+                    <div class="features-item__image flex-row">
+                        <img src="../../../../assets/images/photos/features-2.png" alt="Features image">
+                    </div>
+
+                    <div class="features-item__caption flex-row">
+                        <p>Платформа предоставляет актуальное расписание занятий, включая лекции, семинары и практические занятия, что помогает студентам планировать свое время.</p>
+                    </div>
+                </div>
+
+                <div class="features-item flex-column" (click)="navigateToAuthorization()">
+                    <div class="features-item__title flex-row">
+                        <p>Задания и домашние работы</p>
+                    </div>
+
+                    <div class="features-item__image flex-row">
+                        <img src="../../../../assets/images/photos/features-3.png" alt="Features image">
+                    </div>
+
+                    <div class="features-item__caption flex-row">
+                        <p>Студенты могут получать доступ к заданиям и домашним работам онлайн, сдавать их через платформу, получать обратную связь и отслеживать свой прогресс.</p>
+                    </div>
+                </div>
+
+                <div class="features-item flex-column" (click)="navigateToAuthorization()">
+                    <div class="features-item__title flex-row">
+                        <p>Администрирование и контроль</p>
+                    </div>
+
+                    <div class="features-item__image flex-row">
+                        <img src="../../../../assets/images/photos/features-4.png" alt="Features image">
+                    </div>
+
+                    <div class="features-item__caption flex-row">
+                        <p>Администраторы имеют полный доступ ко всем данным, связанным с преподавателями и студентами. Они могут создавать новые предметы, назначать преподавателей и т.д. </p>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+
+    <div id="contacts" class="section contacts flex-column">
+        <div class="section-title flex-row">
+            <p>Контакты</p>
+        </div>
+
+        <div class="section-container contacts-container flex-row">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d32690.841113589846!2d39.94774978002118!3d57.6024062106607!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x46b29692360c9fd7%3A0x79a76760b7b19ad4!2z0JrQu9GD0LHQvdCw0Y8g0YPQuy4sIDMz0JAsINCv0YDQvtGB0LvQsNCy0LvRjCwg0K_RgNC-0YHQu9Cw0LLRgdC60LDRjyDQvtCx0LsuLCAxNTAwMDg!5e0!3m2!1sru!2sru!4v1715536484858!5m2!1sru!2sru" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+    </div>
+
+    <footer class="footer flex-column">
+        <address class="footer-information flex-row">
+            <div class="footer-information__item flex-column">
+                <p class="footer-information__title">Наш адрес:</p>
+                <p class="footer-information__value">150008, обл. Ярославская, г. Ярославль, Клубная 33А</p>
+            </div>
+
+            <div class="footer-information__item flex-column">
+                <p class="footer-information__title">Телефон:</p>
+                <p class="footer-information__value">+7 (485) 271-46-49</p>
+            </div>
+
+            <div class="footer-information__item flex-column">
+                <p class="footer-information__title">Электронная почта:</p>
+                <p class="footer-information__value">{{ 'zavpk.yaroslavl@yarregion.ru' }}</p>
+            </div>
+
+            <div class="footer-information__item flex-column">
+                <p class="footer-information__title">Госпаблик:</p>
+                <p class="footer-information__value">https://vk.com/zpk_public</p>
+            </div>
+        </address>
+
+        <div class="footer-copyright flex-column">
+            <p>© ГПОАУ ЯО Заволжский политехнический колледж, 2015 – 2024</p>
+
+            <p>Работает на CMS2.edu при поддержке © ГУ ЯО "Центр телекоммуникаций и информационных систем в образовании"</p>
+        </div>
+    </footer>
 </section>

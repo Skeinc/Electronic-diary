@@ -15,4 +15,9 @@ export class OverviewComponent {
     navigateToAuthorization(): void {
         this.router.navigateByUrl('/login');
     };
+
+    // Переадресация на страницу с расписанием
+    navigateToSchedule(): void {
+        this.router.navigateByUrl('schedule');
+    };
 }
