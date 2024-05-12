@@ -12,6 +12,7 @@ import { AuthGuard } from "@core/guards/authorization.guard";
 import { RegistrationComponent } from "@modules/registration/components/registration.component";
 import { WaitingComponent } from "@modules/waiting/components/waiting.component";
 import { OverviewComponent } from "@modules/overview/components/overview.component";
+import { ScheduleComponent } from "@modules/schedule/components/schedule.component";
 
 export const ROUTES: Routes = [
     {
@@ -59,6 +60,10 @@ export const ROUTES: Routes = [
         path: 'subjects',
         component: SubjectsComponent,
         canActivate: [AuthGuard],
+    },
+    {
+        path: 'schedule',
+        component: ScheduleComponent,
     },
     {
         path: 'waiting',

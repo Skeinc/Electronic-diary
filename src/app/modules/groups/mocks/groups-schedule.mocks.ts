@@ -4,8 +4,8 @@ export const GroupsScheduleMocks = [
         data: [
             {
                 number: 1,
-                name: 'История',
-                cabinet: '400',
+                name: null,
+                cabinet: null,
             },
             {
                 number: 2,

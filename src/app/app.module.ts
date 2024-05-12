@@ -18,6 +18,7 @@ import { SubjectsModule } from "./modules/subjects/subjects.module";
 import { RegistrationModule } from "@modules/registration/registration.module";
 import { WaitingModule } from "@modules/waiting/waiting.module";
 import { OverviewModule } from "@modules/overview/overview.module";
+import { ScheduleModule } from "@modules/schedule/schedule.module";
 
 @NgModule({
     declarations: [
@@ -43,6 +44,7 @@ import { OverviewModule } from "@modules/overview/overview.module";
         GroupsModule,
         RequestsModule,
         SubjectsModule,
+        ScheduleModule,
     ],
     providers: [
 

@@ -1,0 +1,51 @@
+<section class="wrapper">
+    <app-loader *ngIf="isDataLoading" class="loader"></app-loader>
+
+    <app-navigation (navigationVisibility)="onNavigationOpenedChange($event)"></app-navigation>
+
+    <div class="container" [style.marginLeft]="isNavigationOpened ? '320px' : '80px'">
+        <div class="schedule flex-column">
+            <header class="header flex-row">
+                <div class="header-title flex-row">
+                    <p class="header-title__value">Расписание</p>
+                </div>
+
+                <div class="header-controllers flex-row"></div>
+            </header>
+
+            <div class="group-controller flex-row">
+                <div class="group-controller__wrapper">
+                    <app-dropdown [elementID]="'select-group'" [elementName]="'select-group'" [elementLabel]="'Выберите группу'" [(elementValue)]="selectedGroup" [options]="avaliableGroup ?? []" [optionsValue]="'nameShortly'" [optionsLabel]="'nameShortly'" [elementDisable]="isDataLoading" [filter]="true" [clearOption]="true"></app-dropdown>
+                </div>
+
+                <div class="group-controller__wrapper">
+                    <app-button [elementID]="'apply'" [elementName]="'apply'" [elementLabel]="'Применить'" [elementDisable]="isDataLoading" (click)="searchScheduleHandler()"></app-button>
+                </div>
+            </div>
+
+            <div class="schedule-wrapper flex-row">
+                <div class="schedule-item flex-column" *ngFor="let day of (scheduleData ? scheduleData : scheduleDataEmpty)">
+                    <div class="schedule-item__title flex-center-center">
+                        <p>{{ day.name }}</p>
+                    </div>
+        
+                    <div class="schedule-item__data flex-column">
+                        <div class="data-item flex-row" *ngFor="let subject of day.data; index as i">
+                            <div class="data-item__number flex-center-center">
+                                <p>{{ day.data[i].number }}</p>
+                            </div>
+        
+                            <div class="data-item__name flex-row">
+                                <app-text-field *ngIf="day.data[i]" [elementID]="'schedule-name'" [elementName]="'schedule-name'" [elementPlaceholder]="'—'" [elementValue]="day.data[i].name" [elementDisable]="true" (elementValueChange)="day.data[i].name = $event"></app-text-field>
+                            </div>
+        
+                            <div class="data-item__cabinet flex-center-center">
+                                <app-text-field *ngIf="day.data[i]" [elementID]="'schedule-cabinet'" [elementName]="'schedule-cabinet'" [elementPlaceholder]="'—'" [elementValue]="day.data[i].cabinet" [elementDisable]="true" (elementValueChange)="day.data[i].cabinet = $event"></app-text-field>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

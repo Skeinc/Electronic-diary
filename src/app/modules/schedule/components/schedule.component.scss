@@ -1,0 +1,161 @@
+@import '@styles/global.scss';
+@import '@styles/variables.scss';
+
+.wrapper {
+    width: 100%;
+    min-height: 100vh;
+}
+
+.container {
+    width: auto;
+    min-height: calc(100vh - 80px);
+    height: 100%;
+    margin-top: 80px;
+    padding: 20px;
+    background-color: $colorGrey7;
+    transition: $transitionMedium;
+}
+
+.schedule {
+    width: 100%;
+    min-height: calc(100vh - 80px - 40px);
+    height: auto;
+    padding: 20px;
+    border-radius: 10px;
+    background-color: $colorWhite;
+    overflow: hidden;
+}
+
+.header {
+    width: 100%;
+    height: 60px;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid $inputBorder;
+    gap: 16px;
+
+    .header-title {
+        width: auto;
+
+        .header-title__value {
+            font-weight: 600;
+            font-size: 24px;
+            line-height: auto;
+            color: $colorDark2;
+        }
+    }
+
+    .header-controllers {
+        width: auto;
+        height: 100%;
+        gap: 10px;
+        align-items: center;
+    }
+}
+
+.group-controller {
+    width: 100%;
+    gap: 20px;
+    margin-top: 20px;
+
+    .group-controller__wrapper {
+        width: 240px;
+    }
+}
+
+.schedule-wrapper {
+    width: 100%;
+    height: auto;
+    flex-wrap: wrap;
+    padding: 20px 0px;
+    gap: 20px;
+    overflow: hidden;
+}
+
+.schedule-item {
+    width: 300px;
+    height: auto;
+    border: 1px solid $inputBorder;
+    border-radius: 6px;
+    background-color: $colorGrey7;
+    overflow: hidden;
+    justify-content: space-between;
+
+    .schedule-item__title {
+        width: 100%;
+        height: 32px;
+        background-color: $colorPrimary3;
+        border-bottom: 1px solid $inputBorder;
+        
+        p {
+            font-weight: 600;
+            font-size: 14px;
+            line-height: auto;
+            color: $colorWhite;
+        }
+    }
+
+    .schedule-item__data {
+        width: 100%;
+        height: auto;
+        background-color: transparent;
+
+        .data-item {
+            width: 100%;
+            height: 32px;
+            border-top: 1px solid $inputBorder;
+            overflow: hidden;
+
+            &::ng-deep {
+                input {
+                    height: 32px;
+                    padding: 0px 10px;
+                    background-color: $colorGrey7;
+                    border-radius: none;
+                    border: none;
+                    font-size: 12px;
+
+                    &:focus,
+                    &:active,
+                    &:not(:placeholder-shown) {
+                        border-radius: 0;
+                        box-shadow: none;
+                    }
+                }
+            }
+
+            .data-item__number {
+                width: 32px;
+                height: 100%;
+                border-right: 1px solid $inputBorder;
+                overflow: hidden;
+
+                p {
+                    font-weight: 500;
+                    font-size: 12px;
+                    line-height: auto;
+                    color: $colorDark2;
+                    width: 32px;
+                    text-wrap: nowrap;
+                    text-overflow: ellipsis;
+                    overflow: hidden;
+                    text-align: center;
+                }
+            }
+
+            .data-item__name {
+                width: calc(100% - 32px - 60px);
+                height: 100%;
+                align-items: center;
+                overflow: hidden;
+            }
+
+            .data-item__cabinet {
+                width: 60px;
+                height: 100%;
+                border-left: 1px solid $inputBorder;
+                overflow: hidden;
+            }
+        }
+    }
+}

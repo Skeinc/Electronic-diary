@@ -37,5 +37,11 @@ export const menuItemsConstant: MenuItemsInterface[] = [
         label: 'Предметы',
         icon: 'book',
         role: RolesEnum.ADMINISTRATOR,
+    },
+    {
+        path: '/schedule',
+        label: 'Расписание',
+        icon: 'schedule',
+        role: RolesEnum.ALL,
     }
 ];

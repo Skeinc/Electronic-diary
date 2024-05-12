@@ -55,6 +55,8 @@ export class RegistrationComponent implements OnInit {
 
         this.groupsService.getAllGroups().subscribe({
             next: (response: GroupModel[]) => {
+                this.avaliableGroups = response;
+
                 this.loggerService.message('backend', 'All groups was recevied', response);
             },
             error: (err) => {

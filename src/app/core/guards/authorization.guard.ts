@@ -29,9 +29,17 @@ export class AuthGuard implements CanActivate {
                     return false;
                 case '4':
                     // Студенту разрешаем доступ к указанным роутам
-                    this.router.navigate(['/personal']);
+                    if(user.accStatus === 1) {
+                        this.router.navigate(['/personal']);
 
-                    return false;
+                        return false;
+                    }
+                    else {
+                        this.router.navigate(['/waiting']);
+
+                        return false;
+                    }
+
                 default:
                     // Если роль неизвестна или неопределена, перенаправляем на страницу входа
                     this.router.navigate(['/login']);

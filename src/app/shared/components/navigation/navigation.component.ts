@@ -36,6 +36,9 @@ export class NavigationComponent implements OnInit{
 
     ngOnInit(): void {
         this.menuItems = menuItemsConstant;
+
+        // Получаем данные о пользователе
+        this.getUserInformation();
     }
 
     // Метод для получения информации о пользователе
