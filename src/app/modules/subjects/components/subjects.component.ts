@@ -263,8 +263,8 @@ export class SubjectsComponent implements OnInit {
             // Формируем тело запроса
             const request: EditSubjectRequestInterface = {
                 id: id,
-                name: this.dialogSubjectName,
-                code: this.dialogSubjectCode,
+                name: this.dialogEditSubjectName,
+                code: this.dialogEditSubjectCode,
                 lecturersId: [],
                 groupsId: [],
             };
@@ -280,6 +280,8 @@ export class SubjectsComponent implements OnInit {
             this.subjectsService.editSubject(request).subscribe({
                 next: (response) => {
                     this.getAllSubjects();
+
+                    this.isEditingSubjectDialogVisible = !this.isEditingSubjectDialogVisible;
 
                     this.loggerService.message('backend', `Subject with id = ${request.id} was edit`);
 
@@ -406,8 +408,6 @@ export class SubjectsComponent implements OnInit {
 
             this.avaliableLecturers.push(lecturer);
         });
-
-        console.log(this.avaliableLecturers);
     };
 
     // Метод для форматирования данных групп с бекенда
@@ -463,10 +463,10 @@ export class SubjectsComponent implements OnInit {
     };
 
     // Метод для смены видимости окна изменения предмета
-    toggleEditingSubjectDialogVisible(data: any): void {
-        this.dialogEditSubjectID = data.id;
-        this.dialogEditSubjectName = data.name;
-        this.dialogEditSubjectCode = data.code;
+    toggleEditingSubjectDialogVisible(data: SubjectModel): void {
+        this.dialogEditSubjectID = data.id!;
+        this.dialogEditSubjectName = data.name ?? '';
+        this.dialogEditSubjectCode = data.code ?? '';
         this.editSubjectSelectedLecturers = data.lecturers;
         this.editSubjectSelectedGroups = data.groups;
 

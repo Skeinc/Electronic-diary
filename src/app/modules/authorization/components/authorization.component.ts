@@ -5,6 +5,7 @@ import { LoggerService } from "@shared/services/logger/logger.service";
 import { Router } from "@angular/router";
 import { PersonalService } from "@modules/personal/services/personal.service";
 import { UserModel } from "@shared/models/user.model";
+import { convertPhoneNumber } from "@shared/utilities/converPhoneNumber.util";
 
 @Component({
     selector: 'app-authorization',
@@ -90,7 +91,7 @@ export class AuthorizationComponent implements OnInit {
             });
         };
         if(requestType === 'student') {
-            this.authorizationService.authorizationStudent(this.studentLogin, this.studentPassword).subscribe({
+            this.authorizationService.authorizationStudent(convertPhoneNumber(this.studentLogin), this.studentPassword).subscribe({
                 next: (response: number) => {
                     // Получаем данные об авторизированном пользователе
                     this.getUserInformation(response);

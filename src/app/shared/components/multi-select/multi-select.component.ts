@@ -15,13 +15,13 @@ export class MultiSelectComponent {
     @Input() elementName?: string | null = null;
 
     // Label элемента
-    @Input() elementLabel?: string  | null = null;
+    @Input() elementLabel?: string | null = null;
 
     // Value элемента
     @Input() elementValue?: any[] | null = null;
 
     // Placeholder элемента
-    @Input() elementPlaceholder?: string  | null = null;
+    @Input() elementPlaceholder?: string | null = null;
 
     // Required параметр элемента
     @Input() elementRequired?: boolean;
@@ -63,15 +63,16 @@ export class MultiSelectComponent {
 
     // Метод для выбора элемента и установки его в ngModel
     selectOption(option: any): void {
-        if(this.elementValue === null || this.elementValue?.length === 0) {
+        if (this.elementValue === null || this.elementValue?.length === 0) {
             this.elementValue = [];
         };
 
-        if(this.elementValue?.includes(option)) {
+        const optionIndex = this.elementValue?.findIndex((el: any) => el.id === option.id);
+
+        if (optionIndex !== -1) {
             this.isMultiselectVisible = false;
-        }
-        else {
-            this.elementValue!.push(option);
+        } else {
+            this.elementValue?.push(option);
             this.elementValueChange.emit(this.elementValue);
             this.isMultiselectVisible = false;
         }
@@ -102,7 +103,7 @@ export class MultiSelectComponent {
         if (!this.elementValue || this.elementValue.length === 0) {
             return '';
         }
-    
+
         return this.elementValue.map(item => item[this.optionsLabel!]).join(', ');
     }
 }

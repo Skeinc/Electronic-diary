@@ -1,6 +1,7 @@
 import { HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { HttpService } from "@core/services/http.service";
+import { ScheduleModel } from "@shared/models/schedule.model";
 import { Observable } from "rxjs";
 
 @Injectable({
@@ -19,8 +20,8 @@ export class ScheduleService {
     };
 
     // Метод для изменения расписания по ID группы
-    public updateScheduleByGroupID(id: number): Observable<any> {
-        const body = { "groupID": id };
+    public updateScheduleByGroupID(id: number, request: ScheduleModel): Observable<any> {
+        const body = { "groupID": id, "schedule": request };
 
         return this.httpService.put('schedule/updateScheduleByGroupID', body);
     };

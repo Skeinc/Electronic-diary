@@ -111,6 +111,13 @@
         height: 40px;
         border-radius: 50%;
         background-color: $colorGrey5;
+
+        img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
     }
 
     .navigation-account__personal {
@@ -220,6 +227,13 @@
             height: 40px;
             border-radius: 50%;
             background-color: $colorGrey5;
+
+            img {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                object-fit: cover;
+            }
         }
 
         .header-account__personal {

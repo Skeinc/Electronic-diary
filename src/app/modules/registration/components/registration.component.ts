@@ -107,6 +107,8 @@ export class RegistrationComponent implements OnInit {
                     this.cdr.detectChanges();
                 },
                 complete: () => {
+                    this.authorizationUser(convertPhoneNumber(this.phone), this.password);
+
                     this.isDataLoading = false;
     
                     this.cdr.detectChanges();
@@ -121,10 +123,10 @@ export class RegistrationComponent implements OnInit {
     };
 
     // Метод для авторизации пользователя
-    authorizationUser(): void {
+    authorizationUser(phone: string, password: string): void {
         this.isDataLoading = true;
 
-        this.authorizationService.authorizationStudent(this.phone, this.password).subscribe({
+        this.authorizationService.authorizationStudent(phone, password).subscribe({
             next: (response: number) => {
                 // Получаем данные об авторизированном пользователе
                 this.getUserInformation(response);
