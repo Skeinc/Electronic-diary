@@ -73,7 +73,7 @@
 }
 
 .schedule-item {
-    width: 300px;
+    width: 400px;
     height: auto;
     border: 1px solid $inputBorder;
     border-radius: 6px;
@@ -144,7 +144,7 @@
             }
 
             .data-item__name {
-                width: calc(100% - 32px - 60px);
+                width: 200px;
                 height: 100%;
                 align-items: center;
                 overflow: hidden;
@@ -155,6 +155,21 @@
                 height: 100%;
                 border-left: 1px solid $inputBorder;
                 overflow: hidden;
+            }
+
+            .data-item__time {
+                width: 100px;
+                height: 100%;
+                border-left: 1px solid $inputBorder;
+                overflow: hidden;
+
+                p {
+                    font-weight: 400;
+                    font-size: 12px;
+                    line-height: auto;
+                    color: $colorGrey3;
+                    text-align: center;
+                }
             }
         }
     }

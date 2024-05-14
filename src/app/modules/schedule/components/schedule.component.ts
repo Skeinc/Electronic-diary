@@ -5,6 +5,7 @@ import { GroupScheduleInterface } from "@shared/interfaces/groups/schedule.inter
 import { GroupModel } from "@shared/models/group.model";
 import { LoggerService } from "@shared/services/logger/logger.service";
 import { ScheduleService } from "../services/schedule.service";
+import { LessonsTimeConstant } from "@shared/constants/lessons-time.constant";
 
 @Component({
     selector: 'app-schedule',
@@ -36,6 +37,9 @@ export class ScheduleComponent implements OnInit{
 
     // Данные по выбранной группе
     selectedGroup: GroupModel | null = null;
+
+    // Время уроков
+    lessonsTime = LessonsTimeConstant;
 
     ngOnInit(): void {
         // Получаем данные по доступным группам

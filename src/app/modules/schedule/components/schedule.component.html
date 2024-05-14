@@ -42,6 +42,10 @@
                             <div class="data-item__cabinet flex-center-center">
                                 <app-text-field *ngIf="day.data[i]" [elementID]="'schedule-cabinet'" [elementName]="'schedule-cabinet'" [elementPlaceholder]="'—'" [elementValue]="day.data[i].cabinet" [elementDisable]="true" (elementValueChange)="day.data[i].cabinet = $event"></app-text-field>
                             </div>
+
+                            <div class="data-item__time flex-center-center">
+                                <p>{{ lessonsTime[i] }}</p>
+                            </div>
                         </div>
                     </div>
                 </div>
