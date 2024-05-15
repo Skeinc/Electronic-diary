@@ -63,12 +63,11 @@
 }
 
 .schedule-item {
-    width: 300px;
+    width: auto;
     height: auto;
     border: 1px solid $inputBorder;
     border-radius: 6px;
     background-color: $colorGrey7;
-    overflow: hidden;
     justify-content: space-between;
 
     .schedule-item__title {
@@ -94,15 +93,14 @@
             width: 100%;
             height: 32px;
             border-top: 1px solid $inputBorder;
-            overflow: hidden;
 
             &::ng-deep {
                 input {
                     height: 32px;
                     padding: 0px 10px;
                     background-color: $colorGrey7;
-                    border-radius: none;
-                    border: none;
+                    border-radius: 0px;
+                    border: 1px solid $inputBorder;
                     font-size: 12px;
 
                     &:focus,
@@ -133,17 +131,19 @@
                 }
             }
 
-            .data-item__name {
-                width: calc(100% - 32px - 60px);
+            .data-item__lecturer {
                 height: 100%;
                 align-items: center;
-                overflow: hidden;
+            }
+
+            .data-item__name {
+                height: 100%;
+                align-items: center;
             }
 
             .data-item__cabinet {
                 width: 60px;
                 height: 100%;
-                border-left: 1px solid $inputBorder;
                 overflow: hidden;
             }
         }

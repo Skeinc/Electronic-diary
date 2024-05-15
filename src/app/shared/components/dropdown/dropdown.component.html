@@ -10,9 +10,9 @@
             [disabled]="elementDisable ?? false"
             (click)="toggleDropdownVisible()">
             
-            <span *ngIf="clearOption" class="material-icons dropdown-icon icon-remove" (click)="clearValue()">close</span>
+            <span *ngIf="clearOption && !elementDisable" class="material-icons dropdown-icon icon-remove" (click)="clearValue()">close</span>
 
-            <span class="material-icons dropdown-icon" (click)="toggleDropdownVisible()">{{ isDropdownVisible ? 'expand_less' : 'expand_more' }}</span>
+            <span *ngIf="!elementDisable" class="material-icons dropdown-icon" (click)="toggleDropdownVisible()">{{ isDropdownVisible ? 'expand_less' : 'expand_more' }}</span>
     
             <label *ngIf="elementLabel" [for]="elementID" class="dropdown-label">{{ elementLabel }}</label>
         </div>

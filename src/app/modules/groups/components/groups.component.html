@@ -109,23 +109,27 @@
 <!-- Редактирование расписания группы -->
 <p-dialog [header]="'Редактирование расписания группы'" class="flex-column" [(visible)]="isEditingScheduleDialogVisible" [modal]="true" [style]="{ width: '1300px' }" [draggable]="false" [resizable]="false">
     <div class="schedule-wrapper flex-row">
-        <div class="schedule-item flex-column" *ngFor="let day of groupSchedule">
+        <div class="schedule-item flex-column" *ngFor="let day of groupSchedule.data">
             <div class="schedule-item__title flex-center-center">
-                <p>{{ day.name }}</p>
+                <p>{{ day.dayOfWeek }}</p>
             </div>
 
             <div class="schedule-item__data flex-column">
-                <div class="data-item flex-row" *ngFor="let subject of day.data; index as i">
+                <div class="data-item flex-row" *ngFor="let subject of day.schedule; index as i">
                     <div class="data-item__number flex-center-center">
-                        <p>{{ day.data[i].number }}</p>
+                        <p>{{ day.schedule[i].number }}</p>
+                    </div>
+
+                    <div class="data-item__lecturer flex-row">
+                        <app-dropdown [elementID]="'lecturer'" [elementName]="'lecturer'" [elementPlaceholder]="'Преподаватель'" [(elementValue)]="day.schedule[i].teacherName" [elementDisable]="!isEditingSchedule" [options]="avaliableLecturers ?? []" [optionsLabel]="'surname'" [optionsValue]="'surname'" [clearOption]="true" [filter]="true"></app-dropdown>
                     </div>
 
                     <div class="data-item__name flex-row">
-                        <app-text-field *ngIf="day.data[i]" [elementID]="'schedule-name'" [elementName]="'schedule-name'" [elementPlaceholder]="'—'" [elementValue]="day.data[i].name" [elementDisable]="!isEditingSchedule" (elementValueChange)="day.data[i].name = $event"></app-text-field>
+                        <app-dropdown [elementID]="'subject'" [elementName]="'subject'" [elementPlaceholder]="'Предмет'" [(elementValue)]="day.schedule[i].subjectName" [elementDisable]="!isEditingSchedule" [options]="avaliableSubjects ?? []" [optionsLabel]="'name'" [optionsValue]="'name'" [clearOption]="true" [filter]="true"></app-dropdown>
                     </div>
 
                     <div class="data-item__cabinet flex-center-center">
-                        <app-text-field *ngIf="day.data[i]" [elementID]="'schedule-cabinet'" [elementName]="'schedule-cabinet'" [elementPlaceholder]="'—'" [elementValue]="day.data[i].cabinet" [elementDisable]="!isEditingSchedule" (elementValueChange)="day.data[i].cabinet = $event"></app-text-field>
+                        <app-text-field *ngIf="day.schedule[i]" [elementID]="'schedule-cabinet'" [elementName]="'schedule-cabinet'" [elementPlaceholder]="'Каб.'" [elementValue]="day.schedule[i].cabinet" [elementDisable]="!isEditingSchedule" (elementValueChange)="day.schedule[i].cabinet = $event"></app-text-field>
                     </div>
                 </div>
             </div>

@@ -5,6 +5,12 @@ import { GroupsScheduleMocks } from "../mocks/groups-schedule.mocks";
 import { GroupsService } from "../services/groups.service";
 import { LoggerService } from "@shared/services/logger/logger.service";
 import { GroupModel } from "@shared/models/group.model";
+import { LecturersService } from "@modules/lecturers/services/lecturers.service";
+import { LecturerModel } from "@shared/models/lecturer.model";
+import { SubjectModel } from "@shared/models/subject.model";
+import { SubjectsService } from "@modules/subjects/services/subjects.service";
+import { ScheduleMocks } from "@modules/schedule/mocks/schedule.mocks";
+import { ScheduleModel } from "@shared/models/schedule.model";
 
 @Component({
     selector: 'app-groups',
@@ -13,6 +19,8 @@ import { GroupModel } from "@shared/models/group.model";
 })
 export class GroupsComponent implements OnInit {
     constructor(
+        private lecturersService: LecturersService,
+        private subjectsService: SubjectsService,
         private groupsService: GroupsService,
         private loggerService: LoggerService,
         private cdr: ChangeDetectorRef,
@@ -62,7 +70,7 @@ export class GroupsComponent implements OnInit {
     dialogEditErrorMessage: string | null = null;
 
     // Данные для расписания группы
-    groupSchedule: GroupScheduleInterface[] = GroupsScheduleMocks;
+    groupSchedule: ScheduleModel = ScheduleMocks;
 
     // Данные о группах
     groupsData: GroupModel[] | null = null;
@@ -79,12 +87,23 @@ export class GroupsComponent implements OnInit {
     // Переменная, хранящая ID группы, которую пытаются редактировать
     editGroupID: number | null = null;
 
+    // Доступные преподаватели
+    avaliableLecturers: LecturerModel[] | null = null;
+
+    // Выбранный преподаватель
+    selectedLecturer: LecturerModel | null = null;
+
+    // Доступные предметы
+    avaliableSubjects: SubjectModel[] | null = null;
+
+    // Выбранный предмет
+    selectedSubject: SubjectModel | null = null;
+
     @HostListener('window:resize', ['$event'])
     onResize(event: any): void {
         // Вызываем метод для обновления высоты скрола таблицы
         this.updateScrollHeight();
     }
-
 
     ngOnInit(): void {
         // Установка высоты скрола таблицы
@@ -95,6 +114,12 @@ export class GroupsComponent implements OnInit {
 
         // Получаем данные о группах
         this.getAllGroupsData();
+
+        // Получаем данные о доступных преподавателях
+        this.getAllLecturers();
+
+        // Получаем данные о доступных предметах
+        this.getAllSubjects();
     }
 
     // Метод для получения всех групп
@@ -252,6 +277,56 @@ export class GroupsComponent implements OnInit {
             },
             error: (err) => {
                 this.loggerService.message('error', 'Error with delete group', err);
+
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+            complete: () => {
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+        });
+    };
+
+    // Метод для получения доступных преподавателей
+    getAllLecturers(): void {
+        this.isDataLoading = true;
+
+        this.lecturersService.getAllLecturers().subscribe({
+            next: (response: LecturerModel[]) => {
+                this.avaliableLecturers = response;
+
+                this.loggerService.message('backend', `Lecturers data was received`, response);
+            },
+            error: (err) => {
+                this.loggerService.message('error', 'Error with get all lecturers', err);
+
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+            complete: () => {
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+        });
+    };
+
+    // Метод для получения доступных предметов
+    getAllSubjects(): void {
+        this.isDataLoading = true;
+
+        this.subjectsService.getAllSubjects().subscribe({
+            next: (response: SubjectModel[]) => {
+                this.avaliableSubjects = response;
+
+                this.loggerService.message('backend', `Subjects data was received`, response);
+            },
+            error: (err) => {
+                this.loggerService.message('error', 'Error with get all subjects', err);
 
                 this.isDataLoading = false;
 
