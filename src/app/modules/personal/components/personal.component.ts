@@ -1,6 +1,5 @@
 import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
 import { PersonalSubjectsMocks } from "../mocks/personal-subjects.mocks";
-import { PersonalThemesMocks } from "../mocks/personal-themes.mocks";
 import { animate, style, transition, trigger } from "@angular/animations";
 import { LoggerService } from "@shared/services/logger/logger.service";
 import { PersonalService } from "../services/personal.service";
@@ -204,12 +203,6 @@ export class PersonalComponent implements OnInit {
 
     // Метод для смены видимости контента предметов
     toggleSubjectVisible(index: number): void {
-        this.subjectThemes = PersonalThemesMocks;
-
-        for (let index = 0; index < this.subjectThemes.length; index++) {
-            this.subjectsThemesVisibleFlags.push(false);
-        }
-
         this.subjectsVisibleFlags[index] = !this.subjectsVisibleFlags[index];
     }
 
