@@ -24,27 +24,31 @@
             </div>
 
             <div class="schedule-wrapper flex-row">
-                <div class="schedule-item flex-column" *ngFor="let day of (scheduleData ? scheduleData : scheduleDataEmpty)">
+                <div class="schedule-item flex-column" *ngFor="let day of scheduleData.data">
                     <div class="schedule-item__title flex-center-center">
-                        <p>{{ day.name }}</p>
+                        <p>{{ day.dayOfWeek }}</p>
                     </div>
         
                     <div class="schedule-item__data flex-column">
-                        <div class="data-item flex-row" *ngFor="let subject of day.data; index as i">
+                        <div class="data-item flex-row" *ngFor="let subject of day.schedule; index as i">
                             <div class="data-item__number flex-center-center">
-                                <p>{{ day.data[i].number }}</p>
+                                <p>{{ day.schedule[i].number }}</p>
+                            </div>
+
+                            <div class="data-item__teacher flex-row">
+                                <app-text-field *ngIf="day.schedule[i]" [elementID]="'schedule-teacher'" [elementName]="'schedule-teacher'" [elementPlaceholder]="'—'" [elementValue]="day.schedule[i].teacher?.name" [elementDisable]="true" (elementValueChange)="day.schedule[i].teacher!.name = $event" [elementDisable]="true"></app-text-field>
                             </div>
         
                             <div class="data-item__name flex-row">
-                                <app-text-field *ngIf="day.data[i]" [elementID]="'schedule-name'" [elementName]="'schedule-name'" [elementPlaceholder]="'—'" [elementValue]="day.data[i].name" [elementDisable]="true" (elementValueChange)="day.data[i].name = $event"></app-text-field>
+                                <app-text-field *ngIf="day.schedule[i]" [elementID]="'schedule-name'" [elementName]="'schedule-name'" [elementPlaceholder]="'—'" [elementValue]="day.schedule[i].subject?.name" [elementDisable]="true" (elementValueChange)="day.schedule[i].subject!.name = $event" [elementDisable]="true"></app-text-field>
                             </div>
         
                             <div class="data-item__cabinet flex-center-center">
-                                <app-text-field *ngIf="day.data[i]" [elementID]="'schedule-cabinet'" [elementName]="'schedule-cabinet'" [elementPlaceholder]="'—'" [elementValue]="day.data[i].cabinet" [elementDisable]="true" (elementValueChange)="day.data[i].cabinet = $event"></app-text-field>
+                                <app-text-field *ngIf="day.schedule[i]" [elementID]="'schedule-cabinet'" [elementName]="'schedule-cabinet'" [elementPlaceholder]="'—'" [elementValue]="day.schedule[i].cabinet" [elementDisable]="true" (elementValueChange)="day.schedule[i].cabinet = $event" [elementDisable]="true"></app-text-field>
                             </div>
 
                             <div class="data-item__time flex-center-center">
-                                <p>{{ lessonsTime[i] }}</p>
+                                <p aria-readonly="true">{{ lessonsTime[i] }}</p>
                             </div>
                         </div>
                     </div>

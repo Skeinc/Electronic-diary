@@ -1,3 +1,6 @@
+import { LecturerShortInformationInterface } from "../lecturers/lecturer.interface";
+import { SubjectShortInformationInterface } from "../subjects/subject.interface";
+
 export interface ScheduleDayInterface {
     dayOfWeek: string | null;
     schedule: ScheduleLessonInterface[];
@@ -5,9 +8,7 @@ export interface ScheduleDayInterface {
 
 export interface ScheduleLessonInterface {
     number: number;
-    teacherID?: number | null;
-    teacherName?: string | null;
-    subjectID?: number | null;
-    subjectName?: string | null;
+    teacher: LecturerShortInformationInterface | null;
+    subject: SubjectShortInformationInterface | null;
     cabinet: string | null;
 };

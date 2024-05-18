@@ -3,6 +3,7 @@ import { Router } from "@angular/router";
 import { environment } from "@environments/environment";
 import { PersonalService } from "@modules/personal/services/personal.service";
 import { menuItemsConstant } from "@shared/constants/menu.constant";
+import { RolesEnum } from "@shared/enums/roles/roles.enum";
 import { MenuItemsInterface } from "@shared/interfaces/navigation/menu-items.interface";
 import { UserModel } from "@shared/models/user.model";
 import { LoggerService } from "@shared/services/logger/logger.service";
@@ -43,8 +44,6 @@ export class NavigationComponent implements OnInit{
     userRole: string = '';
 
     ngOnInit(): void {
-        this.menuItems = menuItemsConstant;
-
         // Получаем данные о пользователе
         this.getUserInformation();
     }
@@ -55,6 +54,14 @@ export class NavigationComponent implements OnInit{
             this.userData = this.personalService.getUser();
 
             this.userRole = this.displayUserRole(this.userData!.role ?? '');
+
+            if(this.userRole !== 'Супер-администратор') {
+                // Определение элементов меню в зависимости от роли пользователя
+                this.menuItems = menuItemsConstant.filter(item => item.role === this.userRole || item.role === RolesEnum.ALL);
+            }
+            else {
+                this.menuItems = menuItemsConstant;
+            }
         };
     };
 

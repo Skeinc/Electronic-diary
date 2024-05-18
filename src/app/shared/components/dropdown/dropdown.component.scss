@@ -39,6 +39,7 @@
 
     &:disabled {
         background-color: $inputBackgroundDisabled;
+        color: $colorGrey3;
 
         &:hover {
             border-radius: 10px;

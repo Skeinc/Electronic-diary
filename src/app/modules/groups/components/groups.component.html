@@ -108,6 +108,9 @@
 
 <!-- Редактирование расписания группы -->
 <p-dialog [header]="'Редактирование расписания группы'" class="flex-column" [(visible)]="isEditingScheduleDialogVisible" [modal]="true" [style]="{ width: '1300px' }" [draggable]="false" [resizable]="false">
+
+    <app-loader *ngIf="isDataLoading" class="loader"></app-loader>
+
     <div class="schedule-wrapper flex-row">
         <div class="schedule-item flex-column" *ngFor="let day of groupSchedule.data">
             <div class="schedule-item__title flex-center-center">
@@ -121,11 +124,11 @@
                     </div>
 
                     <div class="data-item__lecturer flex-row">
-                        <app-dropdown [elementID]="'lecturer'" [elementName]="'lecturer'" [elementPlaceholder]="'Преподаватель'" [(elementValue)]="day.schedule[i].teacherName" [elementDisable]="!isEditingSchedule" [options]="avaliableLecturers ?? []" [optionsLabel]="'name'" [optionsValue]="'name'" [clearOption]="true" [filter]="true"></app-dropdown>
+                        <app-dropdown [elementID]="'lecturer'" [elementName]="'lecturer'" [elementPlaceholder]="'Преподаватель'" [(elementValue)]="day.schedule[i].teacher" [elementDisable]="!isEditingSchedule" [options]="avaliableLecturers ?? []" [optionsLabel]="'name'" [optionsValue]="'name'" [clearOption]="true" [filter]="true"></app-dropdown>
                     </div>
 
                     <div class="data-item__name flex-row">
-                        <app-dropdown [elementID]="'subject'" [elementName]="'subject'" [elementPlaceholder]="'Предмет'" [(elementValue)]="day.schedule[i].subjectName" [elementDisable]="!isEditingSchedule" [options]="avaliableSubjects ?? []" [optionsLabel]="'name'" [optionsValue]="'name'" [clearOption]="true" [filter]="true"></app-dropdown>
+                        <app-dropdown [elementID]="'subject'" [elementName]="'subject'" [elementPlaceholder]="'Предмет'" [(elementValue)]="day.schedule[i].subject" [elementDisable]="!isEditingSchedule" [options]="avaliableSubjects ?? []" [optionsLabel]="'name'" [optionsValue]="'name'" [clearOption]="true" [filter]="true"></app-dropdown>
                     </div>
 
                     <div class="data-item__cabinet flex-center-center">

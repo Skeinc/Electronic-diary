@@ -21,7 +21,7 @@ export class ScheduleService {
 
     // Метод для изменения расписания по ID группы
     public updateScheduleByGroupID(id: number, request: ScheduleModel): Observable<any> {
-        const body = { "groupID": id, "schedule": request };
+        const body = { "id": id, "schedule": request };
 
         return this.httpService.put('schedule/updateScheduleByGroupID', body);
     };

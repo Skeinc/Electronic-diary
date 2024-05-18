@@ -1,11 +1,11 @@
 import { ChangeDetectorRef, Component, OnInit } from "@angular/core";
-import { GroupsScheduleMocks } from "@modules/groups/mocks/groups-schedule.mocks";
 import { GroupsService } from "@modules/groups/services/groups.service";
-import { GroupScheduleInterface } from "@shared/interfaces/groups/schedule.interface";
 import { GroupModel } from "@shared/models/group.model";
 import { LoggerService } from "@shared/services/logger/logger.service";
 import { ScheduleService } from "../services/schedule.service";
 import { LessonsTimeConstant } from "@shared/constants/lessons-time.constant";
+import { ScheduleModel } from "@shared/models/schedule.model";
+import { ScheduleMocks } from "../mocks/schedule.mocks";
 
 @Component({
     selector: 'app-schedule',
@@ -26,11 +26,8 @@ export class ScheduleComponent implements OnInit{
     // Переменная, обозначающая статус загрузки данных
     isDataLoading: boolean = false;
 
-    // Данные для расписания группы (нулевые)
-    scheduleDataEmpty: GroupScheduleInterface[] = GroupsScheduleMocks;
-
     // Данные по расписанию группы
-    scheduleData: GroupScheduleInterface[] | null = null;
+    scheduleData: ScheduleModel = ScheduleMocks;
 
     // Данные по доступным группам
     avaliableGroup: GroupModel[] | null = null;

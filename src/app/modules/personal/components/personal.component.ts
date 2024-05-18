@@ -8,6 +8,7 @@ import { convertPhoneNumber } from "@shared/utilities/converPhoneNumber.util";
 import { MediaService } from "@shared/services/media/media.service";
 import { UploadMediaInterface } from "@shared/interfaces/backend/media/media.interface";
 import { environment } from "@environments/environment";
+import { Router } from "@angular/router";
 
 @Component({
     selector: 'app-personal',
@@ -31,6 +32,7 @@ export class PersonalComponent implements OnInit {
         private loggerService: LoggerService,
         private mediaService: MediaService,
         private cdr: ChangeDetectorRef,
+        private router: Router,
     ) { }
 
     // Определяет открыта ли меню
@@ -51,24 +53,6 @@ export class PersonalComponent implements OnInit {
     // Предметы, закрепленные за преподавателем
     lecturerSubjects: any[] = [];
 
-    // Массив булевых переменных, отвечающие за видимость контента у предметов
-    subjectsVisibleFlags: boolean[] = [];
-
-    // Массив булевых переменных, отвечающие за видимость контента у тем
-    subjectsThemesVisibleFlags: boolean[] = [];
-
-    // Список тем по выбранному предмету
-    subjectThemes: any[] = [];
-
-    // Переменная, контролирующая видимость окна добавления темы
-    isAddingThemeDialogVisible: boolean = false;
-
-    // Данные для окна добавления группы
-    dialogThemeName: string = '';
-
-    // Сообщение ошибки для окна добавления темы
-    dialogErrorMessage: string | null = null;
-
     // Переменная, обозначающая статус загрузки данных
     isDataLoading: boolean = false;
 
@@ -83,6 +67,16 @@ export class PersonalComponent implements OnInit {
     // Метод для получения данных о пользователе
     getUserInformation(): void {
         this.userData = this.personalService.getUser();
+
+        // Проверяем статус аккаунта
+        if(this.userData?.accStatus !== 1) {
+            this.router.navigateByUrl('/waiting');
+        };
+
+        // Если пользователь преподаватель
+        if(this.userData?.role === '3') {
+            this.setLecturerConfiguration();
+        }
     };
 
     // Метод для обновления данных о пользователе
@@ -194,28 +188,5 @@ export class PersonalComponent implements OnInit {
     // Метод для конфигурации данных, если пользователь преподаватель
     setLecturerConfiguration(): void {
         this.lecturerSubjects = PersonalSubjectsMocks;
-
-        // Заполняем значения флагов для видимости контента предметов
-        for (let index = 0; index < this.lecturerSubjects.length; index++) {
-            this.subjectsVisibleFlags.push(false);
-        }
-    }
-
-    // Метод для смены видимости контента предметов
-    toggleSubjectVisible(index: number): void {
-        this.subjectsVisibleFlags[index] = !this.subjectsVisibleFlags[index];
-    }
-
-    // Метод для смены видимости окна добавления темы
-    toggleAddingThemeVisible(index: number): void {
-        // Очищаем предыдущие данные
-        this.dialogThemeName = '';
-
-        this.isAddingThemeDialogVisible = !this.isAddingThemeDialogVisible;
-    }
-
-    // Метод для смены видимости контента темы
-    toggleSubjectThemeVisible(index: number): void {
-        this.subjectsThemesVisibleFlags[index] = !this.subjectsThemesVisibleFlags[index];
     }
 }

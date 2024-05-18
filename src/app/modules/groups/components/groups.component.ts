@@ -1,12 +1,9 @@
 import { ChangeDetectorRef, Component, HostListener, OnInit } from "@angular/core";
-import { GroupScheduleInterface } from "@shared/interfaces/groups/schedule.interface";
 import { generateRandomCode } from "@shared/utilities/generateRandomCode.util";
-import { GroupsScheduleMocks } from "../mocks/groups-schedule.mocks";
 import { GroupsService } from "../services/groups.service";
 import { LoggerService } from "@shared/services/logger/logger.service";
 import { GroupModel } from "@shared/models/group.model";
 import { LecturersService } from "@modules/lecturers/services/lecturers.service";
-import { LecturerModel } from "@shared/models/lecturer.model";
 import { SubjectModel } from "@shared/models/subject.model";
 import { SubjectsService } from "@modules/subjects/services/subjects.service";
 import { ScheduleMocks } from "@modules/schedule/mocks/schedule.mocks";
@@ -371,6 +368,31 @@ export class GroupsComponent implements OnInit {
         });
     };
 
+    // Метод для обновления расписания группы
+    updateScheduleByGroupID(id: number, request: ScheduleModel): void {
+        this.isDataLoading = true;
+
+        this.scheduleService.updateScheduleByGroupID(id, request).subscribe({
+            next: (response: ScheduleModel) => {
+                this.getScheduleByGroupID(id);
+
+                this.loggerService.message('backend', `Schedule data was updated`, response);
+            },
+            error: (err) => {
+                this.loggerService.message('error', 'Error with update schedule data', err);
+
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+            complete: () => {
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+        });
+    };
+
     // Метод для валидации данных группы
     validateAddingGroupData(): boolean {
         if (this.dialogGroupName.length === 0 || this.dialogGroupNumber.length === 0 || this.dialogGroupShortName.length === 0 || this.dialogGroupCourse.length === 0) {
@@ -482,6 +504,8 @@ export class GroupsComponent implements OnInit {
 
     // Метод для сохранения расписания
     saveSchedule(): void {
+        this.updateScheduleByGroupID(this.scheduleChangeGroupID!, this.groupSchedule);
+
         // Изменяем возможность редактирования расписания группы
         this.toggleEditingShedule();
     };

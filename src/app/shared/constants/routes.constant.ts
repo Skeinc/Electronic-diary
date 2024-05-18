@@ -13,6 +13,7 @@ import { RegistrationComponent } from "@modules/registration/components/registra
 import { WaitingComponent } from "@modules/waiting/components/waiting.component";
 import { OverviewComponent } from "@modules/overview/components/overview.component";
 import { ScheduleComponent } from "@modules/schedule/components/schedule.component";
+import { AccessGuard } from "@core/guards/access.guard";
 
 export const ROUTES: Routes = [
     {
@@ -34,36 +35,37 @@ export const ROUTES: Routes = [
     {
         path: 'personal',
         component: PersonalComponent,
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard, AccessGuard],
     },
     {
         path: 'lecturers',
         component: LecturersComponent,
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard, AccessGuard],
     },
     {
         path: 'students',
         component: StudentsComponent,
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard, AccessGuard],
     },
     {
         path: 'groups',
         component: GroupsComponent,
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard, AccessGuard],
     },
     {
         path: 'requests',
         component: RequestsComponent,
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard, AccessGuard],
     },
     {
         path: 'subjects',
         component: SubjectsComponent,
-        canActivate: [AuthGuard],
+        canActivate: [AuthGuard, AccessGuard],
     },
     {
         path: 'schedule',
         component: ScheduleComponent,
+        canActivate: [AuthGuard, AccessGuard],
     },
     {
         path: 'waiting',
