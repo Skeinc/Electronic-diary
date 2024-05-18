@@ -47,7 +47,7 @@
                                         <span class="material-icons button-edit">edit</span>
                                     </button>
 
-                                    <button type="button" class="table-body__button flex-center-center" (click)="toggleEditingScheduleDialogVisible()">
+                                    <button type="button" class="table-body__button flex-center-center" (click)="toggleEditingScheduleDialogVisible(groups.id)">
                                         <span class="material-icons button-edit">schedule</span>
                                     </button>
 
@@ -121,7 +121,7 @@
                     </div>
 
                     <div class="data-item__lecturer flex-row">
-                        <app-dropdown [elementID]="'lecturer'" [elementName]="'lecturer'" [elementPlaceholder]="'Преподаватель'" [(elementValue)]="day.schedule[i].teacherName" [elementDisable]="!isEditingSchedule" [options]="avaliableLecturers ?? []" [optionsLabel]="'surname'" [optionsValue]="'surname'" [clearOption]="true" [filter]="true"></app-dropdown>
+                        <app-dropdown [elementID]="'lecturer'" [elementName]="'lecturer'" [elementPlaceholder]="'Преподаватель'" [(elementValue)]="day.schedule[i].teacherName" [elementDisable]="!isEditingSchedule" [options]="avaliableLecturers ?? []" [optionsLabel]="'name'" [optionsValue]="'name'" [clearOption]="true" [filter]="true"></app-dropdown>
                     </div>
 
                     <div class="data-item__name flex-row">

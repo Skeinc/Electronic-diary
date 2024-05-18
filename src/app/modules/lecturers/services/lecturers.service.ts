@@ -16,6 +16,11 @@ export class LecturersService {
         return this.httpService.get('teachers/getAllTeachers');
     };
 
+    // Метод для получения ФИО и ID преподавателей
+    public getShortLecturersInformation(): Observable<any> {
+        return this.httpService.get('teachers/getFioTeachers');
+    };
+
     // Метод для добавления преподавателя
     public addLecturer(request: LecturerModel): Observable<any> {
         const body = request;

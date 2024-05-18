@@ -59,7 +59,7 @@
     flex-wrap: wrap;
     padding: 0px 20px 20px 20px;
     gap: 20px;
-    overflow: hidden;
+    padding-bottom: 100px;
 }
 
 .schedule-item {
@@ -97,7 +97,7 @@
             &::ng-deep {
                 input {
                     height: 32px;
-                    padding: 0px 10px;
+                    padding: 0px 60px 0px 16px;
                     background-color: $colorGrey7;
                     border-radius: 0px;
                     border: 1px solid $inputBorder;
@@ -145,6 +145,24 @@
                 width: 60px;
                 height: 100%;
                 overflow: hidden;
+
+                &::ng-deep {
+                    input {
+                        height: 32px;
+                        padding: 0px 10px;
+                        background-color: $colorGrey7;
+                        border-radius: 0px;
+                        border: 1px solid $inputBorder;
+                        font-size: 12px;
+    
+                        &:focus,
+                        &:active,
+                        &:not(:placeholder-shown) {
+                            border-radius: 0;
+                            box-shadow: none;
+                        }
+                    }
+                }
             }
         }
     }

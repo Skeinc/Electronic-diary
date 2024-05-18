@@ -11,6 +11,8 @@ import { SubjectModel } from "@shared/models/subject.model";
 import { SubjectsService } from "@modules/subjects/services/subjects.service";
 import { ScheduleMocks } from "@modules/schedule/mocks/schedule.mocks";
 import { ScheduleModel } from "@shared/models/schedule.model";
+import { LecturerShortInformationInterface } from "@shared/interfaces/lecturers/lecturer.interface";
+import { ScheduleService } from "@modules/schedule/services/schedule.service";
 
 @Component({
     selector: 'app-groups',
@@ -21,6 +23,7 @@ export class GroupsComponent implements OnInit {
     constructor(
         private lecturersService: LecturersService,
         private subjectsService: SubjectsService,
+        private scheduleService: ScheduleService,
         private groupsService: GroupsService,
         private loggerService: LoggerService,
         private cdr: ChangeDetectorRef,
@@ -88,16 +91,19 @@ export class GroupsComponent implements OnInit {
     editGroupID: number | null = null;
 
     // Доступные преподаватели
-    avaliableLecturers: LecturerModel[] | null = null;
+    avaliableLecturers: LecturerShortInformationInterface[] | null = null;
 
     // Выбранный преподаватель
-    selectedLecturer: LecturerModel | null = null;
+    selectedLecturer: LecturerShortInformationInterface | null = null;
 
     // Доступные предметы
     avaliableSubjects: SubjectModel[] | null = null;
 
     // Выбранный предмет
     selectedSubject: SubjectModel | null = null;
+
+    // ID группы, у которой пытаются изменить расписание
+    scheduleChangeGroupID: number | null = null;
 
     @HostListener('window:resize', ['$event'])
     onResize(event: any): void {
@@ -116,7 +122,7 @@ export class GroupsComponent implements OnInit {
         this.getAllGroupsData();
 
         // Получаем данные о доступных преподавателях
-        this.getAllLecturers();
+        this.getShortLecturersInformation();
 
         // Получаем данные о доступных предметах
         this.getAllSubjects();
@@ -291,11 +297,11 @@ export class GroupsComponent implements OnInit {
     };
 
     // Метод для получения доступных преподавателей
-    getAllLecturers(): void {
+    getShortLecturersInformation(): void {
         this.isDataLoading = true;
 
-        this.lecturersService.getAllLecturers().subscribe({
-            next: (response: LecturerModel[]) => {
+        this.lecturersService.getShortLecturersInformation().subscribe({
+            next: (response: LecturerShortInformationInterface[]) => {
                 this.avaliableLecturers = response;
 
                 this.loggerService.message('backend', `Lecturers data was received`, response);
@@ -327,6 +333,31 @@ export class GroupsComponent implements OnInit {
             },
             error: (err) => {
                 this.loggerService.message('error', 'Error with get all subjects', err);
+
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+            complete: () => {
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+        });
+    };
+
+    // Метод для получения расписания группы
+    getScheduleByGroupID(id: number): void {
+        this.isDataLoading = true;
+
+        this.scheduleService.getScheduleByGroupID(id).subscribe({
+            next: (response: ScheduleModel) => {
+                this.groupSchedule = response;
+
+                this.loggerService.message('backend', `Schedule data was received`, response);
+            },
+            error: (err) => {
+                this.loggerService.message('error', 'Error with get schedule data', err);
 
                 this.isDataLoading = false;
 
@@ -436,8 +467,12 @@ export class GroupsComponent implements OnInit {
     };
 
     // Метод для смены видимости окна редактирования расписания группы
-    toggleEditingScheduleDialogVisible(): void {
+    toggleEditingScheduleDialogVisible(id: number): void {
         this.isEditingScheduleDialogVisible = !this.isEditingScheduleDialogVisible;
+
+        this.scheduleChangeGroupID = id;
+
+        this.getScheduleByGroupID(id);
     };
 
     // Метод для смены значения переменной, контролирующей возможность редактирования расписания группы
