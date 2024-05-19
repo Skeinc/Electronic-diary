@@ -9,6 +9,8 @@ import { MediaService } from "@shared/services/media/media.service";
 import { UploadMediaInterface } from "@shared/interfaces/backend/media/media.interface";
 import { environment } from "@environments/environment";
 import { Router } from "@angular/router";
+import { SubjectsService } from "@modules/subjects/services/subjects.service";
+import { SubjectModel } from "@shared/models/subject.model";
 
 @Component({
     selector: 'app-personal',
@@ -29,6 +31,7 @@ import { Router } from "@angular/router";
 export class PersonalComponent implements OnInit {
     constructor(
         private personalService: PersonalService,
+        private subjectsService: SubjectsService,
         private loggerService: LoggerService,
         private mediaService: MediaService,
         private cdr: ChangeDetectorRef,
@@ -51,7 +54,7 @@ export class PersonalComponent implements OnInit {
     uploadedImageID: string | null = null;
 
     // Предметы, закрепленные за преподавателем
-    lecturerSubjects: any[] = [];
+    lecturerSubjects: SubjectModel[] = [];
 
     // Переменная, обозначающая статус загрузки данных
     isDataLoading: boolean = false;
@@ -161,6 +164,31 @@ export class PersonalComponent implements OnInit {
         };
     };
 
+    // Получение предметов по ID преподавателя
+    getSubjectsByLecturerID(id: number): void {
+        this.isDataLoading = true;
+
+        this.subjectsService.getAllSubjectsByLecturerID(id).subscribe({
+            next: (response: SubjectModel[]) => {
+                this.lecturerSubjects = response;
+
+                this.loggerService.message('backend', 'Subjects information by Lecturer ID was received');
+            },
+            error: (err) => {
+                this.loggerService.message('error', 'Error with get subjects information by Lecturer ID', err);
+
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+            complete: () => {
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+        });
+    };
+
     // Метод для получения URL к медиафайлу
     getURLForMediafile(): string {
         return `${environment.protocol}://${environment.domain}/media/file?id=`;
@@ -187,6 +215,6 @@ export class PersonalComponent implements OnInit {
 
     // Метод для конфигурации данных, если пользователь преподаватель
     setLecturerConfiguration(): void {
-        this.lecturerSubjects = PersonalSubjectsMocks;
-    }
+        this.getSubjectsByLecturerID(this.userData?.id!);
+    };
 }

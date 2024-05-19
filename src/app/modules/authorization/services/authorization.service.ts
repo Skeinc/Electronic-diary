@@ -29,4 +29,24 @@ export class AuthorizationService {
 
         return this.httpService.post('authStudent', body);
     };
+
+    // Метод для проверки наличия токена доступа в куках
+    isLoggedIn(): boolean {
+        return !!this.getAccessToken();
+    };
+
+    // Метод для получения токена доступа из куки
+    getAccessToken(): string | null {
+        return localStorage.getItem('accessToken');
+    };
+
+    // Метод для установки токена доступа в Мекуки
+    setAccessToken(token: string): void {
+        localStorage.setItem('accessToken', token);
+    };
+
+    // Метод для удаления токена доступа из куки
+    removeAccessToken(): void {
+        localStorage.removeItem('accessToken');
+    };
 };
