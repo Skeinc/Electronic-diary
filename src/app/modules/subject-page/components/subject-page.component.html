@@ -7,7 +7,7 @@
         <div class="subject flex-column">
             <header class="header flex-row">
                 <div class="header-title flex-row">
-                    <p class="header-title__value">Предметы — История</p>
+                    <p class="header-title__value">Предметы — {{ subjectInformationData?.name }}</p>
                 </div>
 
                 <div class="header-controllers flex-row">
@@ -16,61 +16,61 @@
             </header>
 
             <div class="topic-list flex-column">
-                <div class="topic-item flex-column">
-                    <div class="topic flex-row" (click)="toggleTopicVisible(0)">
+                <div class="topic-item flex-column" *ngFor="let item of avaliableTopics; index as i">
+                    <div class="topic flex-row" (click)="toggleTopicVisible(i, item.id)">
                         <div class="topic-item__information flex-column">
                             <div class="topic-item__name">
-                                <p>Многочлены</p>
+                                <p>{{ item.name }}</p>
                             </div>
     
                             <div class="topic-item__description">
-                                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quae repellendus laudantium sequi minus eaque maxime officia voluptatem dolor animi iusto sint, harum explicabo velit quasi neque nostrum molestias unde eveniet.</p>
+                                <p>{{ item.description }}</p>
                             </div>
                         </div>
 
                         <button type="button" class="topic-item__button flex-center-center">
-                            <span class="material-icons" [style.transform]="isTopicFlagsVisible[0] ? 'rotate(180deg)' : 'rotate(0deg)'">expand_more</span>
+                            <span class="material-icons" [style.transform]="isTopicFlagsVisible[i] ? 'rotate(180deg)' : 'rotate(0deg)'">expand_more</span>
                         </button>
                     </div>
 
-                    <div class="topic-content flex-column" [@expandCollapse]="isTopicFlagsVisible[0] ? 'expanded' : 'collapsed'">
+                    <div class="topic-content flex-column" [@expandCollapse]="isTopicFlagsVisible[i] ? 'expanded' : 'collapsed'">
                         <div class="topic-controllers flex-row">
                             <div class="topic-controllers__wrapper">
-                                <app-button [elementID]="'add-task'" [elementName]="'add-task'" [elementLabel]="'Добавить задание'" [elementDisable]="isDataLoading" (click)="toggleAddingTaskDialogVisible()"></app-button>
+                                <app-button [elementID]="'add-task'" [elementName]="'add-task'" [elementLabel]="'Добавить задание'" [elementDisable]="isDataLoading" (click)="toggleAddingTaskDialogVisible(item.id)"></app-button>
                             </div>
 
                             <div class="topic-controllers__wrapper">
-                                <app-button [elementID]="'edit-topic'" [elementName]="'edit-topic'" [elementLabel]="'Редактировать тему'" [elementDisable]="isDataLoading" (click)="toggleEditingTopicDialogVisible(0)"></app-button>
+                                <app-button [elementID]="'edit-topic'" [elementName]="'edit-topic'" [elementLabel]="'Редактировать тему'" [elementDisable]="isDataLoading" (click)="toggleEditingTopicDialogVisible(item.id, item)"></app-button>
                             </div>
     
                             <div class="topic-controllers__wrapper">
-                                <app-button [elementID]="'delete-topic'" [elementName]="'delete-topic'" [elementLabel]="'Удалить тему'" [elementDisable]="isDataLoading" (click)="toggleConfirmDialogVisible(0, 'topic')"></app-button>
+                                <app-button [elementID]="'delete-topic'" [elementName]="'delete-topic'" [elementLabel]="'Удалить тему'" [elementDisable]="isDataLoading" (click)="toggleConfirmDialogVisible(item.id, 'topic')"></app-button>
                             </div>
                         </div>
 
                         <div class="task-list flex-column">
-                            <div class="task-item flex-column">
-                                <div class="task flex-row" (click)="toggleTaskVisible(0)">
+                            <div class="task-item flex-column" *ngFor="let task of avaliableTasks; index as i">
+                                <div class="task flex-row" (click)="toggleTaskVisible(i)">
                                     <div class="task-item__point flex-row">
                                         <p>—</p>
                                     </div>
 
                                     <div class="task-item__information flex-column">
                                         <div class="task-item__name">
-                                            <p>Прочитать параграф 1</p>
+                                            <p>{{ task.name }}</p>
                                         </div>
                 
                                         <div class="task-item__description">
-                                            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quae repellendus laudantium sequi minus eaque maxime officia voluptatem dolor animi iusto sint, harum explicabo velit quasi neque nostrum molestias unde eveniet.</p>
+                                            <p>{{ task.description }}</p>
                                         </div>
                                     </div>
             
                                     <button type="button" class="task-item__button flex-center-center">
-                                        <span class="material-icons" [style.transform]="isTaskFlagsVisible[0] ? 'rotate(180deg)' : 'rotate(0deg)'">expand_more</span>
+                                        <span class="material-icons" [style.transform]="isTaskFlagsVisible[i] ? 'rotate(180deg)' : 'rotate(0deg)'">expand_more</span>
                                     </button>
                                 </div>
 
-                                <div class="task-content flex-column" *ngIf="isTaskFlagsVisible[0]">
+                                <div class="task-content flex-column" *ngIf="isTaskFlagsVisible[i]">
                                     <div class="task-controllers flex-row">
                                         <div class="task-controllers__wrapper">
                                             <app-button [elementID]="'ratings'" [elementName]="'ratings'" [elementLabel]="'Оценки'" [elementDisable]="isDataLoading"></app-button>
@@ -80,12 +80,16 @@
                                             <app-button [elementID]="'attendance'" [elementName]="'attendance'" [elementLabel]="'Посещаемость'" [elementDisable]="isDataLoading"></app-button>
                                         </div>
 
+                                        <div *ngIf="task.mediaID" class="task-controllers__wrapper__link flex-center-center">
+                                            <a [href]="getURLForMediafile() + task.mediaID" target="_blank">Скачать файл</a>
+                                        </div>
+
                                         <div class="task-controllers__wrapper">
-                                            <app-button [elementID]="'edit-task'" [elementName]="'edit-task'" [elementLabel]="'Редактировать задание'" [elementDisable]="isDataLoading" (click)="toggleEditingTaskDialogVisible(0)"></app-button>
+                                            <app-button [elementID]="'edit-task'" [elementName]="'edit-task'" [elementLabel]="'Редактировать задание'" [elementDisable]="isDataLoading" (click)="toggleEditingTaskDialogVisible(task.id, task)"></app-button>
                                         </div>
                 
                                         <div class="task-controllers__wrapper">
-                                            <app-button [elementID]="'delete-task'" [elementName]="'delete-task'" [elementLabel]="'Удалить задание'" [elementDisable]="isDataLoading" (click)="toggleConfirmDialogVisible(0, 'task')"></app-button>
+                                            <app-button [elementID]="'delete-task'" [elementName]="'delete-task'" [elementLabel]="'Удалить задание'" [elementDisable]="isDataLoading" (click)="toggleConfirmDialogVisible(task.id, 'task')"></app-button>
                                         </div>
                                     </div>
                                 </div>
@@ -131,7 +135,7 @@
             <span class="dialog-message__value">{{ dialogAddTaskErrorMessage }}</span>
         </div>
 
-        <app-button [elementID]="'button-add'" [elementName]="'button-add'" [elementLabel]="'Добавить'" [elementDisable]="isDataLoading" (click)="createTask()"></app-button>
+        <app-button [elementID]="'button-add'" [elementName]="'button-add'" [elementLabel]="'Добавить'" [elementDisable]="isDataLoading" (click)="createTaskHandler()"></app-button>
     </div>
 </p-dialog>
 
@@ -168,7 +172,7 @@
             <span class="dialog-message__value">{{ dialogEditTaskErrorMessage }}</span>
         </div>
 
-        <app-button [elementID]="'button-update'" [elementName]="'button-update'" [elementLabel]="'Обновить'" [elementDisable]="isDataLoading" (click)="updateTask()"></app-button>
+        <app-button [elementID]="'button-update'" [elementName]="'button-update'" [elementLabel]="'Обновить'" [elementDisable]="isDataLoading" (click)="updateTaskHandler()"></app-button>
     </div>
 </p-dialog>
 

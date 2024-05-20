@@ -13,7 +13,7 @@ export class TasksService {
 
     // Метод для получения заданий по ID темы
     public getAllTasksByTopicID(id: number): Observable<any> {
-        const body: HttpParams = new HttpParams().set("subjectID", id);
+        const body: HttpParams = new HttpParams().set("topicID", id);
 
         return this.httpService.get('tasks/getTasksByTopicID', body);
     };

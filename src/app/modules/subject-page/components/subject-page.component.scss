@@ -258,6 +258,31 @@
                     }
                 }
             }
+
+            .task-controllers__wrapper__link {
+                width: 150px;
+                height: 36px;
+                appearance: none;
+                outline: none;
+                border: none;
+                border-radius: 10px;
+                background-color: $colorPrimary3;
+                cursor: pointer;
+                transition: $transitionMedium;
+
+                &:hover {
+                    border-radius: 14px;
+                }
+
+                a {
+                    font-weight: 600;
+                    font-size: 12px;
+                    line-height: auto;
+                    color: $colorWhite;
+                    text-align: center;
+                    text-decoration: underline;
+                }
+            }
         }
     }
 }

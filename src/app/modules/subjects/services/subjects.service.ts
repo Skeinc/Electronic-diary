@@ -11,6 +11,13 @@ export class SubjectsService {
         private httpService: HttpService,
     ) {}
 
+    // Метод для получения предмета по ID
+    public getSubjectByID(id: number): Observable<any> {
+        const body: HttpParams = new HttpParams().set('id', id);
+
+        return this.httpService.get('subjects/getSubjectByID', body);
+    };
+
     // Метод для получения всех предметов
     public getAllSubjects(): Observable<any> {
         return this.httpService.get('subjects/getAllSubjects');

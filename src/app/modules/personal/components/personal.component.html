@@ -72,14 +72,14 @@
 
                 <div class="subjects-list flex-column">
                     <div class="subjects-item flex-column" *ngFor="let item of lecturerSubjects; index as i">
-                        <div class="subject flex-row">
+                        <div class="subject flex-row" (click)="redirectToSubjectPage(item.subject.id)">
                             <div class="subject-item__information flex-column">
                                 <div class="subject-item__name">
-                                    <p>{{ item.name }}</p>
+                                    <p>{{ item.subject.name }}</p>
                                 </div>
         
                                 <div class="subject-item__code">
-                                    <p>{{ item.code }}</p>
+                                    <p>{{ item.subject.code }}</p>
                                 </div>
                             </div>
     

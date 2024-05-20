@@ -54,7 +54,7 @@ export class PersonalComponent implements OnInit {
     uploadedImageID: string | null = null;
 
     // Предметы, закрепленные за преподавателем
-    lecturerSubjects: SubjectModel[] = [];
+    lecturerSubjects: any[] = [];
 
     // Переменная, обозначающая статус загрузки данных
     isDataLoading: boolean = false;
@@ -217,4 +217,11 @@ export class PersonalComponent implements OnInit {
     setLecturerConfiguration(): void {
         this.getSubjectsByLecturerID(this.userData?.id!);
     };
+
+    // Переадресация на страницу предмета
+    redirectToSubjectPage(id: number): void {
+        this.router.navigate(['subject-page'], {queryParams: {
+            id:id,
+        }});
+    }
 }

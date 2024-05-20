@@ -7,6 +7,10 @@ import { TaskModel } from "@shared/models/task.model";
 import { animate, state, style, transition, trigger } from "@angular/animations";
 import { MediaService } from "@shared/services/media/media.service";
 import { UploadMediaInterface } from "@shared/interfaces/backend/media/media.interface";
+import { ActivatedRoute } from "@angular/router";
+import { SubjectModel } from "@shared/models/subject.model";
+import { SubjectsService } from "@modules/subjects/services/subjects.service";
+import { environment } from "@environments/environment";
 
 @Component({
     selector: 'app-subject-page',
@@ -35,15 +39,23 @@ import { UploadMediaInterface } from "@shared/interfaces/backend/media/media.int
 })
 export class SubjectPageComponent implements OnInit {
     constructor(
+        private subjectsService: SubjectsService,
         private topicsService: TopicsService,
         private loggerService: LoggerService,
         private tasksService: TasksService,
         private mediaService: MediaService,
         private cdr: ChangeDetectorRef,
+        private route: ActivatedRoute
     ) { }
 
     // Определяет открыта ли меню
     isNavigationOpened: boolean = false;
+
+    // ID предмета, на который произошла переадресация
+    subjectID: number | null = null;
+
+    // Информация о предмете, на который произошла переадресация
+    subjectInformationData: SubjectModel | null = null;
 
     // Переменная, обозначающая статус загрузки данных
     isDataLoading: boolean = false;
@@ -52,10 +64,10 @@ export class SubjectPageComponent implements OnInit {
     isConfirmDialogVisible: boolean = false;
 
     // Массив булевых значений, означающие видимость тем
-    isTopicFlagsVisible: boolean[] = [false];
+    isTopicFlagsVisible: boolean[] = [];
 
     // Массив булевых значений, означающие видимость заданий
-    isTaskFlagsVisible: boolean[] = [false];
+    isTaskFlagsVisible: boolean[] = [];
 
     // Переменная обозначает видимость окна добавления темы
     isAddingTopicDialogVisible: boolean = false;
@@ -97,6 +109,9 @@ export class SubjectPageComponent implements OnInit {
     dialogEditTaskName: string = '';
     dialogEditTaskDescription: string = '';
 
+    // ID темы, для которой хотят создать задание
+    addTopicID: number | null = null;
+
     // ID темы, которую хотят редактировать
     editTopicID: number | null = null;
 
@@ -121,8 +136,48 @@ export class SubjectPageComponent implements OnInit {
     selectedFileName: string | null = null;
 
     ngOnInit(): void {
+        // Получаем subjectID из queryParams
+        this.route.queryParams.subscribe(async params => {
+            this.subjectID = params['id'] ?? '';
+        });
+
+        // Получаем информацию о предмете по ID
+        if(this.subjectID !== null) {
+            this.getSubjectInformationByID(this.subjectID);
+        };
+
         // Получаем все темы предмета
-    }
+        if(this.subjectID !== null) {
+            this.getAllTopicsBySubjectID(this.subjectID!);
+        };
+    };
+
+    // Метод для получения информации о предмете
+    getSubjectInformationByID(id: number): void {
+        this.isDataLoading = true;
+
+        this.subjectsService.getSubjectByID(id).subscribe({
+            next: (response: SubjectModel) => {
+                this.subjectInformationData = response;
+
+                this.loggerService.message('backend', 'Subject information data was received', response);
+
+                this.cdr.detectChanges();
+            },
+            error: (err) => {
+                this.loggerService.message('error', 'Error with get subject information data', err);
+
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+            complete: () => {
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+        });
+    };
 
     // Метод для получения всех тем по ID предмета
     getAllTopicsBySubjectID(id: number): void {
@@ -144,6 +199,10 @@ export class SubjectPageComponent implements OnInit {
                 this.cdr.detectChanges();
             },
             complete: () => {
+                for(let index = 0; index < this.avaliableTopics?.length!; index++) {
+                    this.isTopicFlagsVisible.push(false);
+                };
+
                 this.isDataLoading = false;
 
                 this.cdr.detectChanges();
@@ -171,6 +230,10 @@ export class SubjectPageComponent implements OnInit {
                 this.cdr.detectChanges();
             },
             complete: () => {
+                for(let index = 0; index < this.avaliableTasks?.length!; index++) {
+                    this.isTaskFlagsVisible.push(false);
+                };
+
                 this.isDataLoading = false;
 
                 this.cdr.detectChanges();
@@ -189,7 +252,7 @@ export class SubjectPageComponent implements OnInit {
             const body = {
                 "name": this.dialogAddTopicName,
                 "description": this.dialogAddTopicDescription,
-                "subjectID": null,
+                "subjectID": this.subjectID,
             };
 
             this.topicsService.createTopic(body).subscribe({
@@ -206,6 +269,10 @@ export class SubjectPageComponent implements OnInit {
                     this.cdr.detectChanges();
                 },
                 complete: () => {
+                    this.toggleAddingTopicDialogVisible();
+
+                    this.getAllTopicsBySubjectID(this.subjectID!);
+
                     this.isDataLoading = false;
 
                     this.cdr.detectChanges();
@@ -219,22 +286,40 @@ export class SubjectPageComponent implements OnInit {
         }
     };
 
+    // Метод для обработки кнопки создания задания
+    createTaskHandler(): void {
+        // Формируем тело запроса
+        const body = {
+            "name": this.dialogAddTaskName,
+            "description": this.dialogAddTaskDescription,
+            "topicID": this.addTopicID!,
+            "mediaID": null,
+        };
+
+        // Проверяем есть ли загруженный файл
+        if(this.uploadedFile) {
+            // Вызываем метод для загрузки медиафайла
+            this.uploadMediaFile(body, 'create');
+        }
+        else {
+            // Отправляем запрос на создание задания
+            this.createTask(body);
+        }
+    };
+
     // Метод для создания задания
-    createTask(): void {
+    createTask(body: any): void {
         this.dialogAddTaskErrorMessage = '';
 
         if (this.validateAddingTaskData()) {
             this.isDataLoading = true;
 
-            // Формируем тело запроса
-            const body = {
-                "name": this.dialogAddTaskName,
-                "description": this.dialogAddTaskDescription,
-                "topicID": null,
-            };
+            let topicID: number | null = null;
 
             this.tasksService.createTask(body).subscribe({
                 next: (response: any) => {
+                    topicID = response.topicID;
+
                     this.loggerService.message('backend', 'Task was created', response);
 
                     this.cdr.detectChanges();
@@ -247,6 +332,10 @@ export class SubjectPageComponent implements OnInit {
                     this.cdr.detectChanges();
                 },
                 complete: () => {
+                    this.toggleAddingTaskDialogVisible();
+
+                    this.getAllTasksByTopicID(topicID!);
+
                     this.isDataLoading = false;
 
                     this.cdr.detectChanges();
@@ -288,6 +377,10 @@ export class SubjectPageComponent implements OnInit {
                     this.cdr.detectChanges();
                 },
                 complete: () => {
+                    this.toggleEditingTopicDialogVisible();
+
+                    this.getAllTopicsBySubjectID(this.subjectID!);
+
                     this.isDataLoading = false;
 
                     this.cdr.detectChanges();
@@ -301,22 +394,37 @@ export class SubjectPageComponent implements OnInit {
         }
     };
 
+    // Метод для обработки кнопки обновления задания
+    updateTaskHandler(): void {
+        // Формируем тело запроса
+        const body = {
+            "name": this.dialogEditTaskName,
+            "description": this.dialogEditTaskDescription,
+            "id": this.editTaskID!,
+            "mediaID": null,
+        };
+
+        // Проверяем есть ли загруженный файл
+        if(this.uploadedFile) {
+            // Вызываем метод для загрузки медиафайла
+            this.uploadMediaFile(body, 'update');
+        }
+        else {
+            // Отправляем запрос на создание задания
+            this.updateTask(body);
+        }
+    };
+
     // Метод для редактирования задания
-    updateTask(): void {
+    updateTask(body: any): void {
         this.dialogEditTaskErrorMessage = '';
 
         if (this.validateEditingTaskData()) {
             this.isDataLoading = true;
 
-            // Формируем тело запроса
-            const body = {
-                "name": this.dialogEditTaskName,
-                "description": this.dialogEditTaskDescription,
-                "id": this.editTaskID,
-            };
-
             this.tasksService.updateTask(body).subscribe({
                 next: (response: any) => {
+
                     this.loggerService.message('backend', 'Task was updated', response);
 
                     this.cdr.detectChanges();
@@ -329,6 +437,16 @@ export class SubjectPageComponent implements OnInit {
                     this.cdr.detectChanges();
                 },
                 complete: () => {
+                    this.toggleEditingTaskDialogVisible();
+
+                    for(let index = 0; index < this.isTopicFlagsVisible.length; index++) {
+                        this.isTopicFlagsVisible[index] = false;
+                    };
+
+                    for(let index = 0; index < this.isTaskFlagsVisible.length; index++) {
+                        this.isTaskFlagsVisible[index] = false;
+                    };
+
                     this.isDataLoading = false;
 
                     this.cdr.detectChanges();
@@ -360,6 +478,16 @@ export class SubjectPageComponent implements OnInit {
                 this.cdr.detectChanges();
             },
             complete: () => {
+                this.getAllTopicsBySubjectID(this.subjectID!);
+
+                this.isTopicFlagsVisible.forEach(item => {
+                    item = false;
+                });
+
+                this.isTaskFlagsVisible.forEach(item => {
+                    item = false;
+                });
+
                 this.isDataLoading = false;
 
                 this.cdr.detectChanges();
@@ -385,6 +513,22 @@ export class SubjectPageComponent implements OnInit {
                 this.cdr.detectChanges();
             },
             complete: () => {
+                for(let index = 0; index < this.avaliableTopics?.length!; index++) {
+                    this.isTopicFlagsVisible[index] = false;
+                };
+
+                for(let index = 0; index < this.isTaskFlagsVisible.length; index++) {
+                    this.isTaskFlagsVisible[index] = false;
+                };
+
+                this.isTopicFlagsVisible.forEach(item => {
+                    item = false;
+                });
+
+                this.isTaskFlagsVisible.forEach(item => {
+                    item = false;
+                });
+
                 this.isDataLoading = false;
 
                 this.cdr.detectChanges();
@@ -393,13 +537,15 @@ export class SubjectPageComponent implements OnInit {
     };
 
     // Метод для загрузки медиафайла на сервер
-    async uploadMediaFile(): Promise<void> {
+    async uploadMediaFile(body: any, type: 'create' | 'update'): Promise<void> {
         this.isDataLoading = true;
 
         if(this.uploadedFile) {
             this.mediaService.uploadFile(this.uploadedFile).subscribe({
                 next: (response: UploadMediaInterface) => {
                     this.uploadedFileID = response.id;
+
+                    body.mediaID = this.uploadedFileID;
 
                     this.loggerService.message('backend', 'Mediafile was uploaded');
                 },
@@ -411,6 +557,14 @@ export class SubjectPageComponent implements OnInit {
                     this.cdr.detectChanges();
                 },
                 complete: () => {
+                    if(type === 'create') {
+                        this.createTask(body);
+                    };
+
+                    if(type === 'update') {
+                        this.updateTask(body);
+                    };
+
                     this.isDataLoading = false;
 
                     this.cdr.detectChanges();
@@ -461,7 +615,20 @@ export class SubjectPageComponent implements OnInit {
     };
 
     // Метод для смены видимости темы
-    toggleTopicVisible(index: number): void {
+    toggleTopicVisible(index: number, id?: number): void {
+        for(let index = 0; index < this.isTopicFlagsVisible.length; index++) {
+            this.isTopicFlagsVisible[index] = false;
+        };
+
+        this.isTopicFlagsVisible[index] = !this.isTopicFlagsVisible[index];
+
+        if(id !== null) {
+            this.getAllTasksByTopicID(id!);
+        };
+    };
+
+    // Метод для обработки кнопки смены видимости темы
+    toggleTopicVisibleHandler(index: number): void {
         this.isTopicFlagsVisible[index] = !this.isTopicFlagsVisible[index];
     };
 
@@ -472,30 +639,60 @@ export class SubjectPageComponent implements OnInit {
 
     // Метод для смены видимости окна добавления темы
     toggleAddingTopicDialogVisible(): void {
+        this.dialogAddTopicName = '';
+        this.dialogAddTopicDescription = '';
+
         this.isAddingTopicDialogVisible = !this.isAddingTopicDialogVisible;
     };
 
     // Метод для смены видимости окна добавления задания
-    toggleAddingTaskDialogVisible(): void {
+    toggleAddingTaskDialogVisible(id?: number): void {
+        // Обнуление данных загруженного файла
+        this.selectedFileName = null;
+        this.uploadedFileID = null;
+        this.uploadedFile = null;
+
+        this.dialogAddTaskName = '';
+        this.dialogAddTaskDescription = '';
+
         this.isAddingTaskDialogVisible = !this.isAddingTaskDialogVisible;
+
+        if(id !== null) {
+            this.addTopicID = id!;
+        };
     };
 
     // Метод для смены видимости окна редактирования темы
-    toggleEditingTopicDialogVisible(id?: number | null): void {
+    toggleEditingTopicDialogVisible(id?: number | null, data?: any): void {
         this.isEditingTopicDialogVisible = !this.isEditingTopicDialogVisible;
 
         if (id !== null) {
             this.editTopicID = id!;
         };
+
+        if(data !== null) {
+            this.dialogEditTopicName = data.name;
+            this.dialogEditTopicDescription = data.description;
+        };
     };
 
     // Метод для смены видимости окна редактирования задания
-    toggleEditingTaskDialogVisible(id?: number | null): void {
+    toggleEditingTaskDialogVisible(id?: number | null, task?: any ): void {
+        // Обнуление данных загруженного файла
+        this.selectedFileName = null;
+        this.uploadedFileID = null;
+        this.uploadedFile = null;
+
         this.isEditingTaskDialogVisible = !this.isEditingTaskDialogVisible;
 
         if(id !== null) {
-            this.editTopicID = id!;
-        }
+            this.editTaskID = id!;
+        };
+
+        if(task !== null) {
+            this.dialogEditTaskName = task.name;
+            this.dialogEditTaskDescription = task.description;
+        };
     };
 
     // Метод для смены видимости окна подверждения
@@ -541,4 +738,9 @@ export class SubjectPageComponent implements OnInit {
             this.selectedFileName = null;
         }
     };
+
+    // Метод для получения URL к медиафайлу
+    getURLForMediafile(): string {
+        return `${environment.protocol}://${environment.domain}/media/file?id=`;
+    }
 }
