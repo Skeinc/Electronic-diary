@@ -14,6 +14,7 @@ import { WaitingComponent } from "@modules/waiting/components/waiting.component"
 import { OverviewComponent } from "@modules/overview/components/overview.component";
 import { ScheduleComponent } from "@modules/schedule/components/schedule.component";
 import { AccessGuard } from "@core/guards/access.guard";
+import { SubjectPageComponent } from "@modules/subject-page/components/subject-page.component";
 
 export const ROUTES: Routes = [
     {
@@ -66,6 +67,10 @@ export const ROUTES: Routes = [
         path: 'schedule',
         component: ScheduleComponent,
         canActivate: [AuthGuard, AccessGuard],
+    },
+    {
+        path: 'subject-page',
+        component: SubjectPageComponent,
     },
     {
         path: 'waiting',

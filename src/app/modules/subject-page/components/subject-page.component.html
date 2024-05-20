@@ -1,0 +1,175 @@
+<section class="wrapper">
+    <app-loader *ngIf="isDataLoading" class="loader"></app-loader>
+
+    <app-navigation (navigationVisibility)="onNavigationOpenedChange($event)"></app-navigation>
+
+    <div class="container" [style.marginLeft]="isNavigationOpened ? '320px' : '80px'">
+        <div class="subject flex-column">
+            <header class="header flex-row">
+                <div class="header-title flex-row">
+                    <p class="header-title__value">Предметы — История</p>
+                </div>
+
+                <div class="header-controllers flex-row">
+                    <app-button [elementID]="'add-topic'" [elementName]="'add-topic'" [elementLabel]="'Добавить тему'" [elementDisable]="isDataLoading" (click)="toggleAddingTopicDialogVisible()"></app-button>
+                </div>
+            </header>
+
+            <div class="topic-list flex-column">
+                <div class="topic-item flex-column">
+                    <div class="topic flex-row" (click)="toggleTopicVisible(0)">
+                        <div class="topic-item__information flex-column">
+                            <div class="topic-item__name">
+                                <p>Многочлены</p>
+                            </div>
+    
+                            <div class="topic-item__description">
+                                <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quae repellendus laudantium sequi minus eaque maxime officia voluptatem dolor animi iusto sint, harum explicabo velit quasi neque nostrum molestias unde eveniet.</p>
+                            </div>
+                        </div>
+
+                        <button type="button" class="topic-item__button flex-center-center">
+                            <span class="material-icons" [style.transform]="isTopicFlagsVisible[0] ? 'rotate(180deg)' : 'rotate(0deg)'">expand_more</span>
+                        </button>
+                    </div>
+
+                    <div class="topic-content flex-column" [@expandCollapse]="isTopicFlagsVisible[0] ? 'expanded' : 'collapsed'">
+                        <div class="topic-controllers flex-row">
+                            <div class="topic-controllers__wrapper">
+                                <app-button [elementID]="'add-task'" [elementName]="'add-task'" [elementLabel]="'Добавить задание'" [elementDisable]="isDataLoading" (click)="toggleAddingTaskDialogVisible()"></app-button>
+                            </div>
+
+                            <div class="topic-controllers__wrapper">
+                                <app-button [elementID]="'edit-topic'" [elementName]="'edit-topic'" [elementLabel]="'Редактировать тему'" [elementDisable]="isDataLoading" (click)="toggleEditingTopicDialogVisible(0)"></app-button>
+                            </div>
+    
+                            <div class="topic-controllers__wrapper">
+                                <app-button [elementID]="'delete-topic'" [elementName]="'delete-topic'" [elementLabel]="'Удалить тему'" [elementDisable]="isDataLoading" (click)="toggleConfirmDialogVisible(0, 'topic')"></app-button>
+                            </div>
+                        </div>
+
+                        <div class="task-list flex-column">
+                            <div class="task-item flex-column">
+                                <div class="task flex-row" (click)="toggleTaskVisible(0)">
+                                    <div class="task-item__point flex-row">
+                                        <p>—</p>
+                                    </div>
+
+                                    <div class="task-item__information flex-column">
+                                        <div class="task-item__name">
+                                            <p>Прочитать параграф 1</p>
+                                        </div>
+                
+                                        <div class="task-item__description">
+                                            <p>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quae repellendus laudantium sequi minus eaque maxime officia voluptatem dolor animi iusto sint, harum explicabo velit quasi neque nostrum molestias unde eveniet.</p>
+                                        </div>
+                                    </div>
+            
+                                    <button type="button" class="task-item__button flex-center-center">
+                                        <span class="material-icons" [style.transform]="isTaskFlagsVisible[0] ? 'rotate(180deg)' : 'rotate(0deg)'">expand_more</span>
+                                    </button>
+                                </div>
+
+                                <div class="task-content flex-column" *ngIf="isTaskFlagsVisible[0]">
+                                    <div class="task-controllers flex-row">
+                                        <div class="task-controllers__wrapper">
+                                            <app-button [elementID]="'ratings'" [elementName]="'ratings'" [elementLabel]="'Оценки'" [elementDisable]="isDataLoading"></app-button>
+                                        </div>
+
+                                        <div class="task-controllers__wrapper">
+                                            <app-button [elementID]="'attendance'" [elementName]="'attendance'" [elementLabel]="'Посещаемость'" [elementDisable]="isDataLoading"></app-button>
+                                        </div>
+
+                                        <div class="task-controllers__wrapper">
+                                            <app-button [elementID]="'edit-task'" [elementName]="'edit-task'" [elementLabel]="'Редактировать задание'" [elementDisable]="isDataLoading" (click)="toggleEditingTaskDialogVisible(0)"></app-button>
+                                        </div>
+                
+                                        <div class="task-controllers__wrapper">
+                                            <app-button [elementID]="'delete-task'" [elementName]="'delete-task'" [elementLabel]="'Удалить задание'" [elementDisable]="isDataLoading" (click)="toggleConfirmDialogVisible(0, 'task')"></app-button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Добавление темы -->
+<p-dialog [header]="'Добавление темы'" [(visible)]="isAddingTopicDialogVisible" [modal]="true" [style]="{ width: '400px' }" [draggable]="false" [resizable]="false">
+    <div class="dialog-wrapper flex-column">
+
+        <app-text-field [elementID]="'dialog-name'" [elementName]="'dialog-name'" [elementLabel]="'Наименование'" [(elementValue)]="dialogAddTopicName" [elementDisable]="isDataLoading"></app-text-field>
+
+        <app-text-field [elementID]="'dialog-description'" [elementName]="'dialog-description'" [elementLabel]="'Описание'" [(elementValue)]="dialogAddTopicDescription" [elementDisable]="isDataLoading"></app-text-field>
+        
+        <div class="dialog-message flex-row">
+            <span class="dialog-message__value">{{ dialogAddErrorMessage }}</span>
+        </div>
+
+        <app-button [elementID]="'button-add'" [elementName]="'button-add'" [elementLabel]="'Добавить'" [elementDisable]="isDataLoading" (click)="createTopic()"></app-button>
+    </div>
+</p-dialog>
+
+<!-- Добавление задания -->
+<p-dialog [header]="'Добавление задания'" [(visible)]="isAddingTaskDialogVisible" [modal]="true" [style]="{ width: '400px' }" [draggable]="false" [resizable]="false">
+    <div class="dialog-wrapper flex-column">
+
+        <app-text-field [elementID]="'dialog-name'" [elementName]="'dialog-name'" [elementLabel]="'Наименование'" [(elementValue)]="dialogAddTaskName" [elementDisable]="isDataLoading"></app-text-field>
+
+        <app-text-field [elementID]="'dialog-description'" [elementName]="'dialog-description'" [elementLabel]="'Описание'" [(elementValue)]="dialogAddTaskDescription" [elementDisable]="isDataLoading"></app-text-field>
+
+        <label class="input-file button-file">
+            <input type="file" name="file" (change)="onInputChange($event)">
+            <span>{{ selectedFileName || 'Выберите файл' }}</span>
+        </label>
+
+        <div class="dialog-message flex-row">
+            <span class="dialog-message__value">{{ dialogAddTaskErrorMessage }}</span>
+        </div>
+
+        <app-button [elementID]="'button-add'" [elementName]="'button-add'" [elementLabel]="'Добавить'" [elementDisable]="isDataLoading" (click)="createTask()"></app-button>
+    </div>
+</p-dialog>
+
+<!-- Обновление темы -->
+<p-dialog [header]="'Редактирование темы'" [(visible)]="isEditingTopicDialogVisible" [modal]="true" [style]="{ width: '400px' }" [draggable]="false" [resizable]="false">
+    <div class="dialog-wrapper flex-column">
+
+        <app-text-field [elementID]="'dialog-name'" [elementName]="'dialog-name'" [elementLabel]="'Наименование'" [(elementValue)]="dialogEditTopicName" [elementDisable]="isDataLoading"></app-text-field>
+
+        <app-text-field [elementID]="'dialog-description'" [elementName]="'dialog-description'" [elementLabel]="'Описание'" [(elementValue)]="dialogEditTopicDescription" [elementDisable]="isDataLoading"></app-text-field>
+        
+        <div class="dialog-message flex-row">
+            <span class="dialog-message__value">{{ dialogEditErrorMessage }}</span>
+        </div>
+
+        <app-button [elementID]="'button-update'" [elementName]="'button-update'" [elementLabel]="'Обновить'" [elementDisable]="isDataLoading" (click)="updateTopic()"></app-button>
+    </div>
+</p-dialog>
+
+<!-- Обновление задания -->
+<p-dialog [header]="'Редактирование задания'" [(visible)]="isEditingTaskDialogVisible" [modal]="true" [style]="{ width: '400px' }" [draggable]="false" [resizable]="false">
+    <div class="dialog-wrapper flex-column">
+
+        <app-text-field [elementID]="'dialog-name'" [elementName]="'dialog-name'" [elementLabel]="'Наименование'" [(elementValue)]="dialogEditTaskName" [elementDisable]="isDataLoading"></app-text-field>
+
+        <app-text-field [elementID]="'dialog-description'" [elementName]="'dialog-description'" [elementLabel]="'Описание'" [(elementValue)]="dialogEditTaskDescription" [elementDisable]="isDataLoading"></app-text-field>
+        
+        <label class="input-file button-file">
+            <input type="file" name="file" (change)="onInputChange($event)">
+            <span>{{ selectedFileName || 'Выберите файл' }}</span>
+        </label>
+
+        <div class="dialog-message flex-row">
+            <span class="dialog-message__value">{{ dialogEditTaskErrorMessage }}</span>
+        </div>
+
+        <app-button [elementID]="'button-update'" [elementName]="'button-update'" [elementLabel]="'Обновить'" [elementDisable]="isDataLoading" (click)="updateTask()"></app-button>
+    </div>
+</p-dialog>
+
+<app-confirm-dialog [visibleController]="isConfirmDialogVisible" (next)="handleConfirmDialogNext()" (cancel)="handleConfirmDialogCancel()" ></app-confirm-dialog>

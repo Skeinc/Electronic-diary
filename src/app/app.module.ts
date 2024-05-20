@@ -19,6 +19,7 @@ import { RegistrationModule } from "@modules/registration/registration.module";
 import { WaitingModule } from "@modules/waiting/waiting.module";
 import { OverviewModule } from "@modules/overview/overview.module";
 import { ScheduleModule } from "@modules/schedule/schedule.module";
+import { SubjectPageModule } from "@modules/subject-page/subject-page.module";
 
 @NgModule({
     declarations: [
@@ -45,6 +46,7 @@ import { ScheduleModule } from "@modules/schedule/schedule.module";
         RequestsModule,
         SubjectsModule,
         ScheduleModule,
+        SubjectPageModule,
     ],
     providers: [
 
