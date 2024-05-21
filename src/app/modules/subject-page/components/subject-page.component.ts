@@ -480,13 +480,13 @@ export class SubjectPageComponent implements OnInit {
             complete: () => {
                 this.getAllTopicsBySubjectID(this.subjectID!);
 
-                this.isTopicFlagsVisible.forEach(item => {
-                    item = false;
-                });
+                for(let index = 0; index < this.avaliableTopics?.length!; index++) {
+                    this.isTopicFlagsVisible[index] = false;
+                };
 
-                this.isTaskFlagsVisible.forEach(item => {
-                    item = false;
-                });
+                for(let index = 0; index < this.isTaskFlagsVisible.length; index++) {
+                    this.isTaskFlagsVisible[index] = false;
+                };
 
                 this.isDataLoading = false;
 
@@ -520,14 +520,6 @@ export class SubjectPageComponent implements OnInit {
                 for(let index = 0; index < this.isTaskFlagsVisible.length; index++) {
                     this.isTaskFlagsVisible[index] = false;
                 };
-
-                this.isTopicFlagsVisible.forEach(item => {
-                    item = false;
-                });
-
-                this.isTaskFlagsVisible.forEach(item => {
-                    item = false;
-                });
 
                 this.isDataLoading = false;
 
