@@ -8,6 +8,8 @@ import { ButtonModule } from "@shared/components/button/button.module";
 import { DialogModule } from "primeng/dialog";
 import { TextFieldModule } from "@shared/components/text-field/text-field.module";
 import { ConfirmDialogModule } from "@shared/components/confirm-dialog/confirm-dialog.module";
+import { TextareaModule } from "@shared/components/textarea/textarea.module";
+import { DropdownModule } from "@shared/components/dropdown/dropdown.module";
 
 @NgModule({
     declarations: [
@@ -21,6 +23,8 @@ import { ConfirmDialogModule } from "@shared/components/confirm-dialog/confirm-d
         NavigationModule,
         ButtonModule,
         TextFieldModule,
+        TextareaModule,
+        DropdownModule,
         ConfirmDialogModule,
         // PrimeNG
         DialogModule,

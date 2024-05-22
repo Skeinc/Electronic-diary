@@ -59,10 +59,6 @@
                                         <div class="task-item__name">
                                             <p>{{ task.name }}</p>
                                         </div>
-                
-                                        <div class="task-item__description">
-                                            <p>{{ task.description }}</p>
-                                        </div>
                                     </div>
             
                                     <button type="button" class="task-item__button flex-center-center">
@@ -70,18 +66,24 @@
                                     </button>
                                 </div>
 
-                                <div class="task-content flex-column" *ngIf="isTaskFlagsVisible[i]">
+                                <div class="task-content flex-column" [style.height]="isTaskFlagsVisible[i] ? '100%' : '0px'" [style.opacity]="isTaskFlagsVisible[i] ? '1' : '0'">
+                                    <div class="task-information flex-column">
+                                        <div class="task-information__wrapper">
+                                            <app-textarea [elementID]="'task-description'" [elementName]="'task-description'" [elementLabel]="'Описание'" [(elementValue)]="task.description" [elementReadonly]="true" [elementRows]="5"></app-textarea>
+                                        </div>
+
+                                        <div *ngIf="task.mediaID" class="task-information__link flex-center-center">
+                                            <a [href]="getURLForMediafile() + task.mediaID" target="_blank">Прикрепленный файл</a>
+                                        </div>
+                                    </div>
+
                                     <div class="task-controllers flex-row">
                                         <div class="task-controllers__wrapper">
-                                            <app-button [elementID]="'ratings'" [elementName]="'ratings'" [elementLabel]="'Оценки'" [elementDisable]="isDataLoading"></app-button>
+                                            <app-button [elementID]="'ratings'" [elementName]="'ratings'" [elementLabel]="'Оценки'" [elementDisable]="isDataLoading" (click)="toggleSelectGroupDialogVisible(task.id)"></app-button>
                                         </div>
 
                                         <div class="task-controllers__wrapper">
                                             <app-button [elementID]="'attendance'" [elementName]="'attendance'" [elementLabel]="'Посещаемость'" [elementDisable]="isDataLoading"></app-button>
-                                        </div>
-
-                                        <div *ngIf="task.mediaID" class="task-controllers__wrapper__link flex-center-center">
-                                            <a [href]="getURLForMediafile() + task.mediaID" target="_blank">Скачать файл</a>
                                         </div>
 
                                         <div class="task-controllers__wrapper">
@@ -173,6 +175,19 @@
         </div>
 
         <app-button [elementID]="'button-update'" [elementName]="'button-update'" [elementLabel]="'Обновить'" [elementDisable]="isDataLoading" (click)="updateTaskHandler()"></app-button>
+    </div>
+</p-dialog>
+
+<!-- Выбор группы -->
+<p-dialog [header]="'Выбор группы'" [(visible)]="isSelectedGroupDialogVisible" [modal]="true" [style]="{ width: '400px' }" [draggable]="false" [resizable]="false">
+    <div class="dialog-wrapper flex-column">
+        <app-dropdown [elementID]="'group'" [elementName]="'group'" [elementLabel]="'Выберите группу'" [(elementValue)]="selectedGroup" [options]="avaliableGroups ?? []" [elementDisable]="isDataLoading" [optionsLabel]="'nameShortly'" [optionsValue]="'nameShortly'" [filter]="true" [clearOption]="true"></app-dropdown>
+
+        <div class="dialog-message flex-row">
+            <span class="dialog-message__value">{{ selectedGroupDialogError }}</span>
+        </div>
+
+        <app-button [elementID]="'button-select'" [elementName]="'button-select'" [elementLabel]="'Выбрать'" [elementDisable]="isDataLoading"></app-button>
     </div>
 </p-dialog>
 

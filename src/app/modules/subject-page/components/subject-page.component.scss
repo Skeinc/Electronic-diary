@@ -156,6 +156,8 @@
         width: 100%;
         height: auto;
         padding: 0px 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid $inputBorder;
 
         .task {
             width: 100%;
@@ -192,7 +194,7 @@
             .task-item__information {
                 width: calc(100% - 84px);
                 height: 100%;
-                justify-content: space-between;
+                justify-content: center;
                 gap: 10px;
                 overflow: hidden;
 
@@ -201,16 +203,6 @@
                     font-size: 14px;
                     line-height: auto;
                     color: $colorDark2;
-                }
-
-                .task-item__description {
-                    font-weight: 400;
-                    font-size: 10px;
-                    line-height: auto;
-                    color: $colorGrey3;
-                    text-wrap: nowrap;
-                    text-overflow: ellipsis;
-                    overflow: hidden;
                 }
             }
 
@@ -240,6 +232,42 @@
             height: auto;
             gap: 20px;
             margin-top: 20px;
+            overflow: hidden;
+            transition: $transitionMedium;
+        }
+
+        .task-information {
+            width: 100%;
+            gap: 10px;
+
+            .task-information__link {
+                width: 200px;
+                height: 36px;
+                appearance: none;
+                outline: none;
+                border: none;
+                border-radius: 10px;
+                background-color: $colorPrimary3;
+                cursor: pointer;
+                transition: $transitionMedium;
+
+                &:hover {
+                    border-radius: 14px;
+
+                    a {
+                        text-decoration: underline;
+                    }
+                }
+
+                a {
+                    font-weight: 600;
+                    font-size: 12px;
+                    line-height: auto;
+                    color: $colorWhite;
+                    text-align: center;
+                    transition: $transitionMedium;
+                }
+            }
         }
 
         .task-controllers {
@@ -256,31 +284,6 @@
                     span {
                         font-size: 12px;
                     }
-                }
-            }
-
-            .task-controllers__wrapper__link {
-                width: 150px;
-                height: 36px;
-                appearance: none;
-                outline: none;
-                border: none;
-                border-radius: 10px;
-                background-color: $colorPrimary3;
-                cursor: pointer;
-                transition: $transitionMedium;
-
-                &:hover {
-                    border-radius: 14px;
-                }
-
-                a {
-                    font-weight: 600;
-                    font-size: 12px;
-                    line-height: auto;
-                    color: $colorWhite;
-                    text-align: center;
-                    text-decoration: underline;
                 }
             }
         }

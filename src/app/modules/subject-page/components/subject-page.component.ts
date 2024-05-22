@@ -11,6 +11,8 @@ import { ActivatedRoute } from "@angular/router";
 import { SubjectModel } from "@shared/models/subject.model";
 import { SubjectsService } from "@modules/subjects/services/subjects.service";
 import { environment } from "@environments/environment";
+import { GroupModel } from "@shared/models/group.model";
+import { GroupsService } from "@modules/groups/services/groups.service";
 
 @Component({
     selector: 'app-subject-page',
@@ -42,6 +44,7 @@ export class SubjectPageComponent implements OnInit {
         private subjectsService: SubjectsService,
         private topicsService: TopicsService,
         private loggerService: LoggerService,
+        private groupsService: GroupsService,
         private tasksService: TasksService,
         private mediaService: MediaService,
         private cdr: ChangeDetectorRef,
@@ -135,6 +138,18 @@ export class SubjectPageComponent implements OnInit {
     uploadedFileID: string | null = null;
     selectedFileName: string | null = null;
 
+    // Переменная определяет видимость окна выбора группы
+    isSelectedGroupDialogVisible: boolean = false;
+
+    // Переменная обозначает ошибку в окне выбора группы
+    selectedGroupDialogError: string | null = null;
+
+    // Доступные группы
+    avaliableGroups: GroupModel[] | null = null;
+
+    // Выбранная группа
+    selectedGroup: GroupModel | null = null;
+
     ngOnInit(): void {
         // Получаем subjectID из queryParams
         this.route.queryParams.subscribe(async params => {
@@ -216,8 +231,8 @@ export class SubjectPageComponent implements OnInit {
 
         this.tasksService.getAllTasksByTopicID(id).subscribe({
             next: (response: TaskModel[]) => {
-                this.avaliableTasks = response;
-
+                this.avaliableTasks = response.sort((a, b) => a.id - b.id);
+                
                 this.loggerService.message('backend', 'All tasks information was received', response);
 
                 this.cdr.detectChanges();
@@ -557,12 +572,45 @@ export class SubjectPageComponent implements OnInit {
                         this.updateTask(body);
                     };
 
+                    for(let index = 0; index < this.isTopicFlagsVisible.length; index++) {
+                        this.isTopicFlagsVisible[index] = false;
+                    };
+
+                    for(let index = 0; index < this.isTaskFlagsVisible.length; index++) {
+                        this.isTaskFlagsVisible[index] = false;
+                    };
+
                     this.isDataLoading = false;
 
                     this.cdr.detectChanges();
                 },
             });
         };
+    };
+
+    // Метод для получения всех доступных групп
+    getAllGroups(): void {
+        this.isDataLoading = true;
+
+        this.groupsService.getAllGroups().subscribe({
+            next: (response: GroupModel[]) => {
+                this.avaliableGroups = response;
+
+                this.loggerService.message('backend', 'Groups data was received', response);
+            },
+            error: (err) => {
+                this.loggerService.message('error', 'Error with get groups data', err);
+
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+            complete: () => {
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+        });
     };
 
     // Метод для валидации данных окна добавления темы
@@ -595,6 +643,15 @@ export class SubjectPageComponent implements OnInit {
     // Метод для валидации данных окна обновления задания
     validateEditingTaskData(): boolean {
         if (this.dialogEditTaskName.length === 0 || this.dialogEditTaskDescription.length === 0) {
+            return false;
+        }
+
+        return true;
+    };
+
+    // Метод для валидации данных окна выбора группы
+    validateSelectGroupData(): boolean {
+        if(this.selectedGroup === null) {
             return false;
         }
 
@@ -698,6 +755,16 @@ export class SubjectPageComponent implements OnInit {
         if(id !== null && type === 'task') {
             this.deleteTaskID = id!;
         };
+    };
+
+    // Метод для смены видимости окна выбора группы
+    toggleSelectGroupDialogVisible(taskID?: number): void {
+        if(taskID !== null) {
+            this.getAllGroups();
+            console.log(taskID);
+        };
+
+        this.isSelectedGroupDialogVisible = !this.isSelectedGroupDialogVisible;
     };
 
     // Логика для события "Далее"
