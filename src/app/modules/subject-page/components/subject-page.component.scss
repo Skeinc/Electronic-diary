@@ -240,32 +240,43 @@
             width: 100%;
             gap: 10px;
 
+            .task-information__wrapper {
+                gap: 20px;
+            }
+
             .task-information__link {
-                width: 200px;
-                height: 36px;
-                appearance: none;
-                outline: none;
-                border: none;
-                border-radius: 10px;
-                background-color: $colorPrimary3;
-                cursor: pointer;
-                transition: $transitionMedium;
+                width: auto;
+                height: 45px;
+                background-color: transparent;
+                gap: 10px;
 
-                &:hover {
-                    border-radius: 14px;
+                a {
+                    font-weight: 600;
+                    font-size: 14px;
+                    line-height: auto;
+                    color: $colorGrey3;
+                    text-align: center;
+                    transition: $transitionMedium;
 
-                    a {
+                    &:hover {
                         text-decoration: underline;
                     }
                 }
 
-                a {
-                    font-weight: 600;
-                    font-size: 12px;
+                span {
+                    font-weight: 400;
+                    font-size: 20px;
                     line-height: auto;
-                    color: $colorWhite;
-                    text-align: center;
+                    color: $colorGrey3;
+                    padding: 6px;
+                    background-color: transparent;
+                    cursor: pointer;
                     transition: $transitionMedium;
+
+                    &:hover {
+                        background-color: $colorGrey7;
+                        border-radius: 10px;
+                    }
                 }
             }
         }

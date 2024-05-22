@@ -69,21 +69,23 @@
                                 <div class="task-content flex-column" [style.height]="isTaskFlagsVisible[i] ? '100%' : '0px'" [style.opacity]="isTaskFlagsVisible[i] ? '1' : '0'">
                                     <div class="task-information flex-column">
                                         <div class="task-information__wrapper">
-                                            <app-textarea [elementID]="'task-description'" [elementName]="'task-description'" [elementLabel]="'Описание'" [(elementValue)]="task.description" [elementReadonly]="true" [elementRows]="5"></app-textarea>
+                                            <app-textarea [elementID]="'task-description'" [elementName]="'task-description'" [elementLabel]="'Описание'" [(elementValue)]="task.description" [elementReadonly]="true" [elementRows]="8"></app-textarea>
                                         </div>
 
-                                        <div *ngIf="task.mediaID" class="task-information__link flex-center-center">
-                                            <a [href]="getURLForMediafile() + task.mediaID" target="_blank">Прикрепленный файл</a>
+                                        <div class="task-information__wrapper flex-row">
+                                            <app-button [elementID]="'students-response'" [elementName]="'students-response'" [elementLabel]="'Ответы учеников'" [elementDisable]="isDataLoading"></app-button>
+
+                                            <div *ngIf="task.mediaID" class="task-information__link flex-center-center">
+                                                <a [href]="getURLForMediafile() + task.mediaID" target="_blank">Прикрепленный файл</a>
+
+                                                <span class="material-icons" (click)="unpinTaskFile(task)">close</span>
+                                            </div>
                                         </div>
                                     </div>
 
                                     <div class="task-controllers flex-row">
                                         <div class="task-controllers__wrapper">
                                             <app-button [elementID]="'ratings'" [elementName]="'ratings'" [elementLabel]="'Оценки'" [elementDisable]="isDataLoading" (click)="toggleSelectGroupDialogVisible(task.id)"></app-button>
-                                        </div>
-
-                                        <div class="task-controllers__wrapper">
-                                            <app-button [elementID]="'attendance'" [elementName]="'attendance'" [elementLabel]="'Посещаемость'" [elementDisable]="isDataLoading"></app-button>
                                         </div>
 
                                         <div class="task-controllers__wrapper">
@@ -126,7 +128,7 @@
 
         <app-text-field [elementID]="'dialog-name'" [elementName]="'dialog-name'" [elementLabel]="'Наименование'" [(elementValue)]="dialogAddTaskName" [elementDisable]="isDataLoading"></app-text-field>
 
-        <app-text-field [elementID]="'dialog-description'" [elementName]="'dialog-description'" [elementLabel]="'Описание'" [(elementValue)]="dialogAddTaskDescription" [elementDisable]="isDataLoading"></app-text-field>
+        <app-textarea [elementID]="'dialog-description'" [elementName]="'dialog-description'" [elementLabel]="'Описание'" [elementRows]="8" [(elementValue)]="dialogAddTaskDescription" [elementDisable]="isDataLoading"></app-textarea>
 
         <label class="input-file button-file">
             <input type="file" name="file" (change)="onInputChange($event)">
@@ -163,7 +165,7 @@
 
         <app-text-field [elementID]="'dialog-name'" [elementName]="'dialog-name'" [elementLabel]="'Наименование'" [(elementValue)]="dialogEditTaskName" [elementDisable]="isDataLoading"></app-text-field>
 
-        <app-text-field [elementID]="'dialog-description'" [elementName]="'dialog-description'" [elementLabel]="'Описание'" [(elementValue)]="dialogEditTaskDescription" [elementDisable]="isDataLoading"></app-text-field>
+        <app-textarea [elementID]="'dialog-description'" [elementName]="'dialog-description'" [elementLabel]="'Описание'" [elementRows]="8" [(elementValue)]="dialogEditTaskDescription" [elementDisable]="isDataLoading"></app-textarea>
         
         <label class="input-file button-file">
             <input type="file" name="file" (change)="onInputChange($event)">
@@ -181,7 +183,7 @@
 <!-- Выбор группы -->
 <p-dialog [header]="'Выбор группы'" [(visible)]="isSelectedGroupDialogVisible" [modal]="true" [style]="{ width: '400px' }" [draggable]="false" [resizable]="false">
     <div class="dialog-wrapper flex-column">
-        <app-dropdown [elementID]="'group'" [elementName]="'group'" [elementLabel]="'Выберите группу'" [(elementValue)]="selectedGroup" [options]="avaliableGroups ?? []" [elementDisable]="isDataLoading" [optionsLabel]="'nameShortly'" [optionsValue]="'nameShortly'" [filter]="true" [clearOption]="true"></app-dropdown>
+        <app-dropdown [elementID]="'group'" [elementName]="'group'" [elementLabel]="'Выберите группу'" [(elementValue)]="selectedGroup" [options]="avaliableGroups ?? []" [elementDisable]="isDataLoading" [optionsLabel]="'nameShortly'" [optionsValue]="'nameShortly'" [clearOption]="true"></app-dropdown>
 
         <div class="dialog-message flex-row">
             <span class="dialog-message__value">{{ selectedGroupDialogError }}</span>

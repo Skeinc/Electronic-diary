@@ -279,6 +279,8 @@ export class SubjectPageComponent implements OnInit {
                 error: (err) => {
                     this.loggerService.message('error', 'Error with create topic', err);
 
+                    this.dialogAddErrorMessage = 'Не удалось создать тему';
+
                     this.isDataLoading = false;
 
                     this.cdr.detectChanges();
@@ -342,6 +344,8 @@ export class SubjectPageComponent implements OnInit {
                 error: (err) => {
                     this.loggerService.message('error', 'Error with create task', err);
 
+                    this.dialogAddTaskErrorMessage = 'Не удалось создать задание';
+
                     this.isDataLoading = false;
 
                     this.cdr.detectChanges();
@@ -386,6 +390,8 @@ export class SubjectPageComponent implements OnInit {
                 },
                 error: (err) => {
                     this.loggerService.message('error', 'Error with update topic', err);
+
+                    this.dialogEditErrorMessage = 'Не удалось обновить тему';
 
                     this.isDataLoading = false;
 
@@ -447,12 +453,19 @@ export class SubjectPageComponent implements OnInit {
                 error: (err) => {
                     this.loggerService.message('error', 'Error with update task', err);
 
+                    this.dialogEditTaskErrorMessage = 'Не удалось обновить задачу';
+
                     this.isDataLoading = false;
 
                     this.cdr.detectChanges();
                 },
                 complete: () => {
-                    this.toggleEditingTaskDialogVisible();
+                    // Обнуление данных загруженного файла
+                    this.selectedFileName = null;
+                    this.uploadedFileID = null;
+                    this.uploadedFile = null;
+
+                    this.isEditingTaskDialogVisible = !this.isEditingTaskDialogVisible;
 
                     for(let index = 0; index < this.isTopicFlagsVisible.length; index++) {
                         this.isTopicFlagsVisible[index] = false;
@@ -613,6 +626,51 @@ export class SubjectPageComponent implements OnInit {
         });
     };
 
+    // Метод для открепления задания
+    unpinTaskFile(data: any): void {
+        // Формируем тело запроса
+        const body = {
+            "name": data.name,
+            "description": data.description,
+            "id": data.id!,
+            "mediaID": null,
+        };
+
+        // Обновляем задание
+        this.isDataLoading = true;
+
+        this.tasksService.updateTask(body).subscribe({
+            next: (response: any) => {
+
+                this.loggerService.message('backend', 'Task was updated', response);
+
+                this.cdr.detectChanges();
+            },
+            error: (err) => {
+                this.loggerService.message('error', 'Error with update task', err);
+
+                this.dialogEditTaskErrorMessage = 'Не удалось обновить задачу';
+
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+            complete: () => {
+                for(let index = 0; index < this.isTopicFlagsVisible.length; index++) {
+                    this.isTopicFlagsVisible[index] = false;
+                };
+
+                for(let index = 0; index < this.isTaskFlagsVisible.length; index++) {
+                    this.isTaskFlagsVisible[index] = false;
+                };
+
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+        });
+    };
+
     // Метод для валидации данных окна добавления темы
     validateAddingTopicData(): boolean {
         if (this.dialogAddTopicName.length === 0 || this.dialogAddTopicDescription.length === 0) {
@@ -714,7 +772,7 @@ export class SubjectPageComponent implements OnInit {
     // Метод для смены видимости окна редактирования темы
     toggleEditingTopicDialogVisible(id?: number | null, data?: any): void {
         this.isEditingTopicDialogVisible = !this.isEditingTopicDialogVisible;
-
+        
         if (id !== null) {
             this.editTopicID = id!;
         };
@@ -759,6 +817,8 @@ export class SubjectPageComponent implements OnInit {
 
     // Метод для смены видимости окна выбора группы
     toggleSelectGroupDialogVisible(taskID?: number): void {
+        this.selectedGroup = null;
+
         if(taskID !== null) {
             this.getAllGroups();
             console.log(taskID);
