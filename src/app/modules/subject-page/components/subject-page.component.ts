@@ -861,5 +861,5 @@ export class SubjectPageComponent implements OnInit {
     // Метод для получения URL к медиафайлу
     getURLForMediafile(): string {
         return `${environment.protocol}://${environment.domain}/media/file?id=`;
-    }
+    };
 }
