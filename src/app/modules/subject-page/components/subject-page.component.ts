@@ -150,6 +150,9 @@ export class SubjectPageComponent implements OnInit {
     // Выбранная группа
     selectedGroup: GroupModel | null = null;
 
+    // Переменная обозначает видимость окна выставления оценок
+    isRatingsDialogVisible: boolean = false;
+
     ngOnInit(): void {
         // Получаем subjectID из queryParams
         this.route.queryParams.subscribe(async params => {
