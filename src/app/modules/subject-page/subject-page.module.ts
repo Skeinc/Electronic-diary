@@ -10,6 +10,7 @@ import { TextFieldModule } from "@shared/components/text-field/text-field.module
 import { ConfirmDialogModule } from "@shared/components/confirm-dialog/confirm-dialog.module";
 import { TextareaModule } from "@shared/components/textarea/textarea.module";
 import { DropdownModule } from "@shared/components/dropdown/dropdown.module";
+import { NumberFieldModule } from "@shared/components/number-field/number-field.module";
 
 @NgModule({
     declarations: [
@@ -25,6 +26,7 @@ import { DropdownModule } from "@shared/components/dropdown/dropdown.module";
         TextFieldModule,
         TextareaModule,
         DropdownModule,
+        NumberFieldModule,
         ConfirmDialogModule,
         // PrimeNG
         DialogModule,

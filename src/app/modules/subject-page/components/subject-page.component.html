@@ -73,8 +73,6 @@
                                         </div>
 
                                         <div class="task-information__wrapper flex-row">
-                                            <app-button [elementID]="'students-response'" [elementName]="'students-response'" [elementLabel]="'Ответы учеников'" [elementDisable]="isDataLoading"></app-button>
-
                                             <div *ngIf="task.mediaID" class="task-information__link flex-center-center">
                                                 <a [href]="getURLForMediafile() + task.mediaID" target="_blank">Прикрепленный файл</a>
 
@@ -189,7 +187,38 @@
             <span class="dialog-message__value">{{ selectedGroupDialogError }}</span>
         </div>
 
-        <app-button [elementID]="'button-select'" [elementName]="'button-select'" [elementLabel]="'Выбрать'" [elementDisable]="isDataLoading"></app-button>
+        <app-button [elementID]="'button-select'" [elementName]="'button-select'" [elementLabel]="'Выбрать'" [elementDisable]="isDataLoading" (click)="navigateToRatingsDialog()"></app-button>
+    </div>
+</p-dialog>
+
+<!-- Выставление оценок -->
+<p-dialog [header]="'Оценки за задание'" [(visible)]="isRatingsDialogVisible" [modal]="true" [style]="{ width: '600px' }" [draggable]="false" [resizable]="false">
+    <div class="dialog-wrapper flex-column">
+        <div class="ratings-list flex-column">
+            <div class="ratings-item flex-row" *ngFor="let student of marksByGroupAndTasksData">
+                <div class="ratings-item__student">
+                    <app-text-field *ngIf="student" [elementID]="'ratings-student'" [elementName]="'ratings-student'" [elementPlaceholder]="'Студент'" [(elementValue)]="student.studentFIO" [elementDisable]="!isMarksByGroupAndTasksEditable"></app-text-field>
+                </div>
+
+                <div class="ratings-item__rate">
+                    <app-number-field *ngIf="student" [elementID]="'ratings-mark'" [elementName]="'ratings-mark'" [elementPlaceholder]="'Оценка'" [maxValue]="5" [minValue]="1" [(elementValue)]="student.mark" [elementDisable]="!isMarksByGroupAndTasksEditable"></app-number-field>
+                </div>
+
+                <div *ngIf="student.mediaID" class="ratings-item__media flex-center-center">
+                    <a [href]="getURLForMediafile() + student.mediaID" target="_blank">Прикрепленный файл</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="ratings-controllers flex-row">
+            <div class="ratings-controllers__wrapper">
+                <app-button [elementID]="'button-edit'" [elementName]="'button-edit'" [elementLabel]="'Редактировать'" [elementDisable]="isMarksByGroupAndTasksEditable" (click)="toggleMarksByGroupAndTaskEditable()"></app-button>
+            </div>
+
+            <div class="ratings-controllers__wrapper">
+                <app-button [elementID]="'button-save'" [elementName]="'button-save'" [elementLabel]="'Сохранить'" [elementDisable]="!isMarksByGroupAndTasksEditable" (click)="toggleMarksByGroupAndTaskEditable()"></app-button>
+            </div>
+        </div>
     </div>
 </p-dialog>
 

@@ -1,0 +1,18 @@
+<div class="component">
+    <input class="numberfield-input" type="number" autocomplete="off"
+        [id]="elementID"
+        [name]="elementName ?? ''"
+        [placeholder]="elementPlaceholder ?? ''"
+        [value]="elementValue"
+        [max]="maxValue ?? 1000000"
+        [min]="minValue ?? -1000000"
+        [required]="elementRequired ?? false"
+        [readOnly]="elementReadonly"
+        [disabled]="elementDisable ?? false"
+        [(ngModel)]="elementValue"
+        (ngModelChange)="elementValueChange.emit($event)"
+        (keypress)="isNumericInput($event)"
+        >
+
+    <label *ngIf="elementLabel" [for]="elementID" class="numberfield-label">{{ elementLabel }}</label>
+</div>

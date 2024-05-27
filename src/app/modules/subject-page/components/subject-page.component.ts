@@ -13,6 +13,9 @@ import { SubjectsService } from "@modules/subjects/services/subjects.service";
 import { environment } from "@environments/environment";
 import { GroupModel } from "@shared/models/group.model";
 import { GroupsService } from "@modules/groups/services/groups.service";
+import { StudentsService } from "@modules/students/services/students.service";
+import { StudentModel } from "@shared/models/student.model";
+import { TaskMarksMocks } from "../mocks/task-marks.mocks";
 
 @Component({
     selector: 'app-subject-page',
@@ -42,6 +45,7 @@ import { GroupsService } from "@modules/groups/services/groups.service";
 export class SubjectPageComponent implements OnInit {
     constructor(
         private subjectsService: SubjectsService,
+        private studentsService: StudentsService,
         private topicsService: TopicsService,
         private loggerService: LoggerService,
         private groupsService: GroupsService,
@@ -147,11 +151,23 @@ export class SubjectPageComponent implements OnInit {
     // Доступные группы
     avaliableGroups: GroupModel[] | null = null;
 
+    // Данные оценок по заданию и группе
+    marksByGroupAndTasksData: any[] | null = null;
+
     // Выбранная группа
     selectedGroup: GroupModel | null = null;
 
     // Переменная обозначает видимость окна выставления оценок
     isRatingsDialogVisible: boolean = false;
+
+    // Переменная обозначает к какому заданию выставляют оценки
+    ratingsTaskID: number | null = null;
+
+    // Переменная обозначает какой группе выставляют оценки
+    ratingsGroupID: number | null = null;
+
+    // Переменная, которая контролирует редактируемость окна выставления оценки
+    isMarksByGroupAndTasksEditable: boolean = false;
 
     ngOnInit(): void {
         // Получаем subjectID из queryParams
@@ -629,6 +645,31 @@ export class SubjectPageComponent implements OnInit {
         });
     };
 
+    // Метод для получения всех доступных студентов
+    getStudentsByGroupID(groupID: number): void {
+        this.isDataLoading = true;
+
+        this.studentsService.getAllStudents().subscribe({
+            next: (response: any) => {
+                this.marksByGroupAndTasksData = TaskMarksMocks;
+
+                this.loggerService.message('backend', 'Students data was received', response);
+            },
+            error: (err) => {
+                this.loggerService.message('error', 'Error with get students data', err);
+
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+            complete: () => {
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+        });
+    };
+
     // Метод для открепления задания
     unpinTaskFile(data: any): void {
         // Формируем тело запроса
@@ -824,7 +865,8 @@ export class SubjectPageComponent implements OnInit {
 
         if(taskID !== null) {
             this.getAllGroups();
-            console.log(taskID);
+
+            this.ratingsTaskID = taskID!;
         };
 
         this.isSelectedGroupDialogVisible = !this.isSelectedGroupDialogVisible;
@@ -864,5 +906,31 @@ export class SubjectPageComponent implements OnInit {
     // Метод для получения URL к медиафайлу
     getURLForMediafile(): string {
         return `${environment.protocol}://${environment.domain}/media/file?id=`;
+    };
+
+    // Метод для перехода к окну выставления оценок
+    navigateToRatingsDialog(): void {
+        if(this.selectedGroup) {
+            this.toggleRatingsDialogVisible(this.selectedGroup.id!);
+        }
+        else {
+            this.selectedGroupDialogError = 'Выберите группу';
+        }
+    };
+
+    // Метод для смены видимости окна выставления оценок
+    toggleRatingsDialogVisible(groupID: number): void {
+        this.isRatingsDialogVisible = !this.isRatingsDialogVisible;
+        
+        if(groupID !== null) {
+            this.ratingsGroupID = groupID;
+
+            this.getStudentsByGroupID(this.ratingsGroupID);
+        }
+    };
+
+    // Метод для смены редактируемости оценок
+    toggleMarksByGroupAndTaskEditable(): void {
+        this.isMarksByGroupAndTasksEditable = !this.isMarksByGroupAndTasksEditable;
     };
 }
