@@ -4,14 +4,15 @@
         [name]="elementName ?? ''"
         [placeholder]="elementPlaceholder ?? ''"
         [value]="elementValue"
-        [max]="maxValue ?? 1000000"
-        [min]="minValue ?? -1000000"
+        [max]="maxValue"
+        [min]="minValue"
         [required]="elementRequired ?? false"
         [readOnly]="elementReadonly"
         [disabled]="elementDisable ?? false"
         [(ngModel)]="elementValue"
-        (ngModelChange)="elementValueChange.emit($event)"
+        (ngModelChange)="onValueChange($event)"
         (keypress)="isNumericInput($event)"
+        (blur)="onBlur()"
         >
 
     <label *ngIf="elementLabel" [for]="elementID" class="numberfield-label">{{ elementLabel }}</label>
