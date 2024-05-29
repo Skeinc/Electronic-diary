@@ -36,6 +36,10 @@
                     <div class="topic-content flex-column" [@expandCollapse]="isTopicFlagsVisible[i] ? 'expanded' : 'collapsed'">
                         <div class="topic-controllers flex-row">
                             <div class="topic-controllers__wrapper">
+                                <app-button [elementID]="'attendance'" [elementName]="'attendance'" [elementLabel]="'Посещаемость'" [elementDisable]="isDataLoading" (click)="toggleSelectGroupForAttendanceDialogVisible(item.id!)"></app-button>
+                            </div>
+
+                            <div class="topic-controllers__wrapper">
                                 <app-button [elementID]="'add-task'" [elementName]="'add-task'" [elementLabel]="'Добавить задание'" [elementDisable]="isDataLoading" (click)="toggleAddingTaskDialogVisible(item.id)"></app-button>
                             </div>
 
@@ -191,6 +195,19 @@
     </div>
 </p-dialog>
 
+<!-- Выбор группы для выставления оценок -->
+<p-dialog [header]="'Выбор группы'" [(visible)]="isSelectedGroupForAttendanceDialogVisible" [modal]="true" [style]="{ width: '400px' }" [draggable]="false" [resizable]="false">
+    <div class="dialog-wrapper flex-column">
+        <app-dropdown [elementID]="'group'" [elementName]="'group'" [elementLabel]="'Выберите группу'" [(elementValue)]="selectedGroupForAttendance" [options]="avaliableGroups ?? []" [elementDisable]="isDataLoading" [optionsLabel]="'nameShortly'" [optionsValue]="'nameShortly'" [clearOption]="true"></app-dropdown>
+
+        <div class="dialog-message flex-row">
+            <span class="dialog-message__value">{{ selectedGroupForAttendanceDialogError }}</span>
+        </div>
+
+        <app-button [elementID]="'button-select'" [elementName]="'button-select'" [elementLabel]="'Выбрать'" [elementDisable]="isDataLoading" (click)="navigateToAttendanceDialog()"></app-button>
+    </div>
+</p-dialog>
+
 <!-- Выставление оценок -->
 <p-dialog [header]="'Оценки за задание'" [(visible)]="isRatingsDialogVisible" [modal]="true" [style]="{ width: '600px' }" [draggable]="false" [resizable]="false">
     <div class="dialog-wrapper flex-column">
@@ -221,6 +238,37 @@
 
             <div class="ratings-controllers__wrapper">
                 <app-button [elementID]="'button-save'" [elementName]="'button-save'" [elementLabel]="'Сохранить'" [elementDisable]="!isMarksByGroupAndTasksEditable" (click)="saveMarksByGroupAndTaskHandler()"></app-button>
+            </div>
+        </div>
+    </div>
+</p-dialog>
+
+<!-- Выставление посещаемости -->
+<p-dialog [header]="'Выставление посещаемости'" [(visible)]="isAttendanceDialogVisible" [modal]="true" [style]="{ width: '400px' }" [draggable]="false" [resizable]="false">
+    <div class="dialog-wrapper flex-column">
+        <div class="attendance-list flex-column">
+            <div class="attendance-item flex-row" *ngFor="let student of attendanceByGroupAndTopicData">
+                <div class="attendance-item__student">
+                    <app-text-field *ngIf="student" [elementID]="'attendance-student'" [elementName]="'attendance-student'" [elementPlaceholder]="'Студент'" [(elementValue)]="student.studentFIO" [elementDisable]="!isAttendanceByGroupAndTopicEditable"></app-text-field>
+                </div>
+
+                <div class="ratings-attendance__value">
+                    <app-dropdown *ngIf="student" [elementID]="'attendance-value'" [elementName]="'attendance-value'" [elementPlaceholder]="'Посещаемость'" [(elementValue)]="student.value" [options]="attendanceOptions" [elementDisable]="!isAttendanceByGroupAndTopicEditable" [clearOption]="false" [filter]="false"></app-dropdown>
+                </div>
+            </div>
+        </div>
+
+        <div class="dialog-message flex-row">
+            <span class="dialog-message__value">{{ attendanceErrorMessage }}</span>
+        </div>
+
+        <div class="attendance-controllers flex-row">
+            <div class="attendance-controllers__wrapper">
+                <app-button [elementID]="'button-edit'" [elementName]="'button-edit'" [elementLabel]="'Редактировать'" [elementDisable]="isAttendanceByGroupAndTopicEditable" (click)="toggleAttendanceByGroupAndTopicEditable()"></app-button>
+            </div>
+
+            <div class="attendance-controllers__wrapper">
+                <app-button [elementID]="'button-save'" [elementName]="'button-save'" [elementLabel]="'Сохранить'" [elementDisable]="!isAttendanceByGroupAndTopicEditable" (click)="saveAttendanceByGroupAndTopicHandler()"></app-button>
             </div>
         </div>
     </div>

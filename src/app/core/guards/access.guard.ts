@@ -21,8 +21,8 @@ export class AccessGuard implements CanActivate {
             case '2': // Администратор
                 return true; // Разрешаем доступ ко всем страницам
             case '3': // Преподаватель
-                // Разрешаем доступ только к персоналу и расписанию
-                return state.url.includes('personal') || state.url.includes('schedule');
+                // Разрешаем доступ только к персоналу, расписанию
+                return state.url.includes('personal') || state.url.includes('schedule') || state.url.includes('subject-page');
             case '4': // Студент
                 // Разрешаем доступ только к персоналу и расписанию
                 return state.url.includes('personal') || state.url.includes('schedule');

@@ -21,6 +21,7 @@ export class MarksService {
     // Метод для обновления оценок по ID группы и ID задания
     public updateMarksByGroupIDAndTaskID(request: any): Observable<any> {
         const body = request;
+
         return this.httpService.put('marks/updateMarksByTaskAndGroup', body);
     };
 };

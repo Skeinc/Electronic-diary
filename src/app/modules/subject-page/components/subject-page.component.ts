@@ -13,10 +13,8 @@ import { SubjectsService } from "@modules/subjects/services/subjects.service";
 import { environment } from "@environments/environment";
 import { GroupModel } from "@shared/models/group.model";
 import { GroupsService } from "@modules/groups/services/groups.service";
-import { StudentsService } from "@modules/students/services/students.service";
-import { StudentModel } from "@shared/models/student.model";
-import { TaskMarksMocks } from "../mocks/task-marks.mocks";
 import { MarksService } from "@modules/marks/services/marks.service";
+import { AttendaceService } from "@modules/attendance/services/attendance.service";
 
 @Component({
     selector: 'app-subject-page',
@@ -45,6 +43,7 @@ import { MarksService } from "@modules/marks/services/marks.service";
 })
 export class SubjectPageComponent implements OnInit {
     constructor(
+        private attendanceService: AttendaceService,
         private subjectsService: SubjectsService,
         private topicsService: TopicsService,
         private loggerService: LoggerService,
@@ -146,8 +145,14 @@ export class SubjectPageComponent implements OnInit {
     // Переменная определяет видимость окна выбора группы
     isSelectedGroupDialogVisible: boolean = false;
 
+    // Переменная определяет видимость окна выбора группы для выставления посещаемости
+    isSelectedGroupForAttendanceDialogVisible: boolean = false;
+
     // Переменная обозначает ошибку в окне выбора группы
     selectedGroupDialogError: string | null = null;
+
+    // Переменная обозначает ошибку в окне выбора группы для выставления посещаемости
+    selectedGroupForAttendanceDialogError: string | null = null;
 
     // Доступные группы
     avaliableGroups: GroupModel[] | null = null;
@@ -155,8 +160,14 @@ export class SubjectPageComponent implements OnInit {
     // Данные оценок по заданию и группе
     marksByGroupAndTasksData: any[] | null = null;
 
-    // Выбранная группа
+    // Данные посещаемости по заданию и группе
+    attendanceByGroupAndTopicData: any[] | null =  null;
+
+    // Выбранная группа для выставления оценок
     selectedGroup: GroupModel | null = null;
+
+    // Выбранная группа для выставления посещаемости
+    selectedGroupForAttendance: GroupModel | null = null;
 
     // Переменная обозначает видимость окна выставления оценок
     isRatingsDialogVisible: boolean = false;
@@ -172,6 +183,24 @@ export class SubjectPageComponent implements OnInit {
 
     // Переменная, которая контролирует редактируемость окна выставления оценки
     isMarksByGroupAndTasksEditable: boolean = false;
+
+    // Переменная обозначает видимость окна выставления посещаемости
+    isAttendanceDialogVisible: boolean = false;
+
+    // Переменная обозначает к какой теме выставляют посещаемость
+    attendanceTopicID: number | null = null;
+
+    // Переменная обозначает к какой группе выставляют посещаемость
+    attendanceGroupID: number | null = null;
+    
+    // Переменная обозначет ошибку при выставлении посещаемости
+    attendanceErrorMessage: string | null = null;
+
+    // Переменная, которая контролирует редактируемость окна выставления посещаемости
+    isAttendanceByGroupAndTopicEditable: boolean = false;
+
+    // Массив возможных значений для посещаемости
+    attendanceOptions: string[] = ['Был', 'Не был'];
 
     ngOnInit(): void {
         // Получаем subjectID из queryParams
@@ -651,11 +680,17 @@ export class SubjectPageComponent implements OnInit {
 
     // Метод для получения всех оценок по ID группы и ID задания
     getMarksByGroupIDAndTaskID(groupID: number, taskID: number): void {
+        this.ratingsErrorMessage = '';
+
         this.isDataLoading = true;
 
         this.marksService.getMarksByGroupIDAndTaskID(groupID, taskID).subscribe({
             next: (response: any) => {
                 this.marksByGroupAndTasksData = response;
+
+                if(this.marksByGroupAndTasksData?.length === 0) {
+                    this.ratingsErrorMessage = 'В группе нет студентов';
+                };
 
                 this.loggerService.message('backend', 'Marks by groupID and taskID data was received', response);
             },
@@ -676,8 +711,9 @@ export class SubjectPageComponent implements OnInit {
 
     // Метод для обновления всех оценок по ID группы и ID задания
     updateMarksByGroupAndTaskID(): void {
+        this.ratingsErrorMessage = null;
+
         this.isDataLoading = true;
-        console.log(this.marksByGroupAndTasksData);
 
         this.marksService.updateMarksByGroupIDAndTaskID(this.marksByGroupAndTasksData).subscribe({
             next: (response: any) => {
@@ -686,11 +722,75 @@ export class SubjectPageComponent implements OnInit {
             error: (err) => {
                 this.loggerService.message('error', 'Error with updated marks by groupID and taskID data', err);
 
+                this.ratingsErrorMessage = 'Не удалось изменить оценки по заданию';
+
                 this.isDataLoading = false;
 
                 this.cdr.detectChanges();
             },
             complete: () => {
+                this.isRatingsDialogVisible = !this.isRatingsDialogVisible;
+
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+        });
+    };
+
+    // Метод для получения посещаемости по ID группы и ID темы
+    getAttendanceByGroupIDAndTopicID(groupID: number, topicID: number): void {
+        this.attendanceErrorMessage = null;
+
+        this.isDataLoading = true;
+
+        this.attendanceService.getAttendanceByGroupIDAndTopicID(groupID, topicID).subscribe({
+            next: (response: any) => {
+                this.attendanceByGroupAndTopicData = response;
+
+                if(this.attendanceByGroupAndTopicData?.length === 0) {
+                    this.attendanceErrorMessage = 'В группе нет студентов';
+                };
+
+                this.loggerService.message('backend', 'Attendace by groupID and topicID data was received', response);
+            },
+            error: (err) => {
+                this.loggerService.message('error', 'Error with get attendance by groupID and topicID data', err);
+
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+            complete: () => {
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+        });
+    };
+
+    // Метод для обновления посещаемости по ID группы и ID темы
+    updateAttendanceByGroupAndTopicID(): void {
+        this.ratingsErrorMessage = '';
+
+        this.isDataLoading = true;
+
+        this.attendanceService.updateAttendanceByGroupIDAndTopicID(this.attendanceByGroupAndTopicData).subscribe({
+            next: (response: any) => {
+                this.loggerService.message('backend', 'Attendance by groupID and topicID data was updated', response);
+            },
+            error: (err) => {
+                this.loggerService.message('error', 'Error with updated attendance by groupID and topicID data', err);
+
+                this.attendanceErrorMessage = 'Не удалось изменить посещаемость за тему';
+
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+            complete: () => {
+                this.isAttendanceDialogVisible = !this.isAttendanceDialogVisible;
+
                 this.isDataLoading = false;
 
                 this.cdr.detectChanges();
@@ -900,6 +1000,19 @@ export class SubjectPageComponent implements OnInit {
         this.isSelectedGroupDialogVisible = !this.isSelectedGroupDialogVisible;
     };
 
+    // Метод для смены видимости окна выбора группы для выставления посещаемости
+    toggleSelectGroupForAttendanceDialogVisible(topicID?: number): void {
+        this.selectedGroupForAttendance = null;
+
+        if(topicID !== null) {
+            this.getAllGroups();
+
+            this.attendanceTopicID = topicID!;
+        };
+
+        this.isSelectedGroupForAttendanceDialogVisible = !this.isSelectedGroupForAttendanceDialogVisible;
+    };
+
     // Логика для события "Далее"
     handleConfirmDialogNext(): void {
         this.toggleConfirmDialogVisible();
@@ -946,8 +1059,20 @@ export class SubjectPageComponent implements OnInit {
         }
     };
 
+    // Метод для перехода к окну выставления посещаемости
+    navigateToAttendanceDialog(): void {
+        if(this.selectedGroupForAttendance) {
+            this.toggleAttendanceDialogVisible(this.selectedGroupForAttendance.id!);
+        }
+        else {
+            this.selectedGroupForAttendanceDialogError = 'Выберите группу';
+        }
+    }
+
     // Метод для смены видимости окна выставления оценок
     toggleRatingsDialogVisible(groupID: number): void {
+        this.ratingsErrorMessage = null;
+
         this.isRatingsDialogVisible = !this.isRatingsDialogVisible;
         
         if(groupID !== null) {
@@ -957,9 +1082,27 @@ export class SubjectPageComponent implements OnInit {
         }
     };
 
+    // Метод для смены видимости окна выставления посещаемости
+    toggleAttendanceDialogVisible(groupID: number): void {
+        this.attendanceErrorMessage = null;
+
+        this.isAttendanceDialogVisible = !this.isAttendanceDialogVisible;
+
+        if(groupID !== null) {
+            this.attendanceGroupID = groupID;
+
+            this.getAttendanceByGroupIDAndTopicID(this.attendanceGroupID, this.attendanceTopicID!);
+        };
+    };
+
     // Метод для смены редактируемости оценок
     toggleMarksByGroupAndTaskEditable(): void {
         this.isMarksByGroupAndTasksEditable = !this.isMarksByGroupAndTasksEditable;
+    };
+
+    // Метод для смены редактируемости посещаемости
+    toggleAttendanceByGroupAndTopicEditable(): void {
+        this.isAttendanceByGroupAndTopicEditable = !this.isAttendanceByGroupAndTopicEditable;
     };
 
     // Метод для обработки сохранения оценок
@@ -967,5 +1110,12 @@ export class SubjectPageComponent implements OnInit {
         this.updateMarksByGroupAndTaskID();
 
         this.toggleMarksByGroupAndTaskEditable();
+    };
+
+    // Метод для обработки сохранения посещаемости
+    saveAttendanceByGroupAndTopicHandler(): void {
+        this.updateAttendanceByGroupAndTopicID();
+
+        this.toggleAttendanceByGroupAndTopicEditable();
     };
 }

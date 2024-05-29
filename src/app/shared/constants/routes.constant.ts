@@ -71,6 +71,7 @@ export const ROUTES: Routes = [
     {
         path: 'subject-page',
         component: SubjectPageComponent,
+        canActivate: [AuthGuard, AccessGuard],
     },
     {
         path: 'waiting',

@@ -434,3 +434,58 @@
         width: 200px;
     }
 }
+
+.attendance-list {
+    width: 100%;
+    height: auto;
+
+    .attendance-item {
+        width: 100%;
+        height: 40px;
+        border: 1px solid $inputBorder;
+
+        &::ng-deep {
+            input {
+                width: 100%;
+                height: 40px;
+                padding: 0px 16px;
+                background-color: transparent;
+                border-radius: 0px;
+                border: 1px solid $inputBorder;
+                font-size: 12px;
+                text-overflow: ellipsis;
+
+                &:focus,
+                &:active,
+                &:not(:placeholder-shown) {
+                    border-radius: 0;
+                    box-shadow: none;
+                }
+
+                &:disabled {
+                    color: $colorDark2;
+                }
+            }
+        }
+
+        .attendance-item__student {
+            width: 250px;
+            height: 100%;
+        }
+
+        .attendance-item__value {
+            width: 100px;
+            height: 100%;
+        }
+    }
+}
+
+.attendance-controllers {
+    width: 100%;
+    gap: 20px;
+    margin-top: 20px;
+
+    .attendance-controllers__wrapper {
+        width: 160px;
+    }
+}
