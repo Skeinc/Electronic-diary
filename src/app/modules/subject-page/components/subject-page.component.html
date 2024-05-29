@@ -210,13 +210,17 @@
             </div>
         </div>
 
+        <div class="dialog-message flex-row">
+            <span class="dialog-message__value">{{ ratingsErrorMessage }}</span>
+        </div>
+
         <div class="ratings-controllers flex-row">
             <div class="ratings-controllers__wrapper">
                 <app-button [elementID]="'button-edit'" [elementName]="'button-edit'" [elementLabel]="'Редактировать'" [elementDisable]="isMarksByGroupAndTasksEditable" (click)="toggleMarksByGroupAndTaskEditable()"></app-button>
             </div>
 
             <div class="ratings-controllers__wrapper">
-                <app-button [elementID]="'button-save'" [elementName]="'button-save'" [elementLabel]="'Сохранить'" [elementDisable]="!isMarksByGroupAndTasksEditable" (click)="toggleMarksByGroupAndTaskEditable()"></app-button>
+                <app-button [elementID]="'button-save'" [elementName]="'button-save'" [elementLabel]="'Сохранить'" [elementDisable]="!isMarksByGroupAndTasksEditable" (click)="saveMarksByGroupAndTaskHandler()"></app-button>
             </div>
         </div>
     </div>

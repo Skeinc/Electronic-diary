@@ -16,6 +16,7 @@ import { GroupsService } from "@modules/groups/services/groups.service";
 import { StudentsService } from "@modules/students/services/students.service";
 import { StudentModel } from "@shared/models/student.model";
 import { TaskMarksMocks } from "../mocks/task-marks.mocks";
+import { MarksService } from "@modules/marks/services/marks.service";
 
 @Component({
     selector: 'app-subject-page',
@@ -45,12 +46,12 @@ import { TaskMarksMocks } from "../mocks/task-marks.mocks";
 export class SubjectPageComponent implements OnInit {
     constructor(
         private subjectsService: SubjectsService,
-        private studentsService: StudentsService,
         private topicsService: TopicsService,
         private loggerService: LoggerService,
         private groupsService: GroupsService,
         private tasksService: TasksService,
         private mediaService: MediaService,
+        private marksService: MarksService,
         private cdr: ChangeDetectorRef,
         private route: ActivatedRoute
     ) { }
@@ -165,6 +166,9 @@ export class SubjectPageComponent implements OnInit {
 
     // Переменная обозначает какой группе выставляют оценки
     ratingsGroupID: number | null = null;
+
+    // Переменная обозначает ошибку при выставлении оценок
+    ratingsErrorMessage: string | null = null;
 
     // Переменная, которая контролирует редактируемость окна выставления оценки
     isMarksByGroupAndTasksEditable: boolean = false;
@@ -645,18 +649,42 @@ export class SubjectPageComponent implements OnInit {
         });
     };
 
-    // Метод для получения всех доступных студентов
-    getStudentsByGroupID(groupID: number): void {
+    // Метод для получения всех оценок по ID группы и ID задания
+    getMarksByGroupIDAndTaskID(groupID: number, taskID: number): void {
         this.isDataLoading = true;
 
-        this.studentsService.getAllStudents().subscribe({
+        this.marksService.getMarksByGroupIDAndTaskID(groupID, taskID).subscribe({
             next: (response: any) => {
-                this.marksByGroupAndTasksData = TaskMarksMocks;
+                this.marksByGroupAndTasksData = response;
 
-                this.loggerService.message('backend', 'Students data was received', response);
+                this.loggerService.message('backend', 'Marks by groupID and taskID data was received', response);
             },
             error: (err) => {
-                this.loggerService.message('error', 'Error with get students data', err);
+                this.loggerService.message('error', 'Error with get marks by groupID and taskID data', err);
+
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+            complete: () => {
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+        });
+    };
+
+    // Метод для обновления всех оценок по ID группы и ID задания
+    updateMarksByGroupAndTaskID(): void {
+        this.isDataLoading = true;
+        console.log(this.marksByGroupAndTasksData);
+
+        this.marksService.updateMarksByGroupIDAndTaskID(this.marksByGroupAndTasksData).subscribe({
+            next: (response: any) => {
+                this.loggerService.message('backend', 'Marks by groupID and taskID data was updated', response);
+            },
+            error: (err) => {
+                this.loggerService.message('error', 'Error with updated marks by groupID and taskID data', err);
 
                 this.isDataLoading = false;
 
@@ -925,12 +953,19 @@ export class SubjectPageComponent implements OnInit {
         if(groupID !== null) {
             this.ratingsGroupID = groupID;
 
-            this.getStudentsByGroupID(this.ratingsGroupID);
+            this.getMarksByGroupIDAndTaskID(this.ratingsGroupID, this.ratingsTaskID!);
         }
     };
 
     // Метод для смены редактируемости оценок
     toggleMarksByGroupAndTaskEditable(): void {
         this.isMarksByGroupAndTasksEditable = !this.isMarksByGroupAndTasksEditable;
+    };
+
+    // Метод для обработки сохранения оценок
+    saveMarksByGroupAndTaskHandler(): void {
+        this.updateMarksByGroupAndTaskID();
+
+        this.toggleMarksByGroupAndTaskEditable();
     };
 }
