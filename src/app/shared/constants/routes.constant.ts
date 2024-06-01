@@ -15,6 +15,8 @@ import { OverviewComponent } from "@modules/overview/components/overview.compone
 import { ScheduleComponent } from "@modules/schedule/components/schedule.component";
 import { AccessGuard } from "@core/guards/access.guard";
 import { SubjectPageComponent } from "@modules/subject-page/components/subject-page.component";
+import { MarksComponent } from "@modules/marks/components/marks.component";
+import { AttendanceComponent } from "@modules/attendance/components/attendance.component";
 
 export const ROUTES: Routes = [
     {
@@ -72,6 +74,14 @@ export const ROUTES: Routes = [
         path: 'subject-page',
         component: SubjectPageComponent,
         canActivate: [AuthGuard, AccessGuard],
+    },
+    {
+        path: 'marks',
+        component: MarksComponent,
+    },
+    {
+        path: 'attendance',
+        component: AttendanceComponent,
     },
     {
         path: 'waiting',

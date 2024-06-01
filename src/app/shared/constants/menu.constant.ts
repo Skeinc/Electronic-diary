@@ -43,5 +43,17 @@ export const menuItemsConstant: MenuItemsInterface[] = [
         label: 'Расписание',
         icon: 'schedule',
         role: RolesEnum.ALL,
-    }
+    },
+    {
+        path: '/marks',
+        label: 'Оценки',
+        icon: 'checklist',
+        role: RolesEnum.LECTURER
+    },
+    {
+        path: '/attendance',
+        label: 'Посещаемость',
+        icon: 'history',
+        role: RolesEnum.LECTURER
+    },
 ];

@@ -20,6 +20,8 @@ import { WaitingModule } from "@modules/waiting/waiting.module";
 import { OverviewModule } from "@modules/overview/overview.module";
 import { ScheduleModule } from "@modules/schedule/schedule.module";
 import { SubjectPageModule } from "@modules/subject-page/subject-page.module";
+import { MarksModule } from "@modules/marks/marks.module";
+import { AttendanceModule } from "@modules/attendance/attendance.module";
 
 @NgModule({
     declarations: [
@@ -47,6 +49,8 @@ import { SubjectPageModule } from "@modules/subject-page/subject-page.module";
         SubjectsModule,
         ScheduleModule,
         SubjectPageModule,
+        MarksModule,
+        AttendanceModule,
     ],
     providers: [
 

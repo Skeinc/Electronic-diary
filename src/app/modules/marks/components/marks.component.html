@@ -1,0 +1,17 @@
+<section class="wrapper">
+    <app-loader *ngIf="isDataLoading" class="loader"></app-loader>
+
+    <app-navigation (navigationVisibility)="onNavigationOpenedChange($event)"></app-navigation>
+
+    <div class="container" [style.marginLeft]="isNavigationOpened ? '320px' : '80px'">
+        <div class="marks flex-column">
+            <header class="header flex-row">
+                <div class="header-title flex-row">
+                    <p class="header-title__value">Оценки</p>
+                </div>
+
+                <div class="header-controllers flex-row"></div>
+            </header>
+        </div>
+    </div>
+</section>
