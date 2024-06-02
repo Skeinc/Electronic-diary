@@ -11,6 +11,13 @@ export class MarksService {
         private httpService: HttpService,
     ) {}
 
+    // Метод для получения оценок всех по ID группы и ID предмета
+    public getAllMarksByGroupIDAndTaskID(groupID: number, subjectID: number): Observable<any> {
+        const body: HttpParams = new HttpParams().set('subjectID', subjectID).set('groupID', groupID);
+
+        return this.httpService.get('marks/getGroupMarksBySubjectID', body);
+    };
+
     // Метод для получения оценок по ID группы и ID задания
     public getMarksByGroupIDAndTaskID(groupID: number, taskID: number): Observable<any> {
         const body: HttpParams = new HttpParams().set('taskID', taskID).set('groupID', groupID);

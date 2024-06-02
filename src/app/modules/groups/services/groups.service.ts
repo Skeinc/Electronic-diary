@@ -24,6 +24,13 @@ export class GroupsService {
         return this.httpService.get('groups/getGroupByCode', body);
     };
 
+    // Метод на получение групп по ID предмета
+    public getGroupsBySubjectID(id: number): Observable<any> {
+        const body: HttpParams = new HttpParams().set('subjectID', id);
+
+        return this.httpService.get('groups/getGroupsBySubjectID', body);
+    };
+
     // Метод на получение всех кодировок групп
     public getAllGroupCodes(): Observable<string[]> {
         return this.httpService.get('groups/getAllGroupCodes');

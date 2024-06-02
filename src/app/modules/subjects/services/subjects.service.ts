@@ -50,4 +50,11 @@ export class SubjectsService {
 
         return this.httpService.get('subjects/getSubjectsByTeacherID', body);
     };
+
+    // Метод для получения предметов по ID группы
+    public getAllSubjectsByGroupID(id: number): Observable<any> {
+        const body: HttpParams = new HttpParams().set('id', id);
+
+        return this.httpService.get('subjects/getSubjectsByGroupID', body);
+    };
 }

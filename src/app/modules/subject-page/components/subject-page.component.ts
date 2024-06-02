@@ -657,7 +657,7 @@ export class SubjectPageComponent implements OnInit {
     getAllGroups(): void {
         this.isDataLoading = true;
 
-        this.groupsService.getAllGroups().subscribe({
+        this.groupsService.getGroupsBySubjectID(this.subjectID!).subscribe({
             next: (response: GroupModel[]) => {
                 this.avaliableGroups = response;
 

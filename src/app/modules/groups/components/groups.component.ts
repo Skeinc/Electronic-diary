@@ -430,7 +430,6 @@ export class GroupsComponent implements OnInit {
         this.tableScrollHeight = window.innerHeight - 80 - 40 - 40 - 60 - 40;
     };
 
-
     // Установка конфигурации таблицы
     setConfigurationTable(): void {
         this.tableColumns = [

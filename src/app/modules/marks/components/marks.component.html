@@ -12,6 +12,57 @@
 
                 <div class="header-controllers flex-row"></div>
             </header>
+
+            <div class="marks-controllers flex-row">
+                <div class="marks-controllers__wrapper">
+                    <app-dropdown [elementID]="'group'" [elementName]="'group'" [elementPlaceholder]="'Выберите группу'" [(elementValue)]="selectedGroup" (elementValueChange)="onSelectedGroupChange($event)" [options]="groupsData ?? []" [optionsLabel]="'nameShortly'" [optionsValue]="'nameShortly'" [elementDisable]="isDataLoading" [filter]="true" [clearOption]="true"></app-dropdown>
+                </div>
+
+                <div class="marks-controllers__wrapper">
+                    <app-dropdown [elementID]="'subject'" [elementName]="'subject'" [elementPlaceholder]="'Выберите предмет'" [(elementValue)]="selectedSubject" [options]="subjectsData ?? []" [optionsLabel]="'name'" [optionsValue]="'name'" [elementDisable]="isDataLoading || isSubjectDropdownDisabled" [filter]="true" [clearOption]="true"></app-dropdown>
+                </div>
+
+                <div class="marks-controllers__wrapper">
+                    <app-button [elementID]="'apply'" [elementName]="'apply'" [elementLabel]="'Применить'" [elementDisable]="isDataLoading" (click)="getAllMarksByGroupIDAndSubjectID()"></app-button>
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table *ngIf="marksData" class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="table-header">
+                                    <p class="table-header__value">Ученик</p>
+                                </div>
+                            </th>
+                            <ng-container *ngFor="let task of taskNames">
+                                <th>
+                                    <div class="table-header">
+                                        <p class="table-header__value">{{ task }}</p>
+                                    </div>
+                                </th>
+                            </ng-container>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of marksData">
+                            <td>
+                                <div class="table-body">
+                                    <p class="table-body__value">{{ item.studentName }}</p>
+                                </div>
+                            </td>
+                            <ng-container *ngFor="let task of taskNames">
+                                <td>
+                                    <div class="table-body flex-center-center">
+                                        <p class="table-body__value">{{ getMarkValue(item.marks, task) }}</p>
+                                    </div>
+                                </td>
+                            </ng-container>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </section>

@@ -129,6 +129,23 @@ input[type=number] {
     }
 }
 
+.table-header {
+    width: 100%;
+    justify-content: center;
+    padding: 10px;
+
+    .table-header__value {
+        font-weight: 600;
+        font-size: 12px;
+        line-height: auto;
+        color: $colorDark2;
+        text-wrap: nowrap;
+        text-overflow: ellipsis;
+        text-align: center;
+        overflow: hidden;
+    }
+}
+
 .table-body {
     width: 100%;
     justify-content: center;
