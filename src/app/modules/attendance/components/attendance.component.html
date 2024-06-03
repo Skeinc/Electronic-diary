@@ -7,11 +7,62 @@
         <div class="attendance flex-column">
             <header class="header flex-row">
                 <div class="header-title flex-row">
-                    <p class="header-title__value">Оценки</p>
+                    <p class="header-title__value">Посещаемость</p>
                 </div>
 
                 <div class="header-controllers flex-row"></div>
             </header>
+
+            <div class="attendance-controllers flex-row">
+                <div class="attendance-controllers__wrapper">
+                    <app-dropdown [elementID]="'group'" [elementName]="'group'" [elementPlaceholder]="'Выберите группу'" [(elementValue)]="selectedGroup" (elementValueChange)="onSelectedGroupChange($event)" [options]="groupsData ?? []" [optionsLabel]="'nameShortly'" [optionsValue]="'nameShortly'" [elementDisable]="isDataLoading" [filter]="true" [clearOption]="true"></app-dropdown>
+                </div>
+    
+                <div class="attendance-controllers__wrapper">
+                    <app-dropdown [elementID]="'subject'" [elementName]="'subject'" [elementPlaceholder]="'Выберите предмет'" [(elementValue)]="selectedSubject" [options]="subjectsData ?? []" [optionsLabel]="'name'" [optionsValue]="'name'" [elementDisable]="isDataLoading || isSubjectDropdownDisabled" [filter]="true" [clearOption]="true"></app-dropdown>
+                </div>
+    
+                <div class="attendance-controllers__wrapper">
+                    <app-button [elementID]="'apply'" [elementName]="'apply'" [elementLabel]="'Применить'" [elementDisable]="isDataLoading" (click)="getAttendanceByGroupIDAndSubjectID()"></app-button>
+                </div>
+            </div>
+
+            <div class="table-wrapper">
+                <table *ngIf="attendanceData" class="table">
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="table-header">
+                                    <p class="table-header__value">Ученик</p>
+                                </div>
+                            </th>
+                            <ng-container *ngFor="let topic of topicNames">
+                                <th>
+                                    <div class="table-header">
+                                        <p class="table-header__value" [title]="topic">{{ topic }}</p>
+                                    </div>
+                                </th>
+                            </ng-container>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let item of attendanceData">
+                            <td>
+                                <div class="table-data">
+                                    <p class="table-data__value" [title]="item.studentName">{{ item.studentName }}</p>
+                                </div>
+                            </td>
+                            <ng-container *ngFor="let topic of topicNames">
+                                <td>
+                                    <div class="table-data flex-center-center">
+                                        <p class="table-data__value">{{ getAttendanceValue(item.attendance, topic) }}</p>
+                                    </div>
+                                </td>
+                            </ng-container>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </section>

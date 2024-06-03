@@ -52,3 +52,20 @@
         align-items: center;
     }
 }
+
+.attendance-controllers {
+    width: auto;
+    height: auto;
+    gap: 20px;
+    margin-top: 20px;
+
+    .attendance-controllers__wrapper {
+        width: 270px;
+    }
+}
+
+.table, th, td {
+    overflow: auto;
+    border: 1px solid $inputBorder;
+    border-collapse: collapse;
+}

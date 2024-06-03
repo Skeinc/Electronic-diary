@@ -39,7 +39,7 @@
                             <ng-container *ngFor="let task of taskNames">
                                 <th>
                                     <div class="table-header">
-                                        <p class="table-header__value">{{ task }}</p>
+                                        <p class="table-header__value" [title]="task">{{ task }}</p>
                                     </div>
                                 </th>
                             </ng-container>
@@ -48,14 +48,14 @@
                     <tbody>
                         <tr *ngFor="let item of marksData">
                             <td>
-                                <div class="table-body">
-                                    <p class="table-body__value">{{ item.studentName }}</p>
+                                <div class="table-data">
+                                    <p class="table-data__value" [title]="item.studentName">{{ item.studentName }}</p>
                                 </div>
                             </td>
                             <ng-container *ngFor="let task of taskNames">
                                 <td>
-                                    <div class="table-body flex-center-center">
-                                        <p class="table-body__value">{{ getMarkValue(item.marks, task) }}</p>
+                                    <div class="table-data flex-center-center">
+                                        <p class="table-data__value">{{ getMarkValue(item.marks, task) }}</p>
                                     </div>
                                 </td>
                             </ng-container>

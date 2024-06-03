@@ -6,7 +6,6 @@ import { NavigationModule } from "@shared/components/navigation/navigation.modul
 import { LoaderModule } from "@shared/components/loader/loader.module";
 import { DropdownModule } from "@shared/components/dropdown/dropdown.module";
 import { ButtonModule } from "@shared/components/button/button.module";
-import { TableModule } from "primeng/table";
 
 @NgModule({
     declarations: [
@@ -20,8 +19,6 @@ import { TableModule } from "primeng/table";
         LoaderModule,
         DropdownModule,
         ButtonModule,
-        // PrimeNG
-        TableModule,
     ],
     exports: [
         MarksComponent,

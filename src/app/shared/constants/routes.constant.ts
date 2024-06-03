@@ -78,10 +78,12 @@ export const ROUTES: Routes = [
     {
         path: 'marks',
         component: MarksComponent,
+        canActivate: [AuthGuard, AccessGuard],
     },
     {
         path: 'attendance',
         component: AttendanceComponent,
+        canActivate: [AuthGuard, AccessGuard],
     },
     {
         path: 'waiting',

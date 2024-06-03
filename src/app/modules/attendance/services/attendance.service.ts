@@ -11,6 +11,13 @@ export class AttendaceService {
         private httpService: HttpService,
     ) {}
 
+    // Метод для получения посещаемости по ID группы и ID предмета
+    public getAttendanceByGroupIDAndSubjectID(groupID: number, subjectID: number): Observable<any> {
+        const body: HttpParams = new HttpParams().set('subjectID', subjectID).set('groupID', groupID);
+
+        return this.httpService.get('attendance/getAttendanceBySubjectAndGroup', body);
+    };
+
     // Метод для получения посещаемости по ID группы и ID темы
     public getAttendanceByGroupIDAndTopicID(groupID: number, topicID: number): Observable<any> {
         const body: HttpParams = new HttpParams().set('topicID', topicID).set('groupID', groupID);
