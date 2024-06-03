@@ -65,9 +65,10 @@
                 </address>
             </div>
 
+            <!-- Предметы закрепленные за преподавателем -->
             <div *ngIf="userData?.role === '3'" class="subjects flex-column">
                 <header class="subjects-header">
-                    <p class="subjects-header__title">Предметы</p>
+                    <p class="subjects-header__title">Предметы, закрепленные за преподавателем</p>
                 </header>
 
                 <div class="subjects-list flex-column">
@@ -86,6 +87,29 @@
                             <button type="button" class="subject-item__button flex-center-center">
                                 <span class="material-icons" >chevron_right</span>
                             </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Группы закрепленные за преподавателем -->
+            <div *ngIf="userData?.role === '3'" class="groups flex-column">
+                <header class="groups-header">
+                    <p class="groups-header__title">Группы, закрепленные за преподавателем</p>
+                </header>
+
+                <div class="groups-list flex-column">
+                    <div class="groups-item flex-column" *ngFor="let item of lecturerGroups; index as i">
+                        <div class="group flex-row">
+                            <div class="groups-item__information flex-column">
+                                <div class="groups-item__name">
+                                    <p>{{ item.groupName }}</p>
+                                </div>
+        
+                                <div class="groups-item__nameShortly">
+                                    <p>{{ item.nameShortly }}</p>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

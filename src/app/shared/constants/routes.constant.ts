@@ -17,6 +17,7 @@ import { AccessGuard } from "@core/guards/access.guard";
 import { SubjectPageComponent } from "@modules/subject-page/components/subject-page.component";
 import { MarksComponent } from "@modules/marks/components/marks.component";
 import { AttendanceComponent } from "@modules/attendance/components/attendance.component";
+import { RecoveryComponent } from "@modules/recovery/components/recovery.component";
 
 export const ROUTES: Routes = [
     {
@@ -92,6 +93,10 @@ export const ROUTES: Routes = [
     {
         path: 'undefined',
         component: UndefinedComponent,
+    },
+    {
+        path: 'recovery',
+        component: RecoveryComponent,
     },
     {
         path: '**',

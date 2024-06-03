@@ -1,0 +1,64 @@
+@import '@styles/global.scss';
+@import '@styles/variables.scss';
+
+.wrapper {
+    width: 100%;
+    min-height: 100vh;
+}
+
+.container {
+    width: 100%;
+    height: 100vh;
+    padding: 20px;
+    background-color: $colorPrimary2;
+    overflow: hidden;
+}
+
+.recovery {
+    width: auto;
+    height: auto;
+    align-items: center;
+    gap: 20px;
+
+    .recovery-title {
+        font-weight: 600;
+        font-size: 64px;
+        line-height: auto;
+        color: $colorPrimary3;
+    }
+
+    .recovery-caption {
+        font-weight: 500;
+        font-size: 14px;
+        line-height: auto;
+        color: $colorGrey3;
+        text-align: center;
+    }
+
+    .recovery-button {
+        width: auto;
+        height: 32px;
+        appearance: none;
+        outline: none;
+        border: none;
+        padding: 0px 20px;
+        background-color: transparent;
+        border-radius: 6px;
+        cursor: pointer;
+        transition: $transitionMedium;
+
+        &:hover {
+            opacity: 0.8;
+            border-radius: 10px;
+            background-color: $colorPrimary3;
+        }
+
+        span {
+            font-weight: 600;
+            font-size: 14px;
+            line-height: auto;
+            color: $colorWhite;
+            text-decoration: underline;
+        }
+    }
+}

@@ -1,3 +1,4 @@
+import { HttpParams } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { HttpService } from "@core/services/http.service";
 import { LecturerModel } from "@shared/models/lecturer.model";
@@ -19,6 +20,13 @@ export class LecturersService {
     // Метод для получения ФИО и ID преподавателей
     public getShortLecturersInformation(): Observable<any> {
         return this.httpService.get('teachers/getFioTeachers');
+    };
+
+    // Получение групп по ID преподавателя
+    public getLecturerGroups(id: number): Observable<any> {
+        const body: HttpParams = new HttpParams().set('teacherID', id);
+
+        return this.httpService.get('teachers/getTeachersGroup', body);
     };
 
     // Метод для добавления преподавателя

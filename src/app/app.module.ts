@@ -22,6 +22,7 @@ import { ScheduleModule } from "@modules/schedule/schedule.module";
 import { SubjectPageModule } from "@modules/subject-page/subject-page.module";
 import { MarksModule } from "@modules/marks/marks.module";
 import { AttendanceModule } from "@modules/attendance/attendance.module";
+import { RecoveryModule } from "@modules/recovery/recovery.module";
 
 @NgModule({
     declarations: [
@@ -51,6 +52,7 @@ import { AttendanceModule } from "@modules/attendance/attendance.module";
         SubjectPageModule,
         MarksModule,
         AttendanceModule,
+        RecoveryModule,
     ],
     providers: [
 

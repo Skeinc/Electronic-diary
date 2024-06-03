@@ -11,6 +11,7 @@ import { environment } from "@environments/environment";
 import { Router } from "@angular/router";
 import { SubjectsService } from "@modules/subjects/services/subjects.service";
 import { SubjectModel } from "@shared/models/subject.model";
+import { LecturersService } from "@modules/lecturers/services/lecturers.service";
 
 @Component({
     selector: 'app-personal',
@@ -30,6 +31,7 @@ import { SubjectModel } from "@shared/models/subject.model";
 })
 export class PersonalComponent implements OnInit {
     constructor(
+        private lecturersService: LecturersService,
         private personalService: PersonalService,
         private subjectsService: SubjectsService,
         private loggerService: LoggerService,
@@ -55,6 +57,9 @@ export class PersonalComponent implements OnInit {
 
     // Предметы, закрепленные за преподавателем
     lecturerSubjects: any[] = [];
+
+    // Группы, закрепленные за преподаваталем
+    lecturerGroups: any[] = [];
 
     // Переменная, обозначающая статус загрузки данных
     isDataLoading: boolean = false;
@@ -189,6 +194,31 @@ export class PersonalComponent implements OnInit {
         });
     };
 
+    // Получение групп, закрепленных за преподавателем
+    getGroupsByLecturerID(id: number): void {
+        this.isDataLoading = true;
+
+        this.lecturersService.getLecturerGroups(id).subscribe({
+            next: (response: any[]) => {
+                this.lecturerGroups = response;
+
+                this.loggerService.message('backend', 'Groups information by Lecturer ID was received');
+            },
+            error: (err) => {
+                this.loggerService.message('error', 'Error with get groups information by Lecturer ID', err);
+
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+            complete: () => {
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+        });
+    };
+
     // Метод для получения URL к медиафайлу
     getURLForMediafile(): string {
         return `${environment.protocol}://${environment.domain}/media/file?id=`;
@@ -216,6 +246,8 @@ export class PersonalComponent implements OnInit {
     // Метод для конфигурации данных, если пользователь преподаватель
     setLecturerConfiguration(): void {
         this.getSubjectsByLecturerID(this.userData?.id!);
+
+        this.getGroupsByLecturerID(this.userData?.id!);
     };
 
     // Переадресация на страницу предмета

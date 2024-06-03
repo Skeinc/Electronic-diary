@@ -7,6 +7,7 @@ import { PasswordFieldModule } from "@shared/components/password-field/password-
 import { ButtonModule } from "@shared/components/button/button.module";
 import { PhoneFieldModule } from "@shared/components/phone-field/phone-field.module";
 import { LoaderModule } from "@shared/components/loader/loader.module";
+import { RouterLink } from "@angular/router";
 
 @NgModule({
     declarations: [
@@ -15,6 +16,7 @@ import { LoaderModule } from "@shared/components/loader/loader.module";
     imports: [
         CommonModule,
         FormsModule,
+        RouterLink,
         // Components
         TextFieldModule,
         PhoneFieldModule,
