@@ -15,6 +15,8 @@ import { GroupModel } from "@shared/models/group.model";
 import { GroupsService } from "@modules/groups/services/groups.service";
 import { MarksService } from "@modules/marks/services/marks.service";
 import { AttendaceService } from "@modules/attendance/services/attendance.service";
+import { PersonalService } from "@modules/personal/services/personal.service";
+import { UserModel } from "@shared/models/user.model";
 
 @Component({
     selector: 'app-subject-page',
@@ -44,6 +46,7 @@ import { AttendaceService } from "@modules/attendance/services/attendance.servic
 export class SubjectPageComponent implements OnInit {
     constructor(
         private attendanceService: AttendaceService,
+        private personalService: PersonalService,
         private subjectsService: SubjectsService,
         private topicsService: TopicsService,
         private loggerService: LoggerService,
@@ -202,7 +205,13 @@ export class SubjectPageComponent implements OnInit {
     // Массив возможных значений для посещаемости
     attendanceOptions: string[] = ['Был', 'Не был'];
 
+    // Данные пользователя
+    userData: UserModel | null = null;
+
     ngOnInit(): void {
+        // Получаем информацию о пользователе
+        this.getUserInformation();
+
         // Получаем subjectID из queryParams
         this.route.queryParams.subscribe(async params => {
             this.subjectID = params['id'] ?? '';
@@ -217,6 +226,11 @@ export class SubjectPageComponent implements OnInit {
         if(this.subjectID !== null) {
             this.getAllTopicsBySubjectID(this.subjectID!);
         };
+    };
+
+    // Метод для получения данных пользователя
+    getUserInformation(): void {
+        this.userData = this.personalService.getUser();
     };
 
     // Метод для получения информации о предмете

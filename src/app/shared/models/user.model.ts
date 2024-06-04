@@ -11,6 +11,6 @@ export interface UserModel {
     role?: string;
     id_media?: string | null;
     groupCode?: string;
-    groupID?: number;
+    groupId?: number;
     accStatus?: number;
 }

@@ -10,7 +10,7 @@
                     <p class="header-title__value">Предметы — {{ subjectInformationData?.name }}</p>
                 </div>
 
-                <div class="header-controllers flex-row">
+                <div class="header-controllers flex-row" *ngIf="userData?.role !== '4'">
                     <app-button [elementID]="'add-topic'" [elementName]="'add-topic'" [elementLabel]="'Добавить тему'" [elementDisable]="isDataLoading" (click)="toggleAddingTopicDialogVisible()"></app-button>
                 </div>
             </header>
@@ -34,7 +34,7 @@
                     </div>
 
                     <div class="topic-content flex-column" [@expandCollapse]="isTopicFlagsVisible[i] ? 'expanded' : 'collapsed'">
-                        <div class="topic-controllers flex-row">
+                        <div class="topic-controllers flex-row" *ngIf="userData?.role !== '4'">
                             <div class="topic-controllers__wrapper">
                                 <app-button [elementID]="'attendance'" [elementName]="'attendance'" [elementLabel]="'Посещаемость'" [elementDisable]="isDataLoading" (click)="toggleSelectGroupForAttendanceDialogVisible(item.id!)"></app-button>
                             </div>
@@ -86,15 +86,15 @@
                                     </div>
 
                                     <div class="task-controllers flex-row">
-                                        <div class="task-controllers__wrapper">
+                                        <div class="task-controllers__wrapper" *ngIf="userData?.role !== '4'">
                                             <app-button [elementID]="'ratings'" [elementName]="'ratings'" [elementLabel]="'Оценки'" [elementDisable]="isDataLoading" (click)="toggleSelectGroupDialogVisible(task.id)"></app-button>
                                         </div>
 
-                                        <div class="task-controllers__wrapper">
+                                        <div class="task-controllers__wrapper" *ngIf="userData?.role !== '4'">
                                             <app-button [elementID]="'edit-task'" [elementName]="'edit-task'" [elementLabel]="'Редактировать задание'" [elementDisable]="isDataLoading" (click)="toggleEditingTaskDialogVisible(task.id, task)"></app-button>
                                         </div>
                 
-                                        <div class="task-controllers__wrapper">
+                                        <div class="task-controllers__wrapper" *ngIf="userData?.role !== '4'">
                                             <app-button [elementID]="'delete-task'" [elementName]="'delete-task'" [elementLabel]="'Удалить задание'" [elementDisable]="isDataLoading" (click)="toggleConfirmDialogVisible(task.id, 'task')"></app-button>
                                         </div>
                                     </div>

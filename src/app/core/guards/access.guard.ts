@@ -25,7 +25,7 @@ export class AccessGuard implements CanActivate {
                 return state.url.includes('personal') || state.url.includes('schedule') || state.url.includes('subject-page') || state.url.includes('marks') || state.url.includes('attendance');
             case '4': // Студент
                 // Разрешаем доступ только к персоналу и расписанию
-                return state.url.includes('personal') || state.url.includes('schedule');
+                return state.url.includes('personal') || state.url.includes('schedule') || state.url.includes('subject-page');
             default:
                 // В случае неопределенной роли перенаправляем на страницу "undefined"
                 this.router.navigate(['/undefined']);

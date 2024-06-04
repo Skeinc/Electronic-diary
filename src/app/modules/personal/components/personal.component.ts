@@ -61,6 +61,9 @@ export class PersonalComponent implements OnInit {
     // Группы, закрепленные за преподаваталем
     lecturerGroups: any[] = [];
 
+    // Предметы, закрепленные за студентом
+    studentSubjects: any[] = [];
+
     // Переменная, обозначающая статус загрузки данных
     isDataLoading: boolean = false;
 
@@ -84,7 +87,12 @@ export class PersonalComponent implements OnInit {
         // Если пользователь преподаватель
         if(this.userData?.role === '3') {
             this.setLecturerConfiguration();
-        }
+        };
+
+        // Если пользователь студент
+        if(this.userData?.role === '4') {
+            this.setStudentConfiguration();
+        };
     };
 
     // Метод для обновления данных о пользователе
@@ -219,6 +227,31 @@ export class PersonalComponent implements OnInit {
         });
     };
 
+    // Метод для получения предметом, закрепленных за студентов
+    getSubjectsByStudentID(groupID: number, studentID: number): void {
+        this.isDataLoading = true;
+
+        this.subjectsService.getAllSubjectsByStudentID(groupID, studentID).subscribe({
+            next: (response: any[]) => {
+                this.studentSubjects = response;
+
+                this.loggerService.message('backend', 'Subjects information by Student ID was received');
+            },
+            error: (err) => {
+                this.loggerService.message('error', 'Error with get subjects information by Student ID', err);
+
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+            complete: () => {
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+        });
+    };
+
     // Метод для получения URL к медиафайлу
     getURLForMediafile(): string {
         return `${environment.protocol}://${environment.domain}/media/file?id=`;
@@ -250,10 +283,15 @@ export class PersonalComponent implements OnInit {
         this.getGroupsByLecturerID(this.userData?.id!);
     };
 
+    // Метод для конфигурации данных, если пользователь студент
+    setStudentConfiguration(): void {
+        this.getSubjectsByStudentID(this.userData?.groupId!, this.userData?.id!);
+    };
+
     // Переадресация на страницу предмета
     redirectToSubjectPage(id: number): void {
         this.router.navigate(['subject-page'], {queryParams: {
             id:id,
         }});
-    }
+    };
 }
