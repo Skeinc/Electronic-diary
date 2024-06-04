@@ -54,7 +54,7 @@
 
                         <div class="task-list flex-column">
                             <div class="task-item flex-column" *ngFor="let task of avaliableTasks; index as i">
-                                <div class="task flex-row" (click)="toggleTaskVisible(i)">
+                                <div class="task flex-row" (click)="toggleTaskVisible(i)" (click)="getResponseByTaskIDAndStudentID(i, task.id, userData?.id!)">
                                     <div class="task-item__point flex-row">
                                         <p>—</p>
                                     </div>
@@ -80,12 +80,22 @@
                                             <div *ngIf="task.mediaID" class="task-information__link flex-center-center">
                                                 <a [href]="getURLForMediafile() + task.mediaID" target="_blank">Прикрепленный файл</a>
 
-                                                <span class="material-icons" (click)="unpinTaskFile(task)">close</span>
+                                                <span *ngIf="userData?.role !== '4'" class="material-icons" (click)="unpinTaskFile(task)">close</span>
                                             </div>
+
+                                            <ng-container *ngIf="userData?.role === '4'">
+                                                <div *ngIf="responseValues[i] !== null" class="task-information__link flex-center-center">
+                                                    <a [href]="getURLForMediafile() + responseValues[i]" target="_blank">Прикрепленный ответ</a>
+                                                </div>
+                                            </ng-container>
                                         </div>
                                     </div>
 
                                     <div class="task-controllers flex-row">
+                                        <div class="task-controllers__wrapper" *ngIf="userData?.role === '4'">
+                                            <app-button [elementID]="'add-response'" [elementName]="'add-response'" [elementLabel]="'Отправить ответ'" [elementDisable]="isDataLoading" (click)="toggleAddingResponseDialogVisible(task.id)"></app-button>
+                                        </div>
+
                                         <div class="task-controllers__wrapper" *ngIf="userData?.role !== '4'">
                                             <app-button [elementID]="'ratings'" [elementName]="'ratings'" [elementLabel]="'Оценки'" [elementDisable]="isDataLoading" (click)="toggleSelectGroupDialogVisible(task.id)"></app-button>
                                         </div>
@@ -269,6 +279,28 @@
 
             <div class="attendance-controllers__wrapper">
                 <app-button [elementID]="'button-save'" [elementName]="'button-save'" [elementLabel]="'Сохранить'" [elementDisable]="!isAttendanceByGroupAndTopicEditable" (click)="saveAttendanceByGroupAndTopicHandler()"></app-button>
+            </div>
+        </div>
+    </div>
+</p-dialog>
+
+<!-- Добавление ответа на задание -->
+<p-dialog [header]="'Добавление ответа на задание'" [(visible)]="isAddResponseDialogVisible" [modal]="true" [style]="{ width: '400px' }" [draggable]="false" [resizable]="false">
+    <div class="dialog-wrapper flex-column">
+        <app-textarea [elementID]="'description'" [elementName]="'description'" [elementPlaceholder]="'Описание'" [elementRows]="5" [(elementValue)]="addingResponseDescription" [elementDisable]="isDataLoading"></app-textarea>
+
+        <label class="input-file button-file">
+            <input type="file" name="file" (change)="onInputChange($event)">
+            <span>{{ selectedFileName || 'Выберите файл' }}</span>
+        </label>
+
+        <div class="dialog-message flex-row">
+            <span class="dialog-message__value">{{ isAddResponseDialogError }}</span>
+        </div>
+
+        <div class="response-controllers flex-row">
+            <div class="response-controllers__wrapper">
+                <app-button [elementID]="'button-send'" [elementName]="'button-send'" [elementLabel]="'Отправить'" [elementDisable]="isDataLoading" (click)="addResponseHandler()"></app-button>
             </div>
         </div>
     </div>

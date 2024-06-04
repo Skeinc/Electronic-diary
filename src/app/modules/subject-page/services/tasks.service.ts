@@ -18,11 +18,25 @@ export class TasksService {
         return this.httpService.get('tasks/getTasksByTopicID', body);
     };
 
+    // Метод для получения ответа на задания
+    public getResponseToTask(taskID: number, userID: number): Observable<any> {
+        const body: HttpParams = new HttpParams().set('taskID', taskID).set('userID', userID);
+
+        return this.httpService.get('task-response/getResponseByTaskIDAndUserID', body);
+    };
+
     // Метод для добавления задания
     public createTask(request: any): Observable<any> {
         const body = request;
 
         return this.httpService.post('tasks/addTask', body);
+    };
+
+    // Метод на добавление ответа на задание
+    public addResponseToTask(request: any): Observable<any> {
+        const body = request;
+
+        return this.httpService.post('task-response/addTaskResponse', body);
     };
 
     // Метод для редактирования задания

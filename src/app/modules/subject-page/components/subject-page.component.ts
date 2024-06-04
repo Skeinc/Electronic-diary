@@ -205,6 +205,21 @@ export class SubjectPageComponent implements OnInit {
     // Массив возможных значений для посещаемости
     attendanceOptions: string[] = ['Был', 'Не был'];
 
+    // Переменная, которая контролирует видимость окна отправки задания
+    isAddResponseDialogVisible: boolean = false;
+
+    // Переменная обозначает ошибку при отправки задания
+    isAddResponseDialogError: string | null = null;
+
+    // Переменная хранит ID задания для которого отправляют ответ
+    addingResponseTaskID: number | null = null
+
+    // Данные для добавления ответа на задание
+    addingResponseDescription: string | null = null;
+
+    // Массив значений для ответов на задания
+    responseValues: any[] = [];
+
     // Данные пользователя
     userData: UserModel | null = null;
 
@@ -298,6 +313,10 @@ export class SubjectPageComponent implements OnInit {
         this.tasksService.getAllTasksByTopicID(id).subscribe({
             next: (response: TaskModel[]) => {
                 this.avaliableTasks = response.sort((a, b) => a.id - b.id);
+
+                for(let index = 0; index < this.avaliableTasks.length; index++) {
+                    this.responseValues[index] = null;
+                };
                 
                 this.loggerService.message('backend', 'All tasks information was received', response);
 
@@ -623,7 +642,7 @@ export class SubjectPageComponent implements OnInit {
     };
 
     // Метод для загрузки медиафайла на сервер
-    async uploadMediaFile(body: any, type: 'create' | 'update'): Promise<void> {
+    async uploadMediaFile(body: any, type: 'create' | 'update' | 'add-response'): Promise<void> {
         this.isDataLoading = true;
 
         if(this.uploadedFile) {
@@ -649,6 +668,10 @@ export class SubjectPageComponent implements OnInit {
 
                     if(type === 'update') {
                         this.updateTask(body);
+                    };
+
+                    if(type === 'add-response') {
+                        this.addResponse(body);
                     };
 
                     for(let index = 0; index < this.isTopicFlagsVisible.length; index++) {
@@ -857,6 +880,92 @@ export class SubjectPageComponent implements OnInit {
         });
     };
 
+    // Метод для обработки кнопки обновления задания
+    addResponseHandler(): void {
+        // Формируем тело запроса
+        const body = {
+            "mediaID": null,
+            "description": this.addingResponseDescription,
+            "userID": this.userData?.id,
+            "taskID": this.addingResponseTaskID,
+        };
+
+        // Проверяем есть ли загруженный файл
+        if(this.uploadedFile) {
+            // Вызываем метод для загрузки медиафайла
+            this.uploadMediaFile(body, 'add-response');
+        }
+        else {
+            // Отправляем запрос на отправку ответа на задание
+            this.addResponse(body);
+        }
+    };
+
+    // Метод для отправки ответа на задание
+    addResponse(body: any): void {
+        this.isAddResponseDialogError = '';
+
+        if (this.validateAddingResponseData()) {
+            this.isDataLoading = true;
+
+            this.tasksService.addResponseToTask(body).subscribe({
+                next: (response: any) => {
+                    this.loggerService.message('backend', 'Response was sended', response);
+
+                    this.cdr.detectChanges();
+                },
+                error: (err) => {
+                    this.loggerService.message('error', 'Error with send response', err);
+
+                    this.isAddResponseDialogError = 'Не удалось отправить ответ';
+
+                    this.isDataLoading = false;
+
+                    this.cdr.detectChanges();
+                },
+                complete: () => {
+                    this.isAddResponseDialogVisible = !this.isAddResponseDialogVisible;
+
+                    this.isDataLoading = false;
+
+                    this.cdr.detectChanges();
+                },
+            });
+        }
+        else {
+            this.loggerService.message('error', 'Error with validate add response data');
+
+            this.isAddResponseDialogError = 'Заполните все поля';
+        };
+    };
+
+    // Метод для получения прикрепленного задания по ID задания и ID студента
+    getResponseByTaskIDAndStudentID(index: number, taskID: number, userID: number): void {
+        this.isDataLoading = true;
+
+        this.tasksService.getResponseToTask(taskID, userID).subscribe({
+            next: (response: any) => {
+                this.responseValues[index] = response.mediaID;
+
+                this.loggerService.message('backend', 'Response was received', response);
+
+                this.cdr.detectChanges();
+            },
+            error: (err) => {
+                this.loggerService.message('error', 'Error with get response', err);
+
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+            complete: () => {
+                this.isDataLoading = false;
+
+                this.cdr.detectChanges();
+            },
+        });
+    };
+
     // Метод для валидации данных окна добавления темы
     validateAddingTopicData(): boolean {
         if (this.dialogAddTopicName.length === 0 || this.dialogAddTopicDescription.length === 0) {
@@ -869,6 +978,15 @@ export class SubjectPageComponent implements OnInit {
     // Метод для валидации данных окна добавления задания
     validateAddingTaskData(): boolean {
         if (this.dialogAddTaskName.length === 0 || this.dialogAddTaskDescription.length === 0) {
+            return false;
+        }
+
+        return true;
+    };
+
+    // Метод для валидации данных окна добавления ответа на задание
+    validateAddingResponseData(): boolean {
+        if(this.addingResponseDescription?.length === 0) {
             return false;
         }
 
@@ -1025,6 +1143,15 @@ export class SubjectPageComponent implements OnInit {
         };
 
         this.isSelectedGroupForAttendanceDialogVisible = !this.isSelectedGroupForAttendanceDialogVisible;
+    };
+
+    // Метод для смены видимости окна отправки ответа на задание
+    toggleAddingResponseDialogVisible(taskID?: number): void {
+        if(taskID !== null) {
+            this.addingResponseTaskID = taskID!;
+        };
+
+        this.isAddResponseDialogVisible = !this.isAddResponseDialogVisible;
     };
 
     // Логика для события "Далее"
